@@ -3,6 +3,7 @@
     <head>
       <?php $title='Dashboard'?>
       @include('includes.metadata')
+      
     </head>
 
     <body class="hold-transition sidebar-mini">
@@ -49,7 +50,7 @@
           <img src="./img/student.svg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{Auth::user()->name}}</a>
+        <a href="#" class="d-block">{{Auth::user()->firstname}} {{Auth::user()->lastname}}</a>
         </div>
       </div>
 

@@ -1,104 +1,163 @@
 <template>
     <div class="container">
-        <section class="content">
-      <div class="row">
-        <div class="col-12">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title">Hover Data Table</h3>
-            </div>
-            <!-- /.card-header -->
-            <div class="card-body">
-              <div id="example2_wrapper" class="dataTables_wrapper container-fluid dt-bootstrap4"><div class="row"><div class="col-sm-12 col-md-6"></div><div class="col-sm-12 col-md-6"></div></div><div class="row"><div class="col-sm-12"><table id="example2" class="table table-bordered table-hover dataTable" role="grid" aria-describedby="example2_info">
-                <thead>
-                <tr role="row"><th class="sorting_asc" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Rendering engine: activate to sort column descending">Rendering engine</th><th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Browser: activate to sort column ascending">Browser</th><th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Platform(s): activate to sort column ascending">Platform(s)</th><th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="Engine version: activate to sort column ascending">Engine version</th><th class="sorting" tabindex="0" aria-controls="example2" rowspan="1" colspan="1" aria-label="CSS grade: activate to sort column ascending">CSS grade</th></tr>
-                </thead>
-                <tbody>
+      <div class="row mt-3">
+          <div class="col-md-12">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Users Table</h3>
 
-                <tr role="row" class="odd">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Firefox 1.0</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr><tr role="row" class="even">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Firefox 1.5</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr><tr role="row" class="odd">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Firefox 2.0</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr><tr role="row" class="even">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Firefox 3.0</td>
-                  <td>Win 2k+ / OSX.3+</td>
-                  <td>1.9</td>
-                  <td>A</td>
-                </tr><tr role="row" class="odd">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Camino 1.0</td>
-                  <td>OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr><tr role="row" class="even">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Camino 1.5</td>
-                  <td>OSX.3+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr><tr role="row" class="odd">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Netscape 7.2</td>
-                  <td>Win 95+ / Mac OS 8.6-9.2</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr><tr role="row" class="even">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Netscape Browser 8</td>
-                  <td>Win 98SE+</td>
-                  <td>1.7</td>
-                  <td>A</td>
-                </tr><tr role="row" class="odd">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Netscape Navigator 9</td>
-                  <td>Win 98+ / OSX.2+</td>
-                  <td>1.8</td>
-                  <td>A</td>
-                </tr><tr role="row" class="even">
-                  <td class="sorting_1">Gecko</td>
-                  <td>Mozilla 1.0</td>
-                  <td>Win 95+ / OSX.1+</td>
-                  <td>1</td>
-                  <td>A</td>
-                </tr></tbody>
-                <tfoot>
-                <tr><th rowspan="1" colspan="1">Rendering engine</th><th rowspan="1" colspan="1">Browser</th><th rowspan="1" colspan="1">Platform(s)</th><th rowspan="1" colspan="1">Engine version</th><th rowspan="1" colspan="1">CSS grade</th></tr>
-                </tfoot>
-              </table></div></div><div class="row"><div class="col-sm-12 col-md-5"><div class="dataTables_info" id="example2_info" role="status" aria-live="polite">Showing 1 to 10 of 57 entries</div></div><div class="col-sm-12 col-md-7"><div class="dataTables_paginate paging_simple_numbers" id="example2_paginate"><ul class="pagination"><li class="paginate_button page-item previous disabled" id="example2_previous"><a href="#" aria-controls="example2" data-dt-idx="0" tabindex="0" class="page-link">Previous</a></li><li class="paginate_button page-item active"><a href="#" aria-controls="example2" data-dt-idx="1" tabindex="0" class="page-link">1</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example2" data-dt-idx="2" tabindex="0" class="page-link">2</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example2" data-dt-idx="3" tabindex="0" class="page-link">3</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example2" data-dt-idx="4" tabindex="0" class="page-link">4</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example2" data-dt-idx="5" tabindex="0" class="page-link">5</a></li><li class="paginate_button page-item "><a href="#" aria-controls="example2" data-dt-idx="6" tabindex="0" class="page-link">6</a></li><li class="paginate_button page-item next" id="example2_next"><a href="#" aria-controls="example2" data-dt-idx="7" tabindex="0" class="page-link">Next</a></li></ul></div></div></div></div>
+                <div class="card-tools">
+                  <button class="btn btn-success" data-toggle="modal" data-target="#addNew">
+                    Add New <i class="fas fa-user-plus fa-fw"></i></button>
+                </div>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body table-responsive p-0">
+                <table class="table table-hover">
+                  <tbody><tr>
+                    <th>ID Number</th>
+                    <th>Fullname</th>
+                    <th>Email</th>
+                    <th>User Type</th>
+                    <th>Registered At</th>
+                    <th>Modify</th>
+                  </tr>
+                  <tr v-for="user in users" :key = "user.id">
+                    <td>{{user.id_num}}</td>
+                    <td>{{user.firstname}} {{user.middlename}} {{user.lastname}}</td>
+                    <td>{{user.email}}</td>
+                    <td>{{user.usertype | upText}}</td>
+                    <td>{{user.created_at | setDate}}</td>
+                    <td>
+                      <a href="#">
+                        <i class="fa fa-edit icon-blue"></i>
+                      </a>
+                      /
+                      <a href="#">
+                        <i class="fa fa-trash icon-red"></i>
+                      </a>
+                    </td>
+                  </tr>
+                  
+                </tbody></table>
+              </div>
+              <!-- /.card-body -->
             </div>
-            <!-- /.card-body -->
+            <!-- /.card -->
           </div>
-          <!-- /.card -->
-
-  
-          <!-- /.card -->
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-    </section>
+        <!-- Modal -->
+        <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="addNewLabel">Add New User</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <form @submit.prevent="createUser">
+              <div class="modal-body">
+                    <div class="form-group">
+                      <input v-model="form.id_num" type="text" name="id_num"
+                      placeholder="ID Number"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
+                      <has-error :form="form" field="id_num"></has-error>
+                    </div>
+                    <div class="form-group">
+                      <input v-model="form.firstname" type="text" name="firstname"
+                      placeholder="First Name"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }">
+                      <has-error :form="form" field="firstname"></has-error>
+                    </div>
+                    <div class="form-group">
+                      <input v-model="form.middlename" type="text" name="middlename"
+                      placeholder="Middle Name"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('middlename') }">
+                      <has-error :form="form" field="middlename"></has-error>
+                    </div>
+                    <div class="form-group">
+                      <input v-model="form.lastname" type="text" name="lastname"
+                      placeholder="Last Name"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('lastname') }">
+                      <has-error :form="form" field="lastname"></has-error>
+                    </div>
+                    <div class="form-group">
+                      <input v-model="form.email" type="text" name="email"
+                      placeholder="Email Address"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
+                      <has-error :form="form" field="email"></has-error>
+                    </div>
+                    <div class="form-group">
+                      <select name="usertype" v-model="form.usertype" id="usertype" class="form-control" :class="{'is-invalid': form.errors.has('usertype')}">
+                        <option value="presadmin">School President</option>
+                        <option value="vpadmin">School Vice-President</option>
+                        <option value="collegesec">College Secretary</option>
+                        <option value="adminstaff">Admin Staff</option>
+                        <option value="itstaff">IT Staff</option>
+                        <option value="cashier">Cashier</option>
+                        <option value="registrar">Registrar</option>
+                        <option value="guidance">Guidance</option>
+                        <option value="instructor">Instructor</option>
+                        <option value="student">Student</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <input v-model="form.password" type="hidden" name="password" id="password"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
+                      <has-error :form="form" field="password"></has-error>
+                      
+                    </div>
+                    
+              </div>
+              <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Create <i class="fas fa-save fa-fw"></i></button>
+              </div>
+              </form>
+            </div>
+          </div>
+        </div>
     </div>
 </template>
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
+        data(){
+          return{
+            users : {},
+            form: new Form({
+                id_num : '',
+                firstname : '',
+                middlename : '',
+                lastname : '',
+                email : '',
+                password : '123456',
+                usertype : 'student',
+            })
+          }
+        },
+        methods: {
+          loadUsers(){
+            axios.get("api/user").then(({data}) =>(this.users = data.data));
+
+          },
+
+          createUser(){
+            this.$Progress.start();
+            this.form.post('api/user');
+
+            $('#addNew').modal('hide')
+
+            toast({
+                  type: 'success',
+                  title: 'New User Successfully Created!'
+                })
+            this.$Progress.finish();
+          }
+        },
+        created() {
+           this.loadUsers();
+           setInterval(() =>this.loadUsers(),3000);
         }
     }
 </script>
