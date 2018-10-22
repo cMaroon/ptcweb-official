@@ -33,6 +33,7 @@
                     </p>
             </router-link>
         </li>
+        
           <li class="nav-item">
                 <router-link to="/profile" class="nav-link">
                     <i class="nav-icon fas fa-user icon-orange"></i>

@@ -16,11 +16,11 @@
                 <div class="card card-widget widget-user">
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header text-white" style="background-image:url('./img/hero.png')">
-                    <h3 class="widget-user-username">{{this.form.name}}</h3>
-                    <h5 class="widget-user-desc">{{this.form.type}}</h5>
+                    <h3 class="widget-user-username">{{this.form.firstname}}</h3>
+                    <h5 class="widget-user-desc" >{{this.form.student_type | upText}}</h5>
                 </div>
                 <div class="widget-user-image">
-                    <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar">
+                    <!-- <img class="img-circle" :src="getProfilePhoto()" alt="User Avatar"> -->
                 </div>
                 <div class="card-footer">
                     <div class="row">
@@ -74,11 +74,11 @@
                             <div class="tab-pane active show" id="information">
                                 <form class="form-horizontal">
                                 <div class="form-group">
-                                    <label for="inputName" class="col-sm-2 control-label">Name</label>
+                                    <label for="inputName" class="col-sm-2 control-label">First Name</label>
 
                                     <div class="col-sm-12">
-                                    <input type="" v-model="form.name" class="form-control" id="inputName" placeholder="Name" :class="{ 'is-invalid': form.errors.has('name') }">
-                                     <has-error :form="form" field="name"></has-error>
+                                    <input type="" v-model="form.firstname" class="form-control" id="inputfirstname" placeholder="First Name" :class="{ 'is-invalid': form.errors.has('firstname') }">
+                                     <has-error :form="form" field="firstname"></has-error>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -145,21 +145,20 @@
                     firstname : '',
                     middlename : '',
                     lastname : '',
-                    email : '',
-                    password : '',
-                    usertype : '',
-                    profile_photo: ''
+                    profile_photo: '',
+                    student_type: '',
                 })
+
             }
         },
         mounted() {
             console.log('Component mounted.')
         },
         methods:{
-            getProfilePhoto(){
-                let profile_photo = (this.form.profile_photo.length > 200) ? this.form.profile_photo : "img/profile/"+ this.form.profile_photo ;
-                return profile_photo;
-            },
+            // getProfilePhoto(){
+            //     let profile_photo = (this.form.profile_photo.length > 200) ? this.form.profile_photo : "img/profile/"+ this.form.profile_photo ;
+            //     return profile_photo;
+            // },
             updateInfo(){
                 this.$Progress.start();
                 if(this.form.password == ''){
@@ -196,8 +195,11 @@
             }
         },
         created() {
-            axios.get("api/profile")
-            .then(({ data }) => (this.form.fill(data)));
+                // axios.get("api/profile")
+                // .then(({ data }) => (this.form.fill(data)));
+                axios.get("api/student")
+                .then(({ data }) => (this.form.fill(data)));
+
         }
     }
 </script>

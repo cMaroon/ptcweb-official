@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Student;
 
 class UserController extends Controller
 {
@@ -47,7 +48,6 @@ class UserController extends Controller
             'email' => 'required|string|email|max:191|unique:users',
             'password' => 'required|string|min:6',
         ]);
-
         return User::create([
             'id_num' => $request['id_num'],
             'firstname' => $request['firstname'],
@@ -58,11 +58,9 @@ class UserController extends Controller
             'usertype' => $request['usertype'],
         ]);
 
-        // return $request->all();
-    }
 
-    public function profile(){
-        return auth('api')->user();
+
+        // return $request->all();
     }
 
     /**

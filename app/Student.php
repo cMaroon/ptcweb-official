@@ -2,30 +2,17 @@
 
 namespace App;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\User as Authenticatable;
-use Laravel\Passport\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
 
-class Student extends Authenticatable
+class Student extends Model
 {
-    use Notifiable, HasApiTokens;
+    
+    protected $connection = 'mysql2';
+    protected $table = 'student_information';
+    protected $fillable = ['id_num','firstname', 'lastname'];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array
-     */
-    protected $fillable = [
-        'id_num', 'firstname', 'middlename', 'lastname', 'email', 'password', 'usertype'
-    ];
+    public function user(){
+        return $this->belongsTo('App\User');
+    }
 
-    /**
-     * The attributes that should be hidden for arrays.
-     *
-     * @var array
-     */
-    protected $hidden = [
-        'password', 'remember_token',
-    ];
 }

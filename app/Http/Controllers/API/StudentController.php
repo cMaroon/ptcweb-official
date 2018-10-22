@@ -2,13 +2,27 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Student;
+use App\User;
+use Auth;
 
 class StudentController extends Controller
 {
+    
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +30,16 @@ class StudentController extends Controller
      */
     public function index()
     {
-        //
+
+        $user_id_num = Auth::user()->id_num;
+
+        $student = Student::on('mysql2'); // static method
+
+        // $student = Student::select('student_type')->where('id_num', '=', $user_id_num)->first();
+        $student = Student::where('id_num', '=', $user_id_num)->first();
+
+
+        return $student;
     }
 
     /**
@@ -27,8 +50,16 @@ class StudentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return Student::create([
+            'id_num' => $request['id_num'],
+            ]);
     }
+
+    public function student(){
+
+        return Auth('api')->user(); 
+
+     }
 
     /**
      * Display the specified resource.
@@ -38,7 +69,7 @@ class StudentController extends Controller
      */
     public function show($id)
     {
-        //
+       
     }
 
     /**
@@ -63,4 +94,6 @@ class StudentController extends Controller
     {
         //
     }
+
+    
 }

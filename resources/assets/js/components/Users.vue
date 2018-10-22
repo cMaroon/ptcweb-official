@@ -44,7 +44,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="users" @pagination-change-page="getResults"></pagination>
+                  <!-- <pagination :data="users" @pagination-change-page="getResults"></pagination> -->
               </div>
             </div>
             <!-- /.card -->
@@ -214,6 +214,7 @@
           createUser(){
                 this.$Progress.start();
                 this.form.post('api/user')
+                this.form.post('api/student')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
