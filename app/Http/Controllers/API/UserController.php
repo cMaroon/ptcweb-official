@@ -9,6 +9,18 @@ use App\User;
 
 class UserController extends Controller
 {
+
+
+    /**
+     * Create a new controller instance.
+     *
+     * @return void
+     */
+    public function __construct()
+    {
+        $this->middleware('auth:api');
+    }
+    
     /**
      * Display a listing of the resource.
      *
@@ -28,12 +40,12 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'id_num' => ['required', 'string', 'max:191'],
-            'firstname' => ['required', 'string', 'max:191', 'alpha_spaces'],
-            'middlename' => ['max:191', 'alpha_spaces','nullable'],
-            'lastname' => ['required', 'string', 'max:191', 'alpha_spaces'],
-            'email' => ['required', 'string', 'email', 'max:191', 'unique:users'],
-            'password' => ['required', 'string', 'min:6'],
+            'id_num' => 'required|string|max:191|unique:users',
+            'firstname' => 'required|string|max:191|alpha_spaces',
+            'middlename' => 'max:191|alpha_spaces|nullable',
+            'lastname' => 'required|string|max:191|alpha_spaces',
+            'email' => 'required|string|email|max:191|unique:users',
+            'password' => 'required|string|min:6',
         ]);
 
         return User::create([
@@ -47,6 +59,10 @@ class UserController extends Controller
         ]);
 
         // return $request->all();
+    }
+
+    public function profile(){
+        return auth('api')->user();
     }
 
     /**
@@ -69,7 +85,20 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $user = User::findOrFail($id);
+        
+
+        $this->validate($request,[
+            'id_num' => 'required|string|max:191|unique:users,id_num,'.$user->id,
+            'firstname' => 'required|string|max:191|alpha_spaces',
+            'middlename' => 'max:191|alpha_spaces|nullable',
+            'lastname' => 'required|string|max:191|alpha_spaces',
+            'email' => 'required|string|email|max:191|unique:users,email,'.$user->id,
+            'password' => 'sometimes|string|min:6',
+        ]);
+
+        $user->update($request->all());
+        return ['message'=>'Updated the user info'];
     }
 
     /**
@@ -80,6 +109,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $user = User::findOrFail($id);
+
+        // delete the user
+
+        $user->delete();
+
+
+        return ['message'=>'User Deleted!'];
     }
 }
