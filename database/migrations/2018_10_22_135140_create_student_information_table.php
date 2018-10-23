@@ -15,7 +15,11 @@ class CreateStudentInformationTable extends Migration
     {
         Schema::connection('mysql2')->create('student_information', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('profile_photo')->default('default.svg');
             $table->string('id_num')->unique();
+            $table->string('firstname');
+            $table->string('middlename')->nullable();
+            $table->string('lastname');
             $table->string('suffixname')->nullable();
             $table->string('program')->nullable();
             $table->string('scholarship')->nullable();
@@ -44,6 +48,7 @@ class CreateStudentInformationTable extends Migration
             $table->integer('per_zipcode')->nullable();
             $table->integer('cd_telno')->nullable();
             $table->string('cd_mobno')->nullable();
+            $table->string('cd_email')->unique();
             $table->string('lsa_schtype')->nullable();
             $table->string('lsa_schname')->nullable();
             $table->string('lsa_schprogram')->nullable();

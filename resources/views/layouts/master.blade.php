@@ -50,7 +50,14 @@
           <img src="./img/student.svg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-        <a href="#" class="d-block">{{Auth::user()->firstname}} {{Auth::user()->lastname}}</a>
+        <a href="#" class="d-block">
+        {{-- <template v-if="user.usertype !== 'superadmin'"> --}}
+          {{Auth::user()->firstname}} {{Auth::user()->lastname}}
+        {{-- </template> --}}
+        {{-- <template v-else> --}}
+            {{-- Super Admin --}}
+        {{-- </template> --}}
+        </a>
         </div>
       </div>
 

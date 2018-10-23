@@ -9,10 +9,14 @@ class Student extends Model
     
     protected $connection = 'mysql2';
     protected $table = 'student_information';
-    protected $fillable = ['id_num','firstname', 'lastname'];
 
-    public function user(){
-        return $this->belongsTo('App\User');
-    }
+    //Database Tables
+    protected $fillable = [
+        'id_num','firstname', 'lastname'
+    ];
+
+    // public function user(){
+    //     return $this->belongsTo('App\User');
+    // }
 
 }

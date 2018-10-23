@@ -15,17 +15,12 @@ class CreateAddSuperadminTable extends Migration
     {
         DB::table('users')->insert(array(
             'id_num' => 'superadmin01',
-            'firstname' => 'SuperAdmin',
-            'middlename' => 'SuperAdmin',
-            'lastname' => 'SuperAdmin',
+            'name' => 'Super Admin',
             'email' => 'itstaff.ptc@gmail.com',
             'password' => Hash::make('admin'),
             'created_at' => date('Y-m-d H:m:s'),
             'updated_at' => date('Y-m-d H:m:s'),
             'usertype' => 'superadmin',
-            'completed' => '1'
-
-
         ));
     }
 
