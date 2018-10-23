@@ -21,7 +21,7 @@ class CreateStudentInformationTable extends Migration
             $table->string('middlename')->nullable();
             $table->string('lastname');
             $table->string('suffixname')->nullable();
-            $table->string('program')->nullable();
+            $table->string('acad_program')->nullable();
             $table->string('scholarship')->nullable();
             $table->string('student_type')->default('old student');
             $table->string('year_level')->nullable();

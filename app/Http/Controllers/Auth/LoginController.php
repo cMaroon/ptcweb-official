@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\User;
+use App\Student;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
 
 class LoginController extends Controller
@@ -20,6 +24,7 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+
     public function username()
     {
         return 'id_num'; //or whatever field
@@ -30,6 +35,7 @@ class LoginController extends Controller
      * @var string
      */
     protected $redirectTo = '/dashboard';
+    
 
     /**
      * Create a new controller instance.

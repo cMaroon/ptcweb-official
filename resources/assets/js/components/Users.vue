@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-      <div class="row mt-3">
+      <div class="row mt-3" v-if="$gate.isSuperAdmin()">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Users Table</h3>
 
                 <div class="card-tools">
-                   <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button>
+                   <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
                 </div>
               </div>
               <!-- /.card-header -->
@@ -21,10 +21,10 @@
                     <th>Registered At</th>
                     <th>Modify</th>
                   </tr>
-                  <tr v-for="user in users" :key = "user.id">
+                  <tr v-for="user in users.data" :key = "user.id">
                     <template v-if="user.usertype!=='superadmin'">
                     <td>{{user.id_num}}</td>
-                    <td>{{user.firstname}} {{user.middlename}} {{user.lastname}}</td>
+                    <td>{{user.name}}</td>
                     <td>{{user.email}}</td>
                     <td>{{user.usertype | upText}}</td>
                     <td>{{user.created_at | setDate}}</td>
@@ -44,12 +44,17 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <!-- <pagination :data="users" @pagination-change-page="getResults"></pagination> -->
+                  <pagination :data="users" @pagination-change-page="getResults"></pagination>
               </div>
             </div>
             <!-- /.card -->
           </div>
         </div>
+
+        <div v-if="!$gate.isSuperAdmin()">
+            <not-found></not-found>
+        </div>
+
         <!-- Modal -->
         <div class="modal fade" id="addNew" tabindex="-1" role="dialog" aria-labelledby="addNewLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered" role="document">
@@ -69,7 +74,7 @@
                         class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
                       <has-error :form="form" field="id_num"></has-error>
                     </div>
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                       <input v-model="form.firstname" type="text" name="firstname"
                       placeholder="First Name"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }">
@@ -86,7 +91,7 @@
                       placeholder="Last Name"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('lastname') }">
                       <has-error :form="form" field="lastname"></has-error>
-                    </div>
+                    </div> -->
                     <div class="form-group">
                       <input v-model="form.email" type="text" name="email"
                       placeholder="Email Address"
@@ -201,14 +206,16 @@
                                         )
                                     Fire.$emit('AfterCreate');
                                 }).catch(()=> {
-                                    swal("Failed!", "There was something wronge.", "warning");
+                                    swal("Failed!", "UNAUTHORIZED ACTION.", "warning");
                                 });
                          }
                     })
             },
           loadUsers(){
-            axios.get("api/user").then(({data}) =>(this.users = data.data));
-
+            if(this.$gate.isSuperAdmin()){
+                axios.get("api/user").then(({data}) =>(this.users = data));
+            }
+            
           },
 
           createUser(){

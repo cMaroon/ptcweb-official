@@ -23,4 +23,6 @@ Route::middleware('auth:api')->get('/student',function(Request $request){
 
 Route::apiResources(['user'=>'API\UserController']);
 Route::apiResources(['student'=>'API\StudentController']);
+
 Route::get('profile','API\StudentController@student');
+// Route::put('profile','API\StudentController@updateProfile');

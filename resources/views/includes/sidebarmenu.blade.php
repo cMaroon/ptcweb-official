@@ -1,13 +1,15 @@
 <nav class="mt-2">
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+  
         <li class="nav-item">
-            <router-link to="/dashboard" class="nav-link">
+            <router-link to="/dashboard" class="nav-link " active-class="active">
                 <i class="nav-icon fas fa-tachometer-alt icon-yellow"></i>
                     <p>
                     Dashboard
                     </p>
             </router-link>
         </li>
+        @can('isSuperAdmin')
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-cog icon-teal"></i>
@@ -25,6 +27,7 @@
               </li>
             </ul>
           </li>
+          
           <li class="nav-item">
             <router-link to="/developer" class="nav-link">
                 <i class="nav-icon fas fa-cogs icon-pink"></i>
@@ -33,7 +36,8 @@
                     </p>
             </router-link>
         </li>
-        
+        @endcan
+        @can('isStudent')
           <li class="nav-item">
                 <router-link to="/profile" class="nav-link">
                     <i class="nav-icon fas fa-user icon-orange"></i>
@@ -42,6 +46,7 @@
                         </p>
                 </router-link>
             </li>
+          @endcan
             <li class="nav-item">
                     <a class="nav-link" href="{{ route('logout') }}"
                     onclick="event.preventDefault();

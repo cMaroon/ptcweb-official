@@ -51,12 +51,11 @@
         </div>
         <div class="info">
         <a href="#" class="d-block">
-        {{-- <template v-if="user.usertype !== 'superadmin'"> --}}
-          {{Auth::user()->firstname}} {{Auth::user()->lastname}}
-        {{-- </template> --}}
-        {{-- <template v-else> --}}
-            {{-- Super Admin --}}
-        {{-- </template> --}}
+          @if ((Auth::user()->usertype) !== 'superadmin')
+          {{Auth::user()->name}}
+          @else
+          SUPERADMIN
+          @endif
         </a>
         </div>
       </div>
@@ -90,6 +89,12 @@
   <!-- Main Footer -->
   @include('includes.footer')
 <!-- ./wrapper -->
+
+@auth
+<script>
+  window.user = @json(auth()->user()) 
+</script>   
+@endauth
 
 
 <script src="/js/app.js"></script>

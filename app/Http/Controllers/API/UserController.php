@@ -17,7 +17,13 @@ class UserController extends Controller
     
     public function index()
     {
-        return User::latest()->paginate(10);
+        $student = Student::on('mysql2');
+        $student = Student::all();
+        // || \Gate::allows('isAuthor')
+        if (\Gate::allows('isSuperAdmin')) {
+            return User::latest()->paginate(10);
+        }
+        
     }
 
     public function store(Request $request)
@@ -32,9 +38,10 @@ class UserController extends Controller
         ]);
         return User::create([
             'id_num' => $request['id_num'],
-            'firstname' => $request['firstname'],
-            'middlename' => $request['middlename'],
-            'lastname' => $request['lastname'],
+            // 'firstname' => $request['firstname'],
+            // 'middlename' => $request['middlename'],
+            // 'lastname' => $request['lastname'],
+            'name'=> $data['firstname'].' '.$data['middlename'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
             'usertype' => $request['usertype'],
@@ -89,6 +96,7 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $this->authorize('isSuperAdmin');
         $user = User::findOrFail($id);
 
         // delete the user

@@ -25,6 +25,42 @@
                             </div>
                         </div>
                         <div class="form-group row">
+                                <label for="yearlevel" class="col-md-4 col-form-label text-md-right">{{ __('Year Level and Section') }}</label>
+                                <div class="col-md-3">
+                                <select type="text" id="year_level" name="year_level"  class="form-control{{ $errors->has('yearlevel') ? ' is-invalid' : '' }}" >
+                                        <option value="First Year">First Year</option>
+                                        <option value="Second Year">Second Year</option>
+                                        <option value="Third Year">Third Year</option>
+                                        <option value="Fourth Year">Fourth Year</option>
+                                </select>
+                                </div>
+                                <div class="col-md-3">
+                                <select type="text" id="section" name="section" class="form-control{{ $errors->has('section') ? ' is-invalid' : '' }}" >
+                                        <option value="A">A</option>
+                                        <option value="B">B</option>
+                                        <option value="C">C</option>
+                                        <option value="D">D</option>
+                                </select>
+                                </div>
+                           
+                        </div>
+                        <div class="form-group row">
+                                <label for="acad_program" class="col-md-4 col-form-label text-md-right">{{ __('Program') }}</label>
+                                <div class="col-md-6">
+                                <select type="text" id="acad_program" name="acad_program" class="form-control{{ $errors->has('acad_program') ? ' is-invalid' : '' }}" >
+                                        <option value="ABA">Associate in Business Administration</option>
+                                        <option value="COA">Certificate in Office Administration</option>
+                                        <option value="CCS">Certificate in Computer Science</option>
+                                        <option value="CHRM">Certificate in Hotel and Restaurant Management</option>
+                                        <option value="BSIT">Bachelor of Science in Information Technology</option>
+                                        <option value="BSOA">Bachelor of Science in Office Administration</option>
+                                        <option value="BSIT-EXEC">Bachelor of Science in Information Technology - Executive </option>
+                                        <option value="BSOA-EXEC">Bachelor of Science in Office Administration - Executive </option>
+                                </select>
+                                </div>
+                                                         
+                        </div>
+                        <div class="form-group row">
                             <label for="firstname" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
 
                             <div class="col-md-6">

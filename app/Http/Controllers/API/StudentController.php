@@ -40,9 +40,12 @@ class StudentController extends Controller
     }
 
     public function student(){
-
         return Auth('api')->user(); 
 
+     }
+
+     public function getUser(Request $request){
+        return json_encode($request->user());
      }
 
     public function show($id)
@@ -52,7 +55,9 @@ class StudentController extends Controller
 
     public function update(Request $request, $id)
     {
-        //
+        $student = Student::findOrFail($id);
+        $student->update($request->all());
+        return ['message'=>'Updated the student info'];
     }
 
     public function destroy($id)
