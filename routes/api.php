@@ -16,17 +16,13 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
 Route::middleware('auth:api')->get('/student',function(Request $request){
     return $request->student();
-});
-Route::middleware('auth:api')->get('/studentlist',function(Request $request){
-    return $request->studentlist();
 });
 
 Route::apiResources(['user'=>'API\UserController']);
 Route::apiResources(['student'=>'API\StudentController']);
-Route::apiResources(['studentlist'=>'API\StudentListController']);
+Route::apiResources(['studentlist'=>'API\StudentController']);
 
+Route::get('studentlist','API\StudentController@StudentList');
 Route::get('profile','API\StudentController@student');
-// Route::put('profile','API\StudentController@updateProfile');

@@ -32,6 +32,14 @@ class StudentController extends Controller
         return $student;
     }
 
+    public function StudentList()
+    {
+        if (\Gate::allows('isSuperAdmin')) {
+            return Student::latest()->paginate(15);
+        }
+
+    }
+
     public function store(Request $request)
     {
         return Student::create([
