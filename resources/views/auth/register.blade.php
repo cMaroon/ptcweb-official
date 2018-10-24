@@ -27,7 +27,8 @@
                         <div class="form-group row">
                                 <label for="yearlevel" class="col-md-4 col-form-label text-md-right">{{ __('Year Level and Section') }}</label>
                                 <div class="col-md-3">
-                                <select type="text" id="year_level" name="year_level"  class="form-control{{ $errors->has('yearlevel') ? ' is-invalid' : '' }}" >
+                                <select type="text" id="year_level" name="year_level"  class="form-control{{ $errors->has('yearlevel') ? ' is-invalid' : '' }}" required="" >
+                                        <option value="">Please select year level*</option>
                                         <option value="First Year">First Year</option>
                                         <option value="Second Year">Second Year</option>
                                         <option value="Third Year">Third Year</option>
@@ -35,7 +36,8 @@
                                 </select>
                                 </div>
                                 <div class="col-md-3">
-                                <select type="text" id="section" name="section" class="form-control{{ $errors->has('section') ? ' is-invalid' : '' }}" >
+                                <select type="text" id="section" name="section" class="form-control{{ $errors->has('section') ? ' is-invalid' : '' }}"required="" >
+                                        <option value="">Please select section*</option>
                                         <option value="A">A</option>
                                         <option value="B">B</option>
                                         <option value="C">C</option>
@@ -48,15 +50,16 @@
                         <div class="form-group row">
                                 <label for="acad_program" class="col-md-4 col-form-label text-md-right">{{ __('Program') }}</label>
                                 <div class="col-md-6">
-                                <select type="text" id="acad_program" name="acad_program" class="form-control{{ $errors->has('acad_program') ? ' is-invalid' : '' }}" >
+                                <select type="text" id="acad_program" name="acad_program" class="form-control{{ $errors->has('acad_program') ? ' is-invalid' : '' }}" required="">
+                                        <option value="">Please select your program*</option>
                                         <option value="ABA">Associate in Business Administration</option>
                                         <option value="COA">Certificate in Office Administration</option>
                                         <option value="CCS">Certificate in Computer Science</option>
                                         <option value="CHRM">Certificate in Hotel and Restaurant Management</option>
                                         <option value="BSIT">Bachelor of Science in Information Technology</option>
                                         <option value="BSOA">Bachelor of Science in Office Administration</option>
-                                        <option value="BSIT-EXEC">Bachelor of Science in Information Technology - Executive </option>
-                                        <option value="BSOA-EXEC">Bachelor of Science in Office Administration - Executive </option>
+                                        <option value="BSIT-EXEC">Executive - Bachelor of Science in Information Technology</option>
+                                        <option value="BSOA-EXEC">Executive - Bachelor of Science in Office Administration </option>
                                 </select>
                                 </div>
                                                          

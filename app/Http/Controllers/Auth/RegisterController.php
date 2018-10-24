@@ -69,9 +69,9 @@ class RegisterController extends Controller
     {
         Student::create([
             'id_num'=>$data['id_num'],
-            'firstname' => $data['firstname'],
-            'middlename' => $data['middlename'],
-            'lastname' => $data['lastname'],
+            'firstname' => ucfirst(strtolower($data['firstname'])),
+            'middlename' => ucfirst(strtolower($data['middlename'])),
+            'lastname' => ucfirst(strtolower($data['lastname'])),
             'cd_email' => $data['email'],
             'acad_program' => $data['acad_program'],
             'year_level' => $data['year_level'],
@@ -79,7 +79,7 @@ class RegisterController extends Controller
         ]);
        return User::create([
             'id_num' => $data['id_num'],
-            'name'=>  $data['firstname'].' '.$data['lastname'],
+            'name'=>  ucfirst(strtolower($data['firstname'])).' '.ucfirst(strtolower($data['lastname'])),
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

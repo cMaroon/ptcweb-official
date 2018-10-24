@@ -4,7 +4,7 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Users Table</h3>
+                <h3 class="card-title">Student List Table</h3>
 
                 <div class="card-tools">
                    <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
@@ -15,36 +15,36 @@
                 <table class="table table-hover">
                   <tbody><tr>
                     <th>ID Number</th>
-                    <th>Fullname</th>
-                    <th>Email</th>
-                    <th>User Type</th>
+                    <th>Firstname</th>
+                    <th>Middlename</th>
+                    <th>Lastname</th>
                     <th>Registered At</th>
                     <th>Modify</th>
                   </tr>
-                  <tr v-for="user in users.data" :key = "user.id">
-                    <template v-if="user.usertype!=='superadmin'">
-                    <td>{{user.id_num}}</td>
-                    <td>{{user.name}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.usertype | upText}}</td>
-                    <td>{{user.created_at | setDate}}</td>
+                  <tr v-for="student in studentlist.data" :key = "student.id">
+                    <!-- <template v-if="user.usertype!=='superadmin'"> -->
+                    <td>{{student.id_num}}</td>
+                    <td>{{student.firstname}}</td>
+                    <td>{{student.middlename}}</td>
+                    <td>{{student.lastname}}</td>
+                    <td>{{student.created_at | setDate}}</td>
                     <td>
-                      <a href="#" @click="editModal(user)">
+                      <a href="#" @click="editModal(student)">
                             <i class="fa fa-edit icon-blue"></i>
                         </a>
                       |
-                       <a href="#" @click="deleteUser(user.id)">
+                       <a href="#" @click="deleteStudent(student.id)">
                             <i class="fa fa-trash icon-red"></i>
                         </a>
                     </td>
-                  </template>
+                  <!-- </template> -->
                   </tr>
                   
                 </tbody></table>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="users" :limit="2" @pagination-change-page="getResults">
+                  <pagination :data="studentlist" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
                   </pagination>
@@ -64,12 +64,12 @@
             <div class="modal-content">
               <div class="modal-header">
                     <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
-                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update User's Info</h5>
+                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Student's Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form @submit.prevent="editmode ? updateUser() : createUser()">
+              <form @submit.prevent="editmode ? updateStudent() : createStudent()">
               <div class="modal-body">
                     <div class="form-group">
                       <input v-model="form.id_num" type="text" name="id_num"
@@ -79,31 +79,12 @@
                     </div>
                     
                     <div class="form-group">
-                      <input v-model="form.email" type="text" name="email"
-                      placeholder="Email Address"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                      <has-error :form="form" field="email"></has-error>
+                      <input v-model="form.firstname" type="text" name="firstname"
+                      placeholder="First Name"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }">
+                      <has-error :form="form" field="firstname"></has-error>
                     </div>
-                    <div class="form-group">
-                      <select name="usertype" v-model="form.usertype" id="usertype" class="form-control" :class="{'is-invalid': form.errors.has('usertype')}">
-                        <option value="presadmin">School President</option>
-                        <option value="vpadmin">School Vice-President</option>
-                        <option value="collegesec">College Secretary</option>
-                        <option value="adminstaff">Admin Staff</option>
-                        <option value="itstaff">IT Staff</option>
-                        <option value="cashier">Cashier</option>
-                        <option value="registrar">Registrar</option>
-                        <option value="guidance">Guidance</option>
-                        <option value="instructor">Instructor</option>
-                        <option value="student">Student</option>
-                      </select>
-                    </div>
-                    <div class="form-group">
-                      <input v-model="form.password" type="hidden" name="password" id="password"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                      <has-error :form="form" field="password"></has-error>
-                      
-                    </div>
+
                     
               </div>
               <div class="modal-footer">
@@ -122,27 +103,28 @@
         data(){
           return{
             editmode: false,
-            users : {},
+            studentlist : {},
             form: new Form({
                 id : '',
                 id_num : '',
-                email : '',
-                password : '123456',
-                usertype : 'student',
+                firstname : '',
+                middlename : '',
+                lastname : '',
+
             })
           }
         },
         methods: {
           getResults(page = 1) {
-            axios.get('api/user?page=' + page)
+            axios.get('api/studentlist?page=' + page)
                 .then(response => {
-                    this.users = response.data;
+                    this.studentlist = response.data;
                 });
           },
-          updateUser(){
+          updateStudent(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                this.form.put('api/user/'+this.form.id)
+                this.form.put('api/studentlist/'+this.form.id)
                 .then(() => {
                     // success
                     $('#addNew').modal('hide');
@@ -158,18 +140,18 @@
                     this.$Progress.fail();
                 });
             },
-            editModal(user){
+            editModal(student){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(user);
+                this.form.fill(student);
             },
             newModal(){
                 this.editmode = false;
                 this.form.reset();
                 $('#addNew').modal('show');
             },
-             deleteUser(id){
+             deleteStudent(id){
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -181,7 +163,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/user/'+id).then(()=>{
+                                this.form.delete('api/studentlist/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',
@@ -194,35 +176,35 @@
                          }
                     })
             },
-          loadUsers(){
+          loadStudents(){
             if(this.$gate.isSuperAdmin()){
-                axios.get("api/user").then(({data}) =>(this.users = data));
+                axios.get("api/studentlist").then(({data}) =>(this.studentlist = data));
             }
             
-          },
+          }
 
-          createUser(){
-                this.$Progress.start();
-                this.form.post('api/user')
-                this.form.post('api/student')
-                .then(()=>{
-                    Fire.$emit('AfterCreate');
-                    $('#addNew').modal('hide')
-                    toast({
-                        type: 'success',
-                        title: 'User Created in successfully'
-                        })
-                    this.$Progress.finish();
-                })
-                .catch(()=>{
-                  this.$Progress.fail();
-                })
-            }
+          // createUser(){
+          //       this.$Progress.start();
+          //       // this.form.post('api/user')
+          //       // this.form.post('api/student')
+          //       .then(()=>{
+          //           Fire.$emit('AfterCreate');
+          //           $('#addNew').modal('hide')
+          //           toast({
+          //               type: 'success',
+          //               title: 'User Created in successfully'
+          //               })
+          //           this.$Progress.finish();
+          //       })
+          //       .catch(()=>{
+          //         this.$Progress.fail();
+          //       })
+          //   }
         },
         created() {
-           this.loadUsers();
+           this.loadStudents();
            Fire.$on('AfterCreate',() => {
-               this.loadUsers();
+               this.loadStudents();
            });
           //  setInterval(() => this.loadUsers(), 15000);
         }

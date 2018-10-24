@@ -2,7 +2,7 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
   
         <li class="nav-item">
-            <router-link to="/dashboard" class="nav-link " active-class="active">
+            <router-link to="/dashboard" class="nav-link " >
                 <i class="nav-icon fas fa-tachometer-alt icon-yellow"></i>
                     <p>
                     Dashboard
@@ -26,8 +26,25 @@
                 </router-link>
               </li>
             </ul>
+            
           </li>
-          
+          <li class="nav-item has-treeview">
+            <a href="#" class="nav-link">
+              <i class="nav-icon fas fa-chalkboard-teacher icon-strongblue"></i>
+              <p>
+                Academic
+                <i class="right fa fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <router-link to="/studentlist" class="nav-link">
+                  <i class="fas fa-address-card nav-icon icon-vividorange"></i>
+                  <p>Student List</p>
+                </router-link>
+              </li>
+            </ul>
+          </li>
           <li class="nav-item">
             <router-link to="/developer" class="nav-link">
                 <i class="nav-icon fas fa-cogs icon-pink"></i>
@@ -35,8 +52,9 @@
                     Developer
                     </p>
             </router-link>
-        </li>
+          </li>
         @endcan
+
         @can('isStudent')
           <li class="nav-item">
                 <router-link to="/profile" class="nav-link">

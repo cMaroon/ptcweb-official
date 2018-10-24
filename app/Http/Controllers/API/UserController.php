@@ -38,10 +38,7 @@ class UserController extends Controller
         ]);
         return User::create([
             'id_num' => $request['id_num'],
-            // 'firstname' => $request['firstname'],
-            // 'middlename' => $request['middlename'],
-            // 'lastname' => $request['lastname'],
-            'name'=> $data['firstname'].' '.$data['middlename'],
+            // 'name'=> $data['firstname'].' '.$data['middlename'],
             'email' => $request['email'],
             'password' => Hash::make($request['password']),
             'usertype' => $request['usertype'],

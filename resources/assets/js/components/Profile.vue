@@ -130,7 +130,7 @@
                     <div class="row">
                         <div class="col-sm-5">City / Municipality: <input v-model="form.ca_city" type="text" class="form-control" id="add_city" name="add_city" placeholder="" maxlength="60" ></div>
                         <div class="col-sm-5">Province: <input v-model="form.ca_province" type="text" class="form-control" id="add_province" name="add_province" placeholder="" maxlength="60" ></div>
-                        <div class="col-sm-2">Zip Code: <input v-model="form.ca_zipcode" type="text" class="form-control" id="add_zipcode" name="add_zipcode" placeholder="xxxx" oninput="this.value = this.value.replace(/[^0-9.]/g, &#39;&#39;); this.value = this.value.replace(/(\..*)\./g, &#39;$1&#39;);" onkeydown="limitText(this,4);" onkeyup="limitText(this,4);" min="4" maxlength="4"  title="4 characters only"></div>                    
+                        <div class="col-sm-2">Zip Code: <input v-model="form.ca_zipcode" type="text" class="form-control" id="add_zipcode" name="add_zipcode" placeholder="xxxx" min="4" maxlength="4"  title="4 characters only"></div>                    
                     </div>                         
                 </div>
         </div>
@@ -138,7 +138,7 @@
 <br>
     <div class="col-lg-12">
         <div class="panel panel-default">
-            <div class="panel-heading"><h5><b>Permanent Address</b> &nbsp;&nbsp;<input type="checkbox" name="checker" id="checker"> <small>Same as Current Address</small></h5></div>
+            <div class="panel-heading"><h5><b>Permanent Address</b></h5></div>
                 <div class="panel-body">
                     <div class="row">
                         <div class="col-sm-3">Street No. / Unit No.: <input v-model="form.per_add_st_num" type="text" class="form-control" id="per_add_st_num" name="per_add_st_num" placeholder="" maxlength="20" ></div>
@@ -153,7 +153,7 @@
                     <div class="row">
                         <div class="col-sm-5">City / Municipality: <input v-model="form.per_add_city" type="text" class="form-control" id="per_add_city" name="per_add_city" placeholder="" maxlength="60" ></div>
                         <div class="col-sm-5">Province: <input v-model="form.per_add_province" type="text" class="form-control" id="per_add_province" name="per_add_province" placeholder="" maxlength="60" ></div>
-                        <div class="col-sm-2">Zip Code: <input v-model="form.per_add_zipcode" type="text" class="form-control" id="per_add_zipcode" name="per_add_zipcode" placeholder="xxxx" oninput="this.value = this.value.replace(/[^0-9.]/g, &#39;&#39;); this.value = this.value.replace(/(\..*)\./g, &#39;$1&#39;);" onkeydown="limitText(this,4);" onkeyup="limitText(this,4);" min="4" maxlength="4"  title="4 characters only"></div>     
+                        <div class="col-sm-2">Zip Code: <input v-model="form.per_add_zipcode" type="text" class="form-control" id="per_add_zipcode" name="per_add_zipcode" placeholder="xxxx" min="4" maxlength="4"  title="4 characters only"></div>     
                     </div>                         
                 </div>
         </div>  
@@ -164,8 +164,8 @@
             <div class="panel-heading"><h5><b>Contact Details</b></h5></div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-sm-4">Telephone No.:<input v-model="form.cd_telno" type="text" class="form-control" id="telno" name="telno" maxlength="30" placeholder="Landline" oninput="this.value = this.value.replace(/[^0-9.]/g, &#39;&#39;); this.value = this.value.replace(/(\..*)\./g, &#39;$1&#39;);" onkeydown="limitText(this,30);" onkeyup="limitText(this,30);" title="Minimum 7 &amp; Maximum 30 characters only" pattern=".{7,30}"></div>
-                        <div class="col-sm-4">Mobile No.: <input v-model="form.cd_mobno" type="text" class="form-control" id="mobno" name="mobno" placeholder="09XXxxxxxxx" maxlength="11" oninput="this.value = this.value.replace(/[^0-9.]/g, &#39;&#39;); this.value = this.value.replace(/(\..*)\./g, &#39;$1&#39;);" onkeydown="limitText(this,11);" onkeyup="limitText(this,11);" title="11 characters only" ></div>
+                        <div class="col-sm-4">Telephone No.:<input v-model="form.cd_telno" type="text" class="form-control" id="telno" name="telno" maxlength="30" placeholder="Landline" title="Minimum 7 &amp; Maximum 30 characters only" pattern=".{7,30}"></div>
+                        <div class="col-sm-4">Mobile No.: <input v-model="form.cd_mobno" type="text" class="form-control" id="mobno" name="mobno" placeholder="09XXxxxxxxx" maxlength="11"  title="11 characters only" ></div>
                     </div>
                 </div>
         </div>
@@ -208,21 +208,21 @@
 
                     <div class="row">
                         <div class="col-md-12"><br><p><b>Father's Information</b></p></div>
-                            <div class="col-md-4">First Name<input v-model="form.fa_name" type="text" class="form-control" name="fathersname" id="fathersname" placeholder="Given Name" maxlength="100"></div>
+                            <div class="col-md-4">First Name<input v-model="form.fa_fname" type="text" class="form-control" name="fathersname" id="fathersname" placeholder="Given Name" maxlength="100"></div>
                             <div class="col-md-4">Last Name<input v-model="form.fa_lname" type="text" class="form-control" name="fatherslname" id="fatherslname" placeholder="Surname" maxlength="100"></div>
                             <div class="col-md-2">Middle Initial<input v-model="form.fa_mname" type="text" class="form-control" name="fathersmname" id="fathersmname" placeholder="Middle initial" maxlength="3"></div>
                             <div class="col-md-2">Suffix<input v-model="form.fa_sname" type="text" class="form-control" name="fatherssname" id="fatherssname" placeholder="(eg. Jr.)" maxlength="3"></div>
                     </div>
                     <br>
                     <div class="row">    
-                            <div class="col-md-4">Mobile Number<input v-model="form.fa_mobno" type="text" class="form-control" name="fatherscontact" id="fatherscontact" placeholder="09XXxxxxxxx" maxlength="11" oninput="this.value = this.value.replace(/[^0-9.]/g, &#39;&#39;); this.value = this.value.replace(/(\..*)\./g, &#39;$1&#39;);" onkeydown="limitText(this,11);" onkeyup="limitText(this,11);" title="11 characters only"></div>
+                            <div class="col-md-4">Mobile Number<input v-model="form.fa_mobno" type="text" class="form-control" name="fatherscontact" id="fatherscontact" placeholder="09XXxxxxxxx" maxlength="11" title="11 characters only"></div>
                             <div class="col-md-4">Email<input v-model="form.fa_email" type="email" class="form-control" name="fathersemail" id="fathersemail" placeholder="example@domain.com" maxlength="100"></div>
                             <div class="col-md-4">Occupation<input v-model="form.fa_occu" type="text" class="form-control" name="fathersoccupation" id="fathersoccupation" placeholder="Occupation" maxlength="100"></div>           
                     </div>         
                     <br>
                     <div class="row">
                         <div class="col-md-12"><br><p><b>Mother's Information</b></p></div>
-                            <div class="col-md-5">First Name<input v-model="form.mo_name" type="text" class="form-control" name="mothersname" id="mothersname" placeholder="Given Name" maxlength="100"></div>
+                            <div class="col-md-5">First Name<input v-model="form.mo_fname" type="text" class="form-control" name="mothersname" id="mothersname" placeholder="Given Name" maxlength="100"></div>
                             <div class="col-md-5">Last Name<input v-model="form.mo_lname" type="text" class="form-control" name="motherslname" id="motherslname" placeholder="Surname" maxlength="100"></div>
                             <div class="col-md-2">Middle Initial<input v-model="form.mo_mname" type="text" class="form-control" name="mothersmname" id="mothersmname" placeholder="Middle initial" maxlength="3"></div>
                     </div>
@@ -235,7 +235,7 @@
                     <br>
                     <div class="row">
                         <div class="col-md-12"><br><p><b>Guardian's Information</b></p></div>
-                            <div class="col-md-4">First Name<input v-model="form.gu_name" type="text" class="form-control" name="guardiansname" id="guardiansname" placeholder="Given Name" maxlength="100"></div>
+                            <div class="col-md-4">First Name<input v-model="form.gu_fname" type="text" class="form-control" name="guardiansname" id="guardiansname" placeholder="Given Name" maxlength="100"></div>
                             <div class="col-md-4">Last Name<input v-model="form.gu_lname" type="text" class="form-control" name="guardianslname" id="guardianslname" placeholder="Surname" maxlength="100"></div>
                             <div class="col-md-2">Middle Initial<input v-model="form.gu_mname" type="text" class="form-control" name="guardiansmname" id="guardiansmname" placeholder="Middle initial" maxlength="3"></div>
                             <div class="col-md-2">Suffix<input v-model="form.gu_sname" type="text" class="form-control" name="guardianssname" id="guardianssname" placeholder="Suffix" maxlength="3"></div>
@@ -290,8 +290,7 @@
 <script>
     export default {
         data(){
-            return {
-                
+            return { 
                  form: new Form({
                      //important details
                     id : '',
@@ -340,7 +339,7 @@
                     lsa_schattended:'',
                     //parent information
                     //father
-                    fa_name:'',
+                    fa_fname:'',
                     fa_mname:'',
                     fa_lname:'',
                     fa_sname:'',
@@ -348,14 +347,14 @@
                     fa_email:'',
                     fa_occu:'',
                     //mother
-                    mo_name:'',
+                    mo_fname:'',
                     mo_mname:'',
                     mo_lname:'',
                     mo_mobno:'',
                     mo_email:'',
                     mo_occu:'',
                     //guardian
-                    gu_name:'',
+                    gu_fname:'',
                     gu_mname:'',
                     gu_lname:'',
                     gu_sname:'',
@@ -373,7 +372,7 @@
         },
         methods:{
             getProfilePhoto(){
-                let profile_photo = (this.form.profile_photo.length > 200) ? this.form.profile_photo : "img/profile/"+ this.form.profile_photo ;
+                let profile_photo = "img/profile/"+ this.form.profile_photo ;
                 return profile_photo;
             },
             updateInfo(){
@@ -426,29 +425,6 @@
         }
     }
 
-     $(document).ready(function(){
-                        $("input#checker").bind("click",function(o){
-                            if($("input#checker:checked").length){
-                                $("#per_add_st_num").val($("#add_st_num").val());
-                                $("#per_add_st_name").val($("#add_st_name").val());
-                                $("#per_add_subd").val($("#add_subd").val());
-                                $("#per_add_brgy").val($("#add_brgy").val());
-                                $("#per_add_city").val($("#add_city").val());
-                                $("#per_add_province").val($("#add_province").val());
-                                $("#per_add_zipcode").val($("#add_zipcode").val());
-                      document.getElementById("address_label").style.display = '';
-                            }else{
-                              $("#per_add_st_num").val("");
-                                $("#per_add_st_name").val("");
-                                $("#per_add_subd").val("");
-                                $("#per_add_brgy").val("");
-                                $("#per_add_city").val("");
-                                $("#per_add_province").val("");
-                                $("#per_add_zipcode").val("");
-                                //document.getElementById("address_label").style.display = 'none';
-                            }
-                        });
-                    }
-                );
+    
                 
 </script>

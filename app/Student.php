@@ -17,9 +17,9 @@ class Student extends Model
         'ca_st_num','ca_st_name','ca_subd','ca_brgy','ca_city','ca_province','ca_zipcode',
         'per_st_num','per_st_name','per_subd','per_brgy','per_city','per_province','per_zipcode',
         'cd_telno','cd_mobno','lsa_schtype','lsa_schname','lsa_schprogram','lsa_schattended',
-        'fa_name','fa_mname','fa_lname','fa_sname','fa_mobno','fa_email','fa_occu',
-        'mo_name','mo_mname','mo_lname','mo_mobno','mo_email','mo_occu',
-        'gu_name','gu_mname','gu_lname','gu_sname','gu_mobno','gu_email','gu_occu','gu_rel'
+        'fa_fname','fa_mname','fa_lname','fa_sname','fa_mobno','fa_email','fa_occu',
+        'mo_fname','mo_mname','mo_lname','mo_mobno','mo_email','mo_occu',
+        'gu_fname','gu_mname','gu_lname','gu_sname','gu_mobno','gu_email','gu_occu','gu_rel'
 
     ];
 
