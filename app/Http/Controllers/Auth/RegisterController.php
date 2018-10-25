@@ -67,19 +67,24 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        // $fname = ucwords(strtolower($data['firstname']));
+        // $lname = ucwords(strtolower($data['lastname']));
+        // $mname = ucwords(strtolower($data['middlename']));
+
+
         Student::create([
             'id_num'=>$data['id_num'],
-            'firstname' => ucfirst(strtolower($data['firstname'])),
-            'middlename' => ucfirst(strtolower($data['middlename'])),
-            'lastname' => ucfirst(strtolower($data['lastname'])),
-            'cd_email' => $data['email'],
+            'firstname' => $data['firstname'],
+            'middlename' => $data['middlename'],
+            'lastname' => $data['lastname'],
+            'cd_email' => strtolower($data['email']),
             'acad_program' => $data['acad_program'],
             'year_level' => $data['year_level'],
             'section' => $data['section'],
         ]);
        return User::create([
             'id_num' => $data['id_num'],
-            'name'=>  ucfirst(strtolower($data['firstname'])).' '.ucfirst(strtolower($data['lastname'])),
+            'name'=>  $data['firstname'].' '.$data['lastname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
         ]);

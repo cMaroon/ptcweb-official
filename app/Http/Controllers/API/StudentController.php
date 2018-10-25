@@ -64,6 +64,7 @@ class StudentController extends Controller
     public function update(Request $request, $id)
     {
         $student = Student::findOrFail($id);
+        
         $student->update($request->all());
         return ['message'=>'Updated the student info'];
     }

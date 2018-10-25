@@ -73788,10 +73788,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        getProfilePhoto: function getProfilePhoto() {
-            var profile_photo = "img/profile/" + this.form.profile_photo;
-            return profile_photo;
-        },
+        // getProfilePhoto(){
+        //     let profile_photo = "img/profile/"+ this.form.profile_photo ;
+        //     return profile_photo;
+        // },
         updateInfo: function updateInfo() {
             var _this = this;
 
@@ -73856,12 +73856,7 @@ var render = function() {
             ]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "widget-user-image" }, [
-            _c("img", {
-              staticClass: "img-circle elevation-2",
-              attrs: { src: _vm.getProfilePhoto(), alt: "User Avatar" }
-            })
-          ]),
+          _c("div", { staticClass: "widget-user-image" }),
           _vm._v(" "),
           _c("div", { staticClass: "card-footer" }, [
             _c("div", { staticClass: "row" }, [
@@ -74510,7 +74505,7 @@ var render = function() {
                                   id: "per_add_st_num",
                                   name: "per_add_st_num",
                                   placeholder: "",
-                                  maxlength: "20"
+                                  maxlength: "50"
                                 },
                                 domProps: { value: _vm.form.per_add_st_num },
                                 on: {
@@ -74545,7 +74540,7 @@ var render = function() {
                                   id: "per_add_st_name",
                                   name: "per_add_st_name",
                                   placeholder: "",
-                                  maxlength: "40"
+                                  maxlength: "100"
                                 },
                                 domProps: { value: _vm.form.per_add_st_name },
                                 on: {
@@ -74583,7 +74578,7 @@ var render = function() {
                                   type: "text",
                                   id: "per_add_subd",
                                   name: "per_add_subd",
-                                  maxlength: "40",
+                                  maxlength: "100",
                                   placeholder: ""
                                 },
                                 domProps: { value: _vm.form.per_add_subd },
@@ -74619,7 +74614,7 @@ var render = function() {
                                   id: "per_add_brgy",
                                   name: "per_add_brgy",
                                   placeholder: "",
-                                  maxlength: "40"
+                                  maxlength: "100"
                                 },
                                 domProps: { value: _vm.form.per_add_brgy },
                                 on: {
@@ -75439,10 +75434,6 @@ var render = function() {
                                   id: "motherscontact",
                                   placeholder: "09XXxxxxxxx",
                                   maxlength: "11",
-                                  oninput:
-                                    "this.value = this.value.replace(/[^0-9.]/g, &#39;&#39;); this.value = this.value.replace(/(\\..*)\\./g, &#39;$1&#39;);",
-                                  onkeydown: "limitText(this,11);",
-                                  onkeyup: "limitText(this,11);",
                                   title: "11 characters only"
                                 },
                                 domProps: { value: _vm.form.mo_mobno },
@@ -75699,10 +75690,6 @@ var render = function() {
                                   id: "guardianscontact",
                                   placeholder: "09XXxxxxxxx",
                                   maxlength: "11",
-                                  oninput:
-                                    "this.value = this.value.replace(/[^0-9.]/g, &#39;&#39;); this.value = this.value.replace(/(\\..*)\\./g, &#39;$1&#39;);",
-                                  onkeydown: "limitText(this,11);",
-                                  onkeyup: "limitText(this,11);",
                                   title: "11 characters only"
                                 },
                                 domProps: { value: _vm.form.gu_mobno },
@@ -75985,7 +75972,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "panel-heading" }, [
-      _c("h5", [_c("b", [_vm._v("Current or Last School Attended")])])
+      _c("h5", [_c("b", [_vm._v("Last School Attended")])])
     ])
   },
   function() {
@@ -76987,6 +76974,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -76998,7 +76989,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 id_num: '',
                 firstname: '',
                 middlename: '',
-                lastname: ''
+                lastname: '',
+                acad_program: '',
+                year_level: '',
+                section: ''
 
             })
         };
@@ -77135,6 +77129,16 @@ var render = function() {
                           _c("td", [_vm._v(_vm._s(student.middlename))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(student.lastname))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(student.acad_program))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(student.year_level) +
+                                " - " +
+                                _vm._s(student.section)
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
@@ -77446,6 +77450,10 @@ var staticRenderFns = [
       _c("th", [_vm._v("Middlename")]),
       _vm._v(" "),
       _c("th", [_vm._v("Lastname")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Program")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Year and Section ")]),
       _vm._v(" "),
       _c("th", [_vm._v("Registered At")]),
       _vm._v(" "),

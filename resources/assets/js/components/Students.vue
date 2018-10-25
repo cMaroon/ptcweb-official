@@ -18,6 +18,8 @@
                     <th>Firstname</th>
                     <th>Middlename</th>
                     <th>Lastname</th>
+                    <th>Program</th>
+                    <th>Year and Section </th>
                     <th>Registered At</th>
                     <th>Modify</th>
                   </tr>
@@ -27,6 +29,8 @@
                     <td>{{student.firstname}}</td>
                     <td>{{student.middlename}}</td>
                     <td>{{student.lastname}}</td>
+                    <td>{{student.acad_program}}</td>
+                    <td>{{student.year_level}} - {{student.section}}</td>
                     <td>{{student.created_at | setDate}}</td>
                     <td>
                       <a href="#" @click="editModal(student)">
@@ -110,6 +114,9 @@
                 firstname : '',
                 middlename : '',
                 lastname : '',
+                acad_program:'',
+                year_level:'',
+                section:'',
 
             })
           }
