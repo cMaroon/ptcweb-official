@@ -15,7 +15,7 @@
                             <label for="id_num" class="col-sm-4 col-form-label text-md-right">{{ __('ID Number') }}</label>
 
                             <div class="col-md-6">
-                                <input id="id_num" type="id_num" class="form-control{{ $errors->has('id_num') ? ' is-invalid' : '' }}" name="id_num" value="{{ old('id_num') }}" required autofocus>
+                                <input id="id_num" type="id_num" class="form-control{{ $errors->has('id_num') ? ' is-invalid' : '' }}" name="id_num" value="{{ old('id_num') }}" required>
 
                                 @if ($errors->has('id_num'))
                                     <span class="invalid-feedback" role="alert">

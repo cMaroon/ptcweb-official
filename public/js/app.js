@@ -73842,7 +73842,11 @@ var render = function() {
             [
               _c("h3", { staticClass: "widget-user-username" }, [
                 _vm._v(
-                  _vm._s(this.form.firstname) + " " + _vm._s(this.form.lastname)
+                  _vm._s(this.form.firstname) +
+                    " " +
+                    _vm._s(this.form.middlename) +
+                    " " +
+                    _vm._s(this.form.lastname)
                 )
               ]),
               _vm._v(" "),
@@ -76192,6 +76196,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -76978,6 +76983,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -76997,6 +77004,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             })
         };
     },
+
 
     methods: {
         getResults: function getResults() {

@@ -35,7 +35,8 @@ class StudentController extends Controller
     public function StudentList()
     {
         if (\Gate::allows('isSuperAdmin')) {
-            return Student::latest()->paginate(15);
+            
+            return Student::latest()->paginate(10);
         }
 
     }

@@ -22,7 +22,7 @@
                 <!-- Add the bg color to the header using any of the bg-* classes -->
                 <div class="widget-user-header text-white" style="background-image:url('./img/hero.png')">
                
-                    <h3 class="widget-user-username">{{this.form.firstname}} {{this.form.lastname}}</h3>
+                    <h3 class="widget-user-username">{{this.form.firstname}} {{this.form.middlename}} {{this.form.lastname}}</h3>
                     <h5 class="widget-user-desc" >ID Number: {{this.form.id_num}}</h5>
                     <h5 class="widget-user-desc" >Email: {{this.form.cd_email}}</h5>
 

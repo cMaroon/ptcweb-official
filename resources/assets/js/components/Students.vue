@@ -7,6 +7,7 @@
                 <h3 class="card-title">Student List Table</h3>
 
                 <div class="card-tools">
+                 <!-- {{studentlist.data.id_num}} -->
                    <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
                 </div>
               </div>
@@ -52,6 +53,7 @@
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
                   </pagination>
+                  
               </div>
             </div>
             <!-- /.card -->
@@ -121,6 +123,7 @@
             })
           }
         },
+
         methods: {
           getResults(page = 1) {
             axios.get('api/studentlist?page=' + page)

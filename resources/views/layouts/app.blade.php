@@ -1,3 +1,4 @@
+<?php set_time_limit(0);?>
 <!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
