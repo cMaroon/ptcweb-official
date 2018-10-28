@@ -76203,6 +76203,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             editmode: false,
             users: {},
+            totalrecord: '',
             form: new Form({
                 id: '',
                 id_num: '',
@@ -76279,6 +76280,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios.get("api/user").then(function (_ref) {
                     var data = _ref.data;
                     return _this4.users = data;
+                }).then(function ($data) {
+                    _this4.totalrecord = $data.total - 1;
                 });
             }
         },
@@ -76324,14 +76327,22 @@ var render = function() {
       ? _c("div", { staticClass: "row mt-3" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(0),
+              _c("div", { staticClass: "card-header" }, [
+                _c("h3", { staticClass: "card-title" }, [
+                  _vm._v("Users Table")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-tools" }, [
+                  _c("p", [_vm._v("Total Users : " + _vm._s(_vm.totalrecord))])
+                ])
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body table-responsive p-0" }, [
                 _c("table", { staticClass: "table table-hover" }, [
                   _c(
                     "tbody",
                     [
-                      _vm._m(1),
+                      _vm._m(0),
                       _vm._v(" "),
                       _vm._l(_vm.users.data, function(user) {
                         return _c(
@@ -76501,7 +76512,7 @@ var render = function() {
                   [_vm._v("Update User's Info")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -76775,16 +76786,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Users Table")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", [
       _c("th", [_vm._v("ID Number")]),
       _vm._v(" "),
@@ -76985,12 +76986,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editmode: false,
             studentlist: {},
+            totalrecord: '',
             form: new Form({
                 id: '',
                 id_num: '',
@@ -77072,6 +77076,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 axios.get("api/studentlist").then(function (_ref) {
                     var data = _ref.data;
                     return _this4.studentlist = data;
+                }).then(function ($data) {
+                    _this4.totalrecord = $data.total;
                 });
             }
         }
@@ -77119,14 +77125,24 @@ var render = function() {
       ? _c("div", { staticClass: "row mt-3" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(0),
+              _c("div", { staticClass: "card-header" }, [
+                _c("h3", { staticClass: "card-title" }, [
+                  _vm._v("Student List Table")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-tools" }, [
+                  _c("p", [
+                    _vm._v("Total Students : " + _vm._s(_vm.totalrecord))
+                  ])
+                ])
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body table-responsive p-0" }, [
                 _c("table", { staticClass: "table table-hover" }, [
                   _c(
                     "tbody",
                     [
-                      _vm._m(1),
+                      _vm._m(0),
                       _vm._v(" "),
                       _vm._l(_vm.studentlist.data, function(student) {
                         return _c("tr", { key: student.id }, [
@@ -77285,7 +77301,7 @@ var render = function() {
                   [_vm._v("Update Student's Info")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -77436,16 +77452,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Student List Table")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement

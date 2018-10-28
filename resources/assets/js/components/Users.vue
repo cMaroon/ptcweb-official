@@ -7,7 +7,7 @@
                 <h3 class="card-title">Users Table</h3>
 
                 <div class="card-tools">
-                  <!-- Total Users Count : {{this.users.data.length}} -->
+                <p>Total Users : {{totalrecord}}</p>
                    <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
                 </div>
               </div>
@@ -124,6 +124,7 @@
           return{
             editmode: false,
             users : {},
+            totalrecord:'',
             form: new Form({
                 id : '',
                 id_num : '',
@@ -197,7 +198,8 @@
             },
           loadUsers(){
             if(this.$gate.isSuperAdmin()){
-                axios.get("api/user").then(({data}) =>(this.users = data));
+                axios.get("api/user").then(({data}) =>(this.users = data))
+                .then($data=>{this.totalrecord=$data.total-1});
             }
             
           },

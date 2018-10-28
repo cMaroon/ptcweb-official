@@ -7,6 +7,8 @@
                 <h3 class="card-title">Student List Table</h3>
 
                 <div class="card-tools">
+                <p>Total Students : {{totalrecord}}</p>
+
                  <!-- {{studentlist.data.id_num}} -->
                    <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
                 </div>
@@ -110,6 +112,7 @@
           return{
             editmode: false,
             studentlist : {},
+            totalrecord:'',
             form: new Form({
                 id : '',
                 id_num : '',
@@ -129,6 +132,7 @@
             axios.get('api/studentlist?page=' + page)
                 .then(response => {
                     this.studentlist = response.data;
+                    
                 });
           },
           updateStudent(){
@@ -188,7 +192,9 @@
             },
           loadStudents(){
             if(this.$gate.isSuperAdmin()){
-                axios.get("api/studentlist").then(({data}) =>(this.studentlist = data));
+                axios.get("api/studentlist").then(({data}) =>(this.studentlist = data))
+                .then($data=>{this.totalrecord=$data.total});
+
             }
             
           }
