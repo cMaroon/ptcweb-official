@@ -33,6 +33,8 @@
                                         <option value="Second Year">Second Year</option>
                                         <option value="Third Year">Third Year</option>
                                         <option value="Fourth Year">Fourth Year</option>
+                                        <option value="Grade 11">Grade 11</option>
+                                        <option value="Grade 12">Grade 12</option>
                                 </select>
                                 </div>
                                 <div class="col-md-3">
@@ -43,6 +45,7 @@
                                         <option value="C">C</option>
                                         <option value="D">D</option>
                                         <option value="Executive">Executive</option>
+                                        <option value="SHS">Senior High School</option>
                                 </select>
                                 </div>
                            
@@ -60,6 +63,9 @@
                                         <option value="BSOA">Bachelor of Science in Office Administration</option>
                                         <option value="BSIT-EXEC">Executive - Bachelor of Science in Information Technology</option>
                                         <option value="BSOA-EXEC">Executive - Bachelor of Science in Office Administration </option>
+                                        <option value="ABM">Accountancy, Business and Management </option>
+                                        <option value="HUMSS">Humanities and Social Science </option>
+                                        <option value="TECH-VOC ICT">Tech-Voc Information and Communications Technology </option>
                                 </select>
                                 </div>
                                                          
