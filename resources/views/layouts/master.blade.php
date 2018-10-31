@@ -96,8 +96,9 @@
 </script>   
 @endauth
 
-
+@include('includes.js')
 <script src="/js/app.js"></script>
+
 
 </body>
 </html>

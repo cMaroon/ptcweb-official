@@ -7,3 +7,6 @@
         <strong>&copy; 2018 Pateros Technological College.</strong>
       </footer>
     </div>
+
+
+    

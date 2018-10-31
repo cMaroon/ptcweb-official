@@ -18,3 +18,5 @@
 </title>
 
 <link rel="stylesheet" href="/css/app.css">
+<!-- DataTables -->
+<link rel="stylesheet" href="{{asset('/admin-lte/plugins/datatables/dataTables.bootstrap4.css')}}">
