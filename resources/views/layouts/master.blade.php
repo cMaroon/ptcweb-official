@@ -81,7 +81,9 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    @include('includes.maincontent')
+    <router-view></router-view>
+    <!-- set progressbar -->
+    <vue-progress-bar></vue-progress-bar>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->

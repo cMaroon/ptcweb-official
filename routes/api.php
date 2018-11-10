@@ -23,6 +23,7 @@ Route::middleware('auth:api')->get('/student',function(Request $request){
 Route::apiResources(['user'=>'API\UserController']);
 Route::apiResources(['student'=>'API\StudentController']);
 Route::apiResources(['studentlist'=>'API\StudentController']);
+Route::apiResources(['program'=>'API\ProgramController']);
 
 Route::get('studentlist','API\StudentController@StudentList');
 Route::get('profile','API\StudentController@student');

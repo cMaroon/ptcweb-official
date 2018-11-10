@@ -17,7 +17,7 @@ class UserController extends Controller
     
     public function index()
     {
-        $student = Student::on('mysql2');
+        // $student = Student::on('mysql2');
         $student = Student::all();
         // || \Gate::allows('isAuthor')
         if (\Gate::allows('isSuperAdmin')) {

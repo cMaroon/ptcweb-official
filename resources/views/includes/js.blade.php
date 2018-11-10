@@ -1,4 +1,4 @@
-<!-- jQuery -->
+{{-- <!-- jQuery -->
 <script src="{{asset('/admin-lte/plugins/jquery/jquery.min.js')}}"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="{{asset('/admin-lte/plugins/jQueryUI/jquery-ui.min.js')}}"></script>
@@ -28,19 +28,4 @@
 <script src="{{asset('/admin-lte/plugins/fastclick/fastclick.js')}}"></script>
 <!-- AdminLTE App -->
 <script src="{{asset('/admin-lte/dist/js/adminlte.js')}}"></script>
-<!-- DataTables -->
-<script src="{{asset('/admin-lte/plugins/datatables/jquery.dataTables.js')}}"></script>
-<script src="{{asset('/admin-lte/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
-<script>
-    $(function () {
-      $("#example1").DataTable();
-      $('#example2').DataTable({
-        "paging": true,
-        "lengthChange": false,
-        "searching": false,
-        "ordering": true,
-        "info": true,
-        "autoWidth": false
-      });
-    });
-  </script>
+ --}}

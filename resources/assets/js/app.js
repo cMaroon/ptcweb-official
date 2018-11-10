@@ -51,6 +51,7 @@ let routes = [
   { path: '/profile', component: require('./components/Profile.vue') },
   { path: '/users', component: require('./components/Users.vue') },
   { path: '/studentlist', component: require('./components/Students.vue') },
+  { path: '/program', component: require('./components/Program.vue') },
 
 
 ]
@@ -103,3 +104,5 @@ const app = new Vue({
     el: '#app',
     router
 });
+
+

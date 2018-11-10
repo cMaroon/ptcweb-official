@@ -10,41 +10,24 @@
             </router-link>
         </li>
         @can('isSuperAdmin')
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-cog icon-teal"></i>
-              <p>
-                Management
-                <i class="right fa fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/users" class="nav-link">
-                  <i class="fas fa-users nav-icon icon-indigo"></i>
-                  <p>Users</p>
-                </router-link>
-              </li>
-            </ul>
-            
-          </li>
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
-              <i class="nav-icon fas fa-chalkboard-teacher icon-strongblue"></i>
-              <p>
-                Academic
-                <i class="right fa fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <router-link to="/studentlist" class="nav-link">
-                  <i class="fas fa-address-card nav-icon icon-vividorange"></i>
-                  <p>Student List</p>
-                </router-link>
-              </li>
-            </ul>
-          </li>
+        <li class="nav-item">
+          <router-link to="/users" class="nav-link">
+            <i class="fas fa-users nav-icon icon-indigo"></i>
+            <p>User Accounts</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/studentlist" class="nav-link">
+            <i class="fas fa-address-card nav-icon icon-vividorange"></i>
+            <p>Student List</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/program" class="nav-link">
+            <i class="fas fa-tasks nav-icon icon-vividorange"></i>
+            <p>Manage Program</p>
+          </router-link>
+        </li>
           <li class="nav-item">
             <router-link to="/developer" class="nav-link">
                 <i class="nav-icon fas fa-cogs icon-pink"></i>

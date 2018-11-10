@@ -1,15 +1,13 @@
 <template>
     <div class="container">
-      <div class="row " v-if="$gate.isSuperAdmin()">
+      <div class="row mt-3" v-if="$gate.isSuperAdmin()">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Student List Table</h3>
+                <h3 class="card-title">Program Table</h3>
 
                 <div class="card-tools">
-                <p>Total Students : {{totalrecord}}</p>
-
-                 <!-- {{studentlist.data.id_num}} -->
+                <p>Total Program : {{totalrecord}}</p>
                    <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
                 </div>
               </div>
@@ -17,45 +15,34 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <tbody><tr>
-                    <th>ID Number</th>
-                    <th>Firstname</th>
-                    <th>Middlename</th>
-                    <th>Lastname</th>
-                    <th>Program</th>
-                    <th>Year and Section </th>
-                    <th>Registered At</th>
+                    <th>Program Code</th>
+                    <th>Descriptive Title</th>
                     <th>Modify</th>
                   </tr>
-                  <tr v-for="student in studentlist.data" :key = "student.id">
-                    <!-- <template v-if="user.usertype!=='superadmin'"> -->
-                    <td>{{student.id_num}}</td>
-                    <td>{{student.firstname}}</td>
-                    <td>{{student.middlename}}</td>
-                    <td>{{student.lastname}}</td>
-                    <td>{{student.acad_program}}</td>
-                    <td>{{student.year_level}} - {{student.section}}</td>
-                    <td>{{student.created_at | setDate}}</td>
+                  <tr v-for="program in programs.data" :key = "program.id">
+                 
+                    <td>{{program.program_code}}</td>
+                    <td>{{program.descriptive_title}}</td>
                     <td>
-                      <a href="#" @click="editModal(student)">
+                      <a href="#" @click="editModal(program)">
                             <i class="fa fa-edit icon-blue"></i>
                         </a>
                       |
-                       <a href="#" @click="deleteStudent(student.id)">
+                       <a href="#" @click="deleteUser(program.id)">
                             <i class="fa fa-trash icon-red"></i>
                         </a>
                     </td>
-                  <!-- </template> -->
+                 
                   </tr>
                   
                 </tbody></table>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="studentlist" :limit="2" @pagination-change-page="getResults">
+                  <pagination :data="programs" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
                   </pagination>
-                  
               </div>
             </div>
             <!-- /.card -->
@@ -72,27 +59,27 @@
             <div class="modal-content">
               <div class="modal-header">
                     <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
-                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Student's Info</h5>
+                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Program's Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form @submit.prevent="editmode ? updateStudent() : createStudent()">
+              <form @submit.prevent="editmode ? updateProgram() : createProgram()">
               <div class="modal-body">
                     <div class="form-group">
-                      <input v-model="form.id_num" type="text" name="id_num"
-                      placeholder="ID Number"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
-                      <has-error :form="form" field="id_num"></has-error>
+                      <input v-model="form.program_code" type="text" name="program_code"
+                      placeholder="Program Code"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('program_code') }">
+                      <has-error :form="form" field="program_code"></has-error>
                     </div>
                     
                     <div class="form-group">
-                      <input v-model="form.firstname" type="text" name="firstname"
-                      placeholder="First Name"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('firstname') }">
-                      <has-error :form="form" field="firstname"></has-error>
+                      <input v-model="form.descriptive_title" type="text" name="descriptive_title"
+                      placeholder="Descriptive Title"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }">
+                      <has-error :form="form" field="descriptive_title"></has-error>
                     </div>
-
+                    
                     
               </div>
               <div class="modal-footer">
@@ -111,34 +98,27 @@
         data(){
           return{
             editmode: false,
-            studentlist : {},
+            programs : {},
             totalrecord:'',
             form: new Form({
                 id : '',
-                id_num : '',
-                firstname : '',
-                middlename : '',
-                lastname : '',
-                acad_program:'',
-                year_level:'',
-                section:'',
+                program_code : '',
+                descriptive_title : '',
 
             })
           }
         },
-
         methods: {
           getResults(page = 1) {
-            axios.get('api/studentlist?page=' + page)
+            axios.get('api/program?page=' + page)
                 .then(response => {
-                    this.studentlist = response.data;
-                    
+                    this.programs = response.data;
                 });
           },
-          updateStudent(){
+          updateProgram(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                this.form.put('api/studentlist/'+this.form.id)
+                this.form.put('api/program/'+this.form.id)
                 .then(() => {
                     // success
                     $('#addNew').modal('hide');
@@ -154,18 +134,18 @@
                     this.$Progress.fail();
                 });
             },
-            editModal(student){
+            editModal(program){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(student);
+                this.form.fill(program);
             },
             newModal(){
                 this.editmode = false;
                 this.form.reset();
                 $('#addNew').modal('show');
             },
-             deleteStudent(id){
+             deleteProgram(id){
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -177,7 +157,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/studentlist/'+id).then(()=>{
+                                this.form.delete('api/program/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',
@@ -190,37 +170,35 @@
                          }
                     })
             },
-          loadStudents(){
+          loadPrograms(){
             if(this.$gate.isSuperAdmin()){
-                axios.get("api/studentlist").then(({data}) =>(this.studentlist = data))
-                .then($data=>{this.totalrecord=$data.total});
-
+                axios.get("api/program").then(({data}) =>(this.programs = data))
+                .then($data=>{this.totalrecord=$data.total-1});
             }
             
-          }
+          },
 
-          // createUser(){
-          //       this.$Progress.start();
-          //       // this.form.post('api/user')
-          //       // this.form.post('api/student')
-          //       .then(()=>{
-          //           Fire.$emit('AfterCreate');
-          //           $('#addNew').modal('hide')
-          //           toast({
-          //               type: 'success',
-          //               title: 'User Created in successfully'
-          //               })
-          //           this.$Progress.finish();
-          //       })
-          //       .catch(()=>{
-          //         this.$Progress.fail();
-          //       })
-          //   }
+          createProgram(){
+                this.$Progress.start();
+                this.form.post('api/program')
+                .then(()=>{
+                    Fire.$emit('AfterCreate');
+                    $('#addNew').modal('hide')
+                    toast({
+                        type: 'success',
+                        title: 'Program Created in successfully'
+                        })
+                    this.$Progress.finish();
+                })
+                .catch(()=>{
+                  this.$Progress.fail();
+                })
+            }
         },
         created() {
-           this.loadStudents();
+           this.loadPrograms();
            Fire.$on('AfterCreate',() => {
-               this.loadStudents();
+               this.loadPrograms();
            });
           //  setInterval(() => this.loadUsers(), 15000);
         }
