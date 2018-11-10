@@ -17,9 +17,10 @@ class Program extends Model
 
     ];
 
+    public function programscurr()
+    {
+        return $this->hasMany('App\Curriculum');
+    }
 
-    // public function user(){
-    //     return $this->belongsTo('App\User');
-    // }
 
 }

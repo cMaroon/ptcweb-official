@@ -28,7 +28,8 @@ class StudentController extends Controller
         // $student = Student::on('mysql2'); // Connects to ptcweb_students_db
 
         // $student = Student::select('student_type')->where('id_num', '=', $user_id_num)->first();
-        $student = Student::where('id_num', '=', $user_id_num)->first();
+        $student = Student::with('studprograms')->where('id_num', '=', $user_id_num)->first();
+        // dd($student);
 
         return $student;
     }

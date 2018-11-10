@@ -17,8 +17,16 @@ class Curriculum extends Model
 
     ];
 
-    // public function user(){
-    //     return $this->belongsTo('App\User');
-    // }
+    public function currprograms()
+    {
+        return $this->belongsTo('App\Program','curr_program_id');
+    }
+
+    public function currcourses()
+    {
+        return $this->belongsTo('App\Courses','curr_course_id');
+
+    }
+
 
 }

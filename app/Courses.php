@@ -17,8 +17,9 @@ class Courses extends Model
 
     ];
 
-    // public function user(){
-    //     return $this->belongsTo('App\User');
-    // }
+    public function coursescurr()
+    {
+        return $this->hasMany('App\Curriculum');
+    }
 
 }

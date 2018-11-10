@@ -7,18 +7,18 @@ use Illuminate\Database\Eloquent\Model;
 class Enrollment extends Model
 {
     
-    protected $table = 'courses_information';
+    protected $table = 'enrollment_information';
     public $primaryKey = 'id';
 
 
     //Database Tables
     protected $fillable = [
-        'course_code','descriptive_title','lec_hr','lab_hr','course_unit','course_pre_req'
+        'enr_form_id','enr_id_num','enr_program_id','enr_fee_status'
 
     ];
 
-    // public function user(){
-    //     return $this->belongsTo('App\User');
-    // }
-
+    public function enrollprograms()
+    {
+        return $this->belongsTo('App\Program','enr_program_id');
+    }
 }

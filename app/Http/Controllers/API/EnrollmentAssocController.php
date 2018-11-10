@@ -5,9 +5,11 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Curriculum;
+use App\EnrollmentAssoc;
+use Auth;
 
-class CurriculumController extends Controller
+
+class EnrollmentAssocController extends Controller
 {
     public function __construct()
     {
@@ -16,14 +18,19 @@ class CurriculumController extends Controller
     
     public function index()
     {
-        // $curriculum = Curriculum::with('currprograms','currcourses')->get();
-        // || \Gate::allows('isAuthor')
-        if (\Gate::allows('isSuperAdmin')) {
-            // dd($curriculum);
-            return Curriculum::with('currprograms','currcourses')->latest()->paginate(15);
-        }
+        // $user_id_num = Auth::user()->id_num;
+        // dd($user_id_num);
+    
+        $enrollmentassoc = EnrollmentAssoc::latest()->paginate(15);
+
+        return $enrollmentassoc;
         
     }
+
+    // public function student(){
+    //     return Auth('api')->user(); 
+
+    //  }
 
     public function store(Request $request)
     {

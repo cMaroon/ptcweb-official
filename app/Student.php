@@ -24,13 +24,9 @@ class Student extends Model
 
     ];
 
-    public function students()
+    public function studprograms()
     {
-        return $this->hasOne('App\Program');
+        return $this->belongsTo('App\Program','program_id');
     }
-
-    // public function user(){
-    //     return $this->belongsTo('App\User');
-    // }
 
 }

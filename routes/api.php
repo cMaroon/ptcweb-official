@@ -26,6 +26,9 @@ Route::apiResources(['studentlist'=>'API\StudentController']);
 Route::apiResources(['program'=>'API\ProgramController']);
 Route::apiResources(['courses'=>'API\CoursesController']);
 Route::apiResources(['curriculum'=>'API\CurriculumController']);
+Route::apiResources(['enrollment'=>'API\EnrollmentController']);
+Route::apiResources(['mycurr'=>'API\EnrollmentAssocController']);
 
 Route::get('studentlist','API\StudentController@StudentList');
 Route::get('profile','API\StudentController@student');
+

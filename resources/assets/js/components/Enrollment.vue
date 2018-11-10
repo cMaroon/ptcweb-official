@@ -1,10 +1,10 @@
 <template>
     <div class="container">
-      <div class="row mt-3" v-if="$gate.isSuperAdmin()">
+      <div class="row mt-3" v-if="$gate.isStudent()">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Curriculum Table</h3>
+                <h3 class="card-title">Enrollment Table</h3>
 
                 <div class="card-tools">
                    <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
@@ -14,26 +14,24 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <tbody><tr>
-                    <th>Curriculum Year</th>
-                    <th>Semester</th>
-                    <th>Program</th>
-                    <th>Course</th>
-                    <th>Modify</th>
+                    <th>Form ID</th>
+                    <th>ID Number</th>
+                    <th>Program Code</th>
+                    <th>Fee Status</th>
+                    <th>My Curriculum</th>
                   </tr>
-                  <tr v-for="curr in curriculum.data" :key = "curr.id">
+                  <tr v-for="enroll in enrollment.data" :key = "enroll.id">
                  
-                    <td>{{curr.curr_year}}</td>
-                    <td>{{curr.semester}}</td>
-                    <td>{{curr.currprograms.program_code}}</td>
-                    <td>{{curr.currcourses.course_code}}</td>
+                    <td>{{enroll.enr_form_id}}</td>
+                    <td>{{enroll.enr_id_num}}</td>
+                    <td>{{enroll.enrollprograms.program_code}}</td>
+                    <td>{{enroll.fee_status}}</td>
                     <td>
-                      <a href="#" @click="editModal(curr)">
-                            <i class="fa fa-edit icon-blue"></i>
-                        </a>
-                      |
-                       <a href="#" @click="deleteCurr(curr.id)">
-                            <i class="fa fa-trash icon-red"></i>
-                        </a>
+                <router-link :to="`/mycurr/${enroll.enr_form_id}`" >
+                     
+                           Add Curriculum
+         
+                </router-link>
                     </td>
                  
                   </tr>
@@ -42,9 +40,9 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <p>Total Curriculum : {{totalrecord}}</p>
+                <p>Total Enrollment : {{totalrecord}}</p>
 
-                  <pagination :data="curriculum" :limit="2" @pagination-change-page="getResults">
+                  <pagination :data="enrollment" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
                   </pagination>
@@ -54,7 +52,7 @@
           </div>
         </div>
 
-        <div v-if="!$gate.isSuperAdmin()">
+        <div v-if="!$gate.isStudent()">
             <not-found></not-found>
         </div>
 
@@ -69,10 +67,10 @@
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form @submit.prevent="editmode ? updateCurr() : createCurr()">
+              <form @submit.prevent="editmode ? updateEnroll() : createEnroll()">
               <div class="modal-body">
 
-                    <div class="form-group">
+                    <!-- <div class="form-group">
                     <select  type="text" name="curr_year" class="form-control"  required v-model="form.curr_year" >
                             <option value="">Please select year level*</option>
                             <option value="First Year">First Year</option>
@@ -102,7 +100,7 @@
                     <select  type="text" class="form-control" v-model="form.curr_course_id">
                         <option v-for="course in courses.data" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
                     </select>
-                    </div>
+                    </div> -->
   
 
                     
@@ -124,30 +122,29 @@
           return{
             editmode: false,
             programs : {},
-            courses : {},
-            curriculum : {},
+            enrollment : {},
             totalrecord:'',
             form: new Form({
                 id : '',
-                curr_year : '',
-                semester : '',
-                curr_program_id : '',
-                curr_course_id : '',
+                enr_form_id:'',
+                enr_id_num:'',
+                enr_program_id:'',
+                fee_status:'',
 
             })
           }
         },
         methods: {
           getResults(page = 1) {
-            axios.get('api/curriculum?page=' + page)
+            axios.get('api/enrollment?page=' + page)
                 .then(response => {
-                    this.curriculum = response.data;
+                    this.enrollment = response.data;
                 });
           },
-          updateCurr(){
+          updateEnroll(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                this.form.put('api/curriculum/'+this.form.id)
+                this.form.put('api/enrollment/'+this.form.id)
                 .then(() => {
                     // success
                     $('#addNew').modal('hide');
@@ -163,18 +160,18 @@
                     this.$Progress.fail();
                 });
             },
-            editModal(curr){
-                this.editmode = true;
-                this.form.reset();
-                $('#addNew').modal('show');
-                this.form.fill(curr);
+            editModal(enroll){
+                // this.editmode = true;
+                // this.form.reset();
+                // $('#addNew').modal('show');
+                // this.form.fill(enroll);
             },
             newModal(){
                 this.editmode = false;
                 this.form.reset();
                 $('#addNew').modal('show');
             },
-             deleteCurr(id){
+             deleteEnroll(id){
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -186,7 +183,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/curriculum/'+id).then(()=>{
+                                this.form.delete('api/enrollment/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',
@@ -199,25 +196,25 @@
                          }
                     })
             },
-          loadCurriculum(){
-            if(this.$gate.isSuperAdmin()){
-                axios.get("api/courses").then(({data}) =>(this.courses = data))
+          loadEnrollment(){
+            if(this.$gate.isStudent()){
+                // axios.get("api/courses").then(({data}) =>(this.courses = data))
                 axios.get("api/program").then(({data}) =>(this.programs = data))                
-                axios.get("api/curriculum").then(({data}) =>(this.curriculum = data))
+                axios.get("api/enrollment").then(({data}) =>(this.enrollment = data))
                 .then($data=>{this.totalrecord=$data.total});
             }
             
           },
 
-          createCurr(){
+          createEnroll(){
                 this.$Progress.start();
-                this.form.post('api/curriculum')
+                this.form.post('api/enrollment')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
                     toast({
                         type: 'success',
-                        title: 'Curriculum Created in successfully'
+                        title: 'Enrollment Form Created in successfully'
                         })
                     this.$Progress.finish();
                 })
@@ -227,9 +224,9 @@
             }
         },
         created() {
-           this.loadCurriculum();
+           this.loadEnrollment();
            Fire.$on('AfterCreate',() => {
-               this.loadCurriculum();
+               this.loadEnrollment();
            });
           //  setInterval(() => this.loadUsers(), 15000);
         }

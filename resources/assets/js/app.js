@@ -54,6 +54,8 @@ let routes = [
   { path: '/program', component: require('./components/Program.vue') },
   { path: '/courses', component: require('./components/Courses.vue') },
   { path: '/curriculum', component: require('./components/Curriculum.vue') },
+  { path: '/enrollment', component: require('./components/Enrollment.vue') },
+  { path: '/mycurr/:id', component: require('./components/EnrollmentAssoc.vue') },
 
 
 ]

@@ -51,7 +51,7 @@
                     <div class="col-sm-4">
                         <div class="description-block">
                         <h5 class="description-header">Program</h5>
-                        <span class="description-text">{{this.form.program_id}}</span>
+                        <span class="description-text" >{{this.form.studprograms.program_code}}</span>
                        
                         </div>
                         <!-- /.description-block -->
@@ -251,7 +251,7 @@
                 </div>
         </div>
     </div> 
-
+<br>
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-12">
@@ -350,9 +350,10 @@
                     gu_email:'',
                     gu_occu:'',
                     gu_rel:'',
+                    studprograms:{},
 
 
-                }),
+                }), 
 
    
             }
@@ -361,10 +362,7 @@
             console.log('Component mounted.')
         },
         methods:{
-            // getProfilePhoto(){
-            //     let profile_photo = "img/profile/"+ this.form.profile_photo ;
-            //     return profile_photo;
-            // },
+
             updateInfo(){
                 this.$Progress.start();
 
@@ -383,33 +381,12 @@
                     this.$Progress.fail();
                 });
             },
-            // updateProfile(e){
-            //     // console.log('uploading');
-            //         let file = e.target.files[0];
-            //         // console.log(file);
-            //         let reader = new FileReader();
-            //         // let vm = this;
-            //         if(file['size'] < 2111775){
-            //             reader.onloadend = (file) => {
-            //                 // console.log('RESULT', reader.result)
-            //                 this.form.profile_photo = reader.result;
-            //             }
-            //             reader.readAsDataURL(file);
-            //         }else{
-            //              swal({
-            //                 type: 'error',
-            //                 title: 'Exceeded File Size',
-            //                 text: 'Maximum upload image file size: 2 MB',
-            //             })
-            //         }
-            // }
+
         },
         created() {
-                // axios.get("api/profile")
-                // .then(({ data }) => (this.form.fill(data)));
+
                 axios.get("api/program").then(({data}) =>(this.programs = data))
                 axios.get("api/student").then(({data}) => (this.form.fill(data)));
-                // axios.get("api/user").then(({data}) =>(this.users = data.data));
 
         }
     }

@@ -8,7 +8,7 @@ class EnrollmentAssoc extends Model
 {
     
     protected $table = 'assoc_enr_cou';
-    public $primaryKey = 'assoc_form_id';
+    public $primaryKey = 'id';
 
 
     //Database Tables

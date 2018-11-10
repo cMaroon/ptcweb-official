@@ -15,6 +15,7 @@ class CreateInstructorInformationTable extends Migration
     {
         Schema::create('instructor_information', function (Blueprint $table) {
             $table->increments('id');
+            $table->string('name');
             $table->timestamps();
         });
     }
