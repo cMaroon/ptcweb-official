@@ -4,48 +4,51 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Users Table</h3>
+                <h3 class="card-title">Courses Table</h3>
 
                 <div class="card-tools">
-                <p>Total Users : {{totalrecord}}</p>
-                   <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
+                   <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <tbody><tr>
-                    <th>ID Number</th>
-                    <th>Fullname</th>
-                    <th>Email</th>
-                    <th>User Type</th>
-                    <th>Registered At</th>
+                    <th>Course Code</th>
+                    <th>Descriptive Title</th>
+                    <th>Lecture Hour</th>
+                    <th>Laboratory Hour</th>
+                    <th>Course Unit</th>
+                    <th>Course Pre-requisite</th>
                     <th>Modify</th>
                   </tr>
-                  <tr v-for="user in users.data" :key = "user.id">
-                    <template v-if="user.usertype!=='superadmin'">
-                    <td>{{user.id_num}}</td>
-                    <td>{{user.name}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.usertype | upText}}</td>
-                    <td>{{user.created_at | setDate}}</td>
+                  <tr v-for="course in courses.data" :key = "course.id">
+                 
+                    <td>{{course.course_code}}</td>
+                    <td>{{course.descriptive_title}}</td>
+                    <td>{{course.lec_hr}}</td>
+                    <td>{{course.lab_hr}}</td>
+                    <td>{{course.course_unit}}</td>
+                    <td>{{course.course_pre_req}}</td>
                     <td>
-                      <a href="#" @click="editModal(user)">
+                      <a href="#" @click="editModal(course)">
                             <i class="fa fa-edit icon-blue"></i>
                         </a>
                       |
-                       <a href="#" @click="deleteUser(user.id)">
+                       <a href="#" @click="deleteCourse(course.id)">
                             <i class="fa fa-trash icon-red"></i>
                         </a>
                     </td>
-                  </template>
+                 
                   </tr>
                   
                 </tbody></table>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="users" :limit="2" @pagination-change-page="getResults">
+                <p>Total Courses : {{totalrecord}}</p>
+
+                  <pagination :data="courses" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
                   </pagination>
@@ -65,46 +68,55 @@
             <div class="modal-content">
               <div class="modal-header">
                     <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
-                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update User's Info</h5>
+                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Course's Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form @submit.prevent="editmode ? updateUser() : createUser()">
+              <form @submit.prevent="editmode ? updateCourse() : createCourse()">
               <div class="modal-body">
                     <div class="form-group">
-                      <input v-model="form.id_num" type="text" name="id_num"
-                      placeholder="ID Number"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
-                      <has-error :form="form" field="id_num"></has-error>
+                      <input v-model="form.course_code" type="text" name="course_code"
+                      placeholder="Course Code"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('course_code') }">
+                      <has-error :form="form" field="course_code"></has-error>
                     </div>
                     
                     <div class="form-group">
-                      <input v-model="form.email" type="text" name="email"
-                      placeholder="Email Address"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                      <has-error :form="form" field="email"></has-error>
+                      <input v-model="form.descriptive_title" type="text" name="descriptive_title"
+                      placeholder="Descriptive Title"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('descriptive_title') }">
+                      <has-error :form="form" field="descriptive_title"></has-error>
                     </div>
+
                     <div class="form-group">
-                      <select name="usertype" v-model="form.usertype" id="usertype" class="form-control" :class="{'is-invalid': form.errors.has('usertype')}">
-                        <option value="presadmin">School President</option>
-                        <option value="vpadmin">School Vice-President</option>
-                        <option value="collegesec">College Secretary</option>
-                        <option value="adminstaff">Admin Staff</option>
-                        <option value="itstaff">IT Staff</option>
-                        <option value="cashier">Cashier</option>
-                        <option value="registrar">Registrar</option>
-                        <option value="guidance">Guidance</option>
-                        <option value="instructor">Instructor</option>
-                        <option value="student">Student</option>
-                      </select>
+                      <input v-model="form.lec_hr" type="text" name="lec_hr"
+                      placeholder="Lecture Hour"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('lec_hr') }">
+                      <has-error :form="form" field="lec_hr"></has-error>
                     </div>
+
                     <div class="form-group">
-                      <input v-model="form.password" type="hidden" name="password" id="password"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                      <has-error :form="form" field="password"></has-error>
-                      
+                      <input v-model="form.lab_hr" type="text" name="lab_hr"
+                      placeholder="Laboratory Hour"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('lab_hr') }">
+                      <has-error :form="form" field="lab_hr"></has-error>
                     </div>
+
+                    <div class="form-group">
+                      <input v-model="form.course_unit" type="text" name="course_unit"
+                      placeholder="Course Unit"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('course_unit') }">
+                      <has-error :form="form" field="course_unit"></has-error>
+                    </div>
+
+                    <div class="form-group">
+                      <input v-model="form.course_pre_req" type="text" name="course_pre_req"
+                      placeholder="Course Pre-requisite"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('course_pre_req') }">
+                      <has-error :form="form" field="course_pre_req"></has-error>
+                    </div>
+                                      
                     
               </div>
               <div class="modal-footer">
@@ -123,29 +135,31 @@
         data(){
           return{
             editmode: false,
-            users : {},
+            courses : {},
             totalrecord:'',
             form: new Form({
                 id : '',
-                id_num : '',
-                email : '',
-                password : '123456',
-                usertype : 'student',
+                course_code : '',
+                descriptive_title : '',
+                lec_hr : '',
+                lab_hr : '',
+                course_unit : '',
+                course_pre_req : '',
+
             })
           }
         },
         methods: {
           getResults(page = 1) {
-            axios.get('api/user?page=' + page)
+            axios.get('api/courses?page=' + page)
                 .then(response => {
-                    this.users = response.data;
+                    this.courses = response.data;
                 });
           },
-          updateUser(){
+          updateCourse(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                // this.form.put('api/studentlist/'+this.form.id_num)
-                this.form.put('api/user/'+this.form.id)
+                this.form.put('api/courses/'+this.form.id)
                 .then(() => {
                     // success
                     $('#addNew').modal('hide');
@@ -161,18 +175,18 @@
                     this.$Progress.fail();
                 });
             },
-            editModal(user){
+            editModal(course){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(user);
+                this.form.fill(course);
             },
             newModal(){
                 this.editmode = false;
                 this.form.reset();
                 $('#addNew').modal('show');
             },
-             deleteUser(id){
+             deleteCourse(id){
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -184,7 +198,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/user/'+id).then(()=>{
+                                this.form.delete('api/courses/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',
@@ -197,24 +211,23 @@
                          }
                     })
             },
-          loadUsers(){
+          loadCourses(){
             if(this.$gate.isSuperAdmin()){
-                axios.get("api/user").then(({data}) =>(this.users = data))
-                .then($data=>{this.totalrecord=$data.total-1});
+                axios.get("api/courses").then(({data}) =>(this.courses = data))
+                .then($data=>{this.totalrecord=$data.total});
             }
             
           },
 
-          createUser(){
+          createCourse(){
                 this.$Progress.start();
-                this.form.post('api/user')
-                this.form.post('api/student')
+                this.form.post('api/courses')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
                     toast({
                         type: 'success',
-                        title: 'User Created in successfully'
+                        title: 'Course Created in successfully'
                         })
                     this.$Progress.finish();
                 })
@@ -224,9 +237,9 @@
             }
         },
         created() {
-           this.loadUsers();
+           this.loadCourses();
            Fire.$on('AfterCreate',() => {
-               this.loadUsers();
+               this.loadCourses();
            });
           //  setInterval(() => this.loadUsers(), 15000);
         }

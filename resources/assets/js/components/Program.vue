@@ -7,8 +7,7 @@
                 <h3 class="card-title">Program Table</h3>
 
                 <div class="card-tools">
-                <p>Total Program : {{totalrecord}}</p>
-                   <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
+                   <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>                  
                 </div>
               </div>
               <!-- /.card-header -->
@@ -28,7 +27,7 @@
                             <i class="fa fa-edit icon-blue"></i>
                         </a>
                       |
-                       <a href="#" @click="deleteUser(program.id)">
+                       <a href="#" @click="deleteProgram(program.id)">
                             <i class="fa fa-trash icon-red"></i>
                         </a>
                     </td>
@@ -39,6 +38,8 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
+                <p>Total Program : {{totalrecord}}</p>
+
                   <pagination :data="programs" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
@@ -173,7 +174,7 @@
           loadPrograms(){
             if(this.$gate.isSuperAdmin()){
                 axios.get("api/program").then(({data}) =>(this.programs = data))
-                .then($data=>{this.totalrecord=$data.total-1});
+                .then($data=>{this.totalrecord=$data.total});
             }
             
           },

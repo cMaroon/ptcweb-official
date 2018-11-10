@@ -13,7 +13,7 @@ class CreateStudentInformationTable extends Migration
      */
     public function up()
     {
-        Schema::connection('mysql2')->create('student_information', function (Blueprint $table) {
+        Schema::create('student_information', function (Blueprint $table) {
             $table->increments('id');
             $table->string('profile_photo')->default('default.svg');
             $table->string('id_num')->unique();
@@ -21,7 +21,7 @@ class CreateStudentInformationTable extends Migration
             $table->string('middlename')->nullable();
             $table->string('lastname');
             $table->string('suffixname')->nullable();
-            $table->string('acad_program')->nullable();
+            $table->string('program_id')->nullable();
             $table->string('scholarship')->nullable();
             $table->string('student_type')->default('old student');
             $table->string('year_level')->nullable();

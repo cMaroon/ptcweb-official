@@ -7,7 +7,6 @@
                 <h3 class="card-title">Student List Table</h3>
 
                 <div class="card-tools">
-                <p>Total Students : {{totalrecord}}</p>
 
                  <!-- {{studentlist.data.id_num}} -->
                    <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
@@ -28,7 +27,7 @@
                     <!-- <template v-if="user.usertype!=='superadmin'"> -->
                     <td>{{student.id_num}}</td>
                     <td>{{student.firstname}} {{student.middlename}} {{student.lastname}} {{student.suffixname}}</td>
-                    <td>{{student.acad_program}}</td>
+                    <td>{{student.program_id}}</td>
                     <td>{{student.year_level}} - {{student.section}}</td>
                     <td>{{student.created_at | setDate}}</td>
                     <td>
@@ -47,6 +46,8 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
+                <p>Total Students : {{totalrecord}}</p>
+
                   <pagination :data="studentlist" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
@@ -78,7 +79,7 @@
                     <div class="form-group">
                       <input v-model="form.id_num" type="text" name="id_num"
                       placeholder="ID Number"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }" readonly>
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
                       <has-error :form="form" field="id_num"></has-error>
                     </div>
                     
@@ -154,6 +155,7 @@
           return{
             editmode: false,
             studentlist : {},
+            programs : {},
             totalrecord:'',
             form: new Form({
                 id: '',
@@ -162,7 +164,7 @@
                 middlename:'',
                 lastname:'',
                 suffixname:'',
-                acad_program:'',
+                program_id:'',
                 year_level:'',
                 section:'',
 
@@ -235,6 +237,7 @@
             },
           loadStudents(){
             if(this.$gate.isSuperAdmin()){
+                axios.get("api/program").then(({data}) =>(this.programs = data))
                 axios.get("api/studentlist").then(({data}) =>(this.studentlist = data))
                 .then($data=>{this.totalrecord=$data.total});
 

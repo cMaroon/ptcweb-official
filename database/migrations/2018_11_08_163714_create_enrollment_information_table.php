@@ -15,11 +15,15 @@ class CreateEnrollmentInformationTable extends Migration
     {
         Schema::create('enrollment_information', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('form_id')->unique();
-            $table->string('enr_id_num')->references('id')->on('student_information');
-            $table->string('enr_program_id')->references('id')->on('programs_information');
+            $table->integer('form_id')->unique();
+            $table->string('enr_id_num');
+            $table->integer('enr_program_id')->unsigned();
 
             $table->timestamps();
+
+            $table->foreign('enr_id_num')->references('id_num')->on('student_information')->onDelete('cascade');
+            $table->foreign('enr_program_id')->references('id')->on('programs_information')->onDelete('cascade');
+
         });
     }
 

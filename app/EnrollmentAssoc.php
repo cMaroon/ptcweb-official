@@ -4,19 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Program extends Model
+class EnrollmentAssoc extends Model
 {
     
-    protected $table = 'programs_information';
-    public $primaryKey = 'id';
+    protected $table = 'assoc_enr_cou';
+    public $primaryKey = 'assoc_form_id';
 
 
     //Database Tables
     protected $fillable = [
-        'program_code','descriptive_title'
+        'assoc_form_id','assoc_course_id','assoc_curr_id'
 
     ];
-
 
     // public function user(){
     //     return $this->belongsTo('App\User');

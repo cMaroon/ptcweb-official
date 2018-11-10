@@ -9,10 +9,11 @@ class Student extends Model
     
     // protected $connection = 'mysql2';
     protected $table = 'student_information';
+    public $primaryKey = 'id';
 
     //Database Tables
     protected $fillable = [
-        'id_num','firstname', 'middlename' ,'lastname','cd_email','acad_program','year_level','section',
+        'id_num','firstname', 'middlename' ,'lastname','cd_email','program_id','year_level','section',
         'suffixname','scholarship','sex','civil_status','citizenship','birthplace','religion','dob',
         'ca_st_num','ca_st_name','ca_subd','ca_brgy','ca_city','ca_province','ca_zipcode',
         'per_st_num','per_st_name','per_subd','per_brgy','per_city','per_province','per_zipcode',
@@ -22,6 +23,11 @@ class Student extends Model
         'gu_fname','gu_mname','gu_lname','gu_sname','gu_mobno','gu_email','gu_occu','gu_rel'
 
     ];
+
+    public function students()
+    {
+        return $this->hasOne('App\Program');
+    }
 
     // public function user(){
     //     return $this->belongsTo('App\User');

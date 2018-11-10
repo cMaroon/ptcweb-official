@@ -24,6 +24,8 @@ Route::apiResources(['user'=>'API\UserController']);
 Route::apiResources(['student'=>'API\StudentController']);
 Route::apiResources(['studentlist'=>'API\StudentController']);
 Route::apiResources(['program'=>'API\ProgramController']);
+Route::apiResources(['courses'=>'API\CoursesController']);
+Route::apiResources(['curriculum'=>'API\CurriculumController']);
 
 Route::get('studentlist','API\StudentController@StudentList');
 Route::get('profile','API\StudentController@student');

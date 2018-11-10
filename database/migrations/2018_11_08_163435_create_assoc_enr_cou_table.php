@@ -21,6 +21,10 @@ class CreateAssocEnrCouTable extends Migration
             $table->string('advising_status')->nullable();
             $table->string('fee_status')->nullable();
             $table->timestamps();
+
+
+            $table->foreign('enr_id_num')->references('id_num')->on('student_information')->onDelete('cascade');
+
         });
     }
 

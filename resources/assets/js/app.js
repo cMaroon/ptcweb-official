@@ -52,6 +52,8 @@ let routes = [
   { path: '/users', component: require('./components/Users.vue') },
   { path: '/studentlist', component: require('./components/Students.vue') },
   { path: '/program', component: require('./components/Program.vue') },
+  { path: '/courses', component: require('./components/Courses.vue') },
+  { path: '/curriculum', component: require('./components/Curriculum.vue') },
 
 
 ]

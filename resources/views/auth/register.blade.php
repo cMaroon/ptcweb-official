@@ -51,22 +51,17 @@
                            
                         </div>
                         <div class="form-group row">
-                                <label for="acad_program" class="col-md-4 col-form-label text-md-right">{{ __('Program') }}</label>
+                                <label for="program_id" class="col-md-4 col-form-label text-md-right">{{ __('Program') }}</label>
                                 <div class="col-md-6">
-                                <select type="text" id="acad_program" name="acad_program" class="form-control{{ $errors->has('acad_program') ? ' is-invalid' : '' }}" required="">
-                                        <option value="">Please select your program*</option>
-                                        <option value="ABA">Associate in Business Administration</option>
-                                        <option value="COA">Certificate in Office Administration</option>
-                                        <option value="CCS">Certificate in Computer Science</option>
-                                        <option value="CHRM">Certificate in Hotel and Restaurant Management</option>
-                                        <option value="BSIT">Bachelor of Science in Information Technology</option>
-                                        <option value="BSOA">Bachelor of Science in Office Administration</option>
-                                        <option value="BSIT-EXEC">Executive - Bachelor of Science in Information Technology</option>
-                                        <option value="BSOA-EXEC">Executive - Bachelor of Science in Office Administration </option>
-                                        <option value="ABM">Accountancy, Business and Management </option>
-                                        <option value="HUMSS">Humanities and Social Science </option>
-                                        <option value="TECH-VOC ICT">Tech-Voc Information and Communications Technology </option>
+                            @if(count(App\Program::get()) > 0)
+                                <select type="text" id="program_id" name="program_id" class="form-control{{ $errors->has('program_id') ? ' is-invalid' : '' }}" required="">
+                                    <option value="">Please select your program*</option>
+                                    @foreach (App\Program::get() as $program) 
+                                        <option value='{{$program->id}}'>{{$program->descriptive_title}}</option>
+                                    @endforeach
+
                                 </select>
+                            @endif
                                 </div>
                                                          
                         </div>

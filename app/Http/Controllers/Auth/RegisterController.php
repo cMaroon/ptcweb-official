@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Student;
+use App\Program;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -78,7 +79,7 @@ class RegisterController extends Controller
             'middlename' => $data['middlename'],
             'lastname' => $data['lastname'],
             'cd_email' => strtolower($data['email']),
-            'acad_program' => $data['acad_program'],
+            'program_id' => $data['program_id'],
             'year_level' => $data['year_level'],
             'section' => $data['section'],
         ]);
@@ -93,4 +94,5 @@ class RegisterController extends Controller
 
 
     }
+
 }

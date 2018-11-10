@@ -6,12 +6,14 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
+use App\Enrollment;
+use App\EnrollmentAssoc;
+use App\Courses;
 use App\Student;
-use App\Program;
 use App\User;
 use Auth;
 
-class StudentController extends Controller
+class EnrollmentController extends Controller
 {
 
     public function __construct()
@@ -23,23 +25,14 @@ class StudentController extends Controller
     {
 
         $user_id_num = Auth::user()->id_num;
-    
 
         // $student = Student::on('mysql2'); // Connects to ptcweb_students_db
 
         // $student = Student::select('student_type')->where('id_num', '=', $user_id_num)->first();
         $student = Student::where('id_num', '=', $user_id_num)->first();
 
+
         return $student;
-    }
-
-    public function StudentList()
-    {
-        if (\Gate::allows('isSuperAdmin')) {
-            
-            return Student::latest()->paginate(10);
-        }
-
     }
 
     public function store(Request $request)
@@ -68,6 +61,7 @@ class StudentController extends Controller
         $student = Student::findOrFail($id);
         
         $student->update($request->all());
+        return ['message'=>'Updated the student info'];
     }
 
     public function destroy($id)

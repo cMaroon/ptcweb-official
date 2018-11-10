@@ -79,6 +79,9 @@
                         <p class="mb-1">
                             <a class="btn btn-link" href="{{ route('password.request') }}">
                                 {{ __('Forgot Your Password?') }}
+                            </a><br>
+                            <a class="btn btn-link" href="{{ route('register') }}">
+                                {{ __('Register') }}
                             </a>
                         </p>
                         

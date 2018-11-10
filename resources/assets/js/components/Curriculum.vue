@@ -4,48 +4,47 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">Users Table</h3>
+                <h3 class="card-title">Curriculum Table</h3>
 
                 <div class="card-tools">
-                <p>Total Users : {{totalrecord}}</p>
-                   <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
+                   <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <tbody><tr>
-                    <th>ID Number</th>
-                    <th>Fullname</th>
-                    <th>Email</th>
-                    <th>User Type</th>
-                    <th>Registered At</th>
+                    <th>Curriculum Year</th>
+                    <th>Semester</th>
+                    <th>Program</th>
+                    <th>Course</th>
                     <th>Modify</th>
                   </tr>
-                  <tr v-for="user in users.data" :key = "user.id">
-                    <template v-if="user.usertype!=='superadmin'">
-                    <td>{{user.id_num}}</td>
-                    <td>{{user.name}}</td>
-                    <td>{{user.email}}</td>
-                    <td>{{user.usertype | upText}}</td>
-                    <td>{{user.created_at | setDate}}</td>
+                  <tr v-for="curr in curriculum.data" :key = "curr.id">
+                 
+                    <td>{{curr.curr_year}}</td>
+                    <td>{{curr.semester}}</td>
+                    <td>{{curr.curr_program_id}}</td>
+                    <td>{{curr.curr_course_id}}</td>
                     <td>
-                      <a href="#" @click="editModal(user)">
+                      <a href="#" @click="editModal(curr)">
                             <i class="fa fa-edit icon-blue"></i>
                         </a>
                       |
-                       <a href="#" @click="deleteUser(user.id)">
+                       <a href="#" @click="deleteCurr(curr.id)">
                             <i class="fa fa-trash icon-red"></i>
                         </a>
                     </td>
-                  </template>
+                 
                   </tr>
                   
                 </tbody></table>
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                  <pagination :data="users" :limit="2" @pagination-change-page="getResults">
+                <p>Total Curriculum : {{totalrecord}}</p>
+
+                  <pagination :data="curriculum" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
                   </pagination>
@@ -65,46 +64,47 @@
             <div class="modal-content">
               <div class="modal-header">
                     <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
-                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update User's Info</h5>
+                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Curriculum's Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
-              <form @submit.prevent="editmode ? updateUser() : createUser()">
+              <form @submit.prevent="editmode ? updateCurr() : createCurr()">
               <div class="modal-body">
+
                     <div class="form-group">
-                      <input v-model="form.id_num" type="text" name="id_num"
-                      placeholder="ID Number"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
-                      <has-error :form="form" field="id_num"></has-error>
+                    <select  type="text" name="curr_year" class="form-control"  required v-model="form.curr_year" >
+                            <option value="">Please select year level*</option>
+                            <option value="First Year">First Year</option>
+                            <option value="Second Year">Second Year</option>
+                            <option value="Third Year">Third Year</option>
+                            <option value="Fourth Year">Fourth Year</option>
+                            <option value="Grade 11">Grade 11</option>
+                            <option value="Grade 12">Grade 12</option>
+                    </select>
                     </div>
-                    
+
                     <div class="form-group">
-                      <input v-model="form.email" type="text" name="email"
-                      placeholder="Email Address"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('email') }">
-                      <has-error :form="form" field="email"></has-error>
+                    <select  type="text" name="semester" class="form-control"  required v-model="form.semester" >
+                            <option value="">Please select semester*</option>
+                            <option value="1st Sem">1st Sem</option>
+                            <option value="2nd Sem">2nd Sem</option>
+                    </select>
                     </div>
+
                     <div class="form-group">
-                      <select name="usertype" v-model="form.usertype" id="usertype" class="form-control" :class="{'is-invalid': form.errors.has('usertype')}">
-                        <option value="presadmin">School President</option>
-                        <option value="vpadmin">School Vice-President</option>
-                        <option value="collegesec">College Secretary</option>
-                        <option value="adminstaff">Admin Staff</option>
-                        <option value="itstaff">IT Staff</option>
-                        <option value="cashier">Cashier</option>
-                        <option value="registrar">Registrar</option>
-                        <option value="guidance">Guidance</option>
-                        <option value="instructor">Instructor</option>
-                        <option value="student">Student</option>
-                      </select>
+                    <select  type="text" class="form-control" v-model="form.curr_program_id">
+                        <option v-for="program in programs.data" :key="program.id" v-bind:value="program.id">{{program.program_code}} - {{program.descriptive_title}}</option>
+                    </select>
                     </div>
+
                     <div class="form-group">
-                      <input v-model="form.password" type="hidden" name="password" id="password"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('password') }">
-                      <has-error :form="form" field="password"></has-error>
-                      
+                    <select  type="text" class="form-control" v-model="form.curr_course_id">
+                        <option v-for="course in courses.data" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
+                    </select>
                     </div>
+  
+
                     
               </div>
               <div class="modal-footer">
@@ -123,29 +123,31 @@
         data(){
           return{
             editmode: false,
-            users : {},
+            programs : {},
+            courses : {},
+            curriculum : {},
             totalrecord:'',
             form: new Form({
                 id : '',
-                id_num : '',
-                email : '',
-                password : '123456',
-                usertype : 'student',
+                curr_year : '',
+                semester : '',
+                curr_program_id : '',
+                curr_course_id : '',
+
             })
           }
         },
         methods: {
           getResults(page = 1) {
-            axios.get('api/user?page=' + page)
+            axios.get('api/curriculum?page=' + page)
                 .then(response => {
-                    this.users = response.data;
+                    this.curriculum = response.data;
                 });
           },
-          updateUser(){
+          updateCurr(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                // this.form.put('api/studentlist/'+this.form.id_num)
-                this.form.put('api/user/'+this.form.id)
+                this.form.put('api/curriculum/'+this.form.id)
                 .then(() => {
                     // success
                     $('#addNew').modal('hide');
@@ -161,18 +163,18 @@
                     this.$Progress.fail();
                 });
             },
-            editModal(user){
+            editModal(curr){
                 this.editmode = true;
                 this.form.reset();
                 $('#addNew').modal('show');
-                this.form.fill(user);
+                this.form.fill(curr);
             },
             newModal(){
                 this.editmode = false;
                 this.form.reset();
                 $('#addNew').modal('show');
             },
-             deleteUser(id){
+             deleteCurr(id){
                 swal({
                     title: 'Are you sure?',
                     text: "You won't be able to revert this!",
@@ -184,7 +186,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/user/'+id).then(()=>{
+                                this.form.delete('api/curriculum/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',
@@ -197,24 +199,25 @@
                          }
                     })
             },
-          loadUsers(){
+          loadCurriculum(){
             if(this.$gate.isSuperAdmin()){
-                axios.get("api/user").then(({data}) =>(this.users = data))
-                .then($data=>{this.totalrecord=$data.total-1});
+                axios.get("api/courses").then(({data}) =>(this.courses = data))
+                axios.get("api/program").then(({data}) =>(this.programs = data))                
+                axios.get("api/curriculum").then(({data}) =>(this.curriculum = data))
+                .then($data=>{this.totalrecord=$data.total});
             }
             
           },
 
-          createUser(){
+          createCurr(){
                 this.$Progress.start();
-                this.form.post('api/user')
-                this.form.post('api/student')
+                this.form.post('api/curriculum')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
                     toast({
                         type: 'success',
-                        title: 'User Created in successfully'
+                        title: 'Curriculum Created in successfully'
                         })
                     this.$Progress.finish();
                 })
@@ -224,9 +227,9 @@
             }
         },
         created() {
-           this.loadUsers();
+           this.loadCurriculum();
            Fire.$on('AfterCreate',() => {
-               this.loadUsers();
+               this.loadCurriculum();
            });
           //  setInterval(() => this.loadUsers(), 15000);
         }

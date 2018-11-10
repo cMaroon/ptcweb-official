@@ -24,8 +24,20 @@
         </li>
         <li class="nav-item">
           <router-link to="/program" class="nav-link">
-            <i class="fas fa-tasks nav-icon icon-vividorange"></i>
+            <i class="fas fa-tasks nav-icon icon-green"></i>
             <p>Manage Program</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/courses" class="nav-link">
+            <i class="fas fa-clipboard-list nav-icon icon-blue"></i>
+            <p>Manage Courses</p>
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link to="/curriculum" class="nav-link">
+            <i class="fas fa-table nav-icon icon-teal"></i>
+            <p>Manage Curriculum</p>
           </router-link>
         </li>
           <li class="nav-item">
@@ -46,6 +58,12 @@
                         Profile
                         </p>
                 </router-link>
+            </li>
+            <li class="nav-item">
+              <router-link to="/program" class="nav-link">
+                <i class="fas fa-tasks nav-icon icon-green"></i>
+                <p>Enrollment</p>
+              </router-link>
             </li>
           @endcan
             <li class="nav-item">

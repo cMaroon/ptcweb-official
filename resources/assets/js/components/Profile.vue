@@ -51,7 +51,8 @@
                     <div class="col-sm-4">
                         <div class="description-block">
                         <h5 class="description-header">Program</h5>
-                        <span class="description-text">{{this.form.acad_program}}</span>
+                        <span class="description-text">{{this.form.program_id}}</span>
+                       
                         </div>
                         <!-- /.description-block -->
                     </div>
@@ -250,21 +251,7 @@
                 </div>
         </div>
     </div> 
-                                                              
-                                <div class="form-group">
-                                    <!-- <label for="password" class="col-sm-12 control-label">Password (leave blank if you don't want to change it)</label> -->
 
-                                    <div class="col-sm-12">
-                                    <input type="hidden"
-                                        v-model="form.password"
-                                        class="form-control"
-                                        id="password"
-                                        placeholder="Password"
-                                        :class="{ 'is-invalid': form.errors.has('password') }"
-                                    >
-                                     <has-error :form="form" field="password"></has-error>
-                                    </div>
-                                </div>
 
                                 <div class="form-group">
                                     <div class="col-sm-offset-2 col-sm-12">
@@ -291,6 +278,7 @@
     export default {
         data(){
             return { 
+            programs : {},
                  form: new Form({
                      //important details
                     id : '',
@@ -301,7 +289,7 @@
                     lastname : '',
                     year_level: '',
                     section:'',
-                    acad_program:'',
+                    program_id:'',
                     profile_photo: '',
                     student_type: '',
                     //supporting details
@@ -363,7 +351,9 @@
                     gu_occu:'',
                     gu_rel:'',
 
-                })               
+
+                }),
+
    
             }
         },
@@ -377,9 +367,7 @@
             // },
             updateInfo(){
                 this.$Progress.start();
-                if(this.form.password == ''){
-                    this.form.password = undefined;
-                }
+
                 this.form.put('api/student/'+this.form.id)
                 .then(()=>{
                     swal(
@@ -419,7 +407,8 @@
         created() {
                 // axios.get("api/profile")
                 // .then(({ data }) => (this.form.fill(data)));
-                axios.get("api/student").then(({ data }) => (this.form.fill(data)));
+                axios.get("api/program").then(({data}) =>(this.programs = data))
+                axios.get("api/student").then(({data}) => (this.form.fill(data)));
                 // axios.get("api/user").then(({data}) =>(this.users = data.data));
 
         }

@@ -5,9 +5,9 @@ namespace App\Http\Controllers\API;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
-use App\Program;
+use App\Courses;
 
-class ProgramController extends Controller
+class CoursesController extends Controller
 {
     public function __construct()
     {
@@ -16,23 +16,30 @@ class ProgramController extends Controller
     
     public function index()
     {
-        $program = Program::all();
+        $courses = Courses::all();
         // || \Gate::allows('isAuthor')
-        // if (\Gate::allows('isSuperAdmin')) {
-            return Program::latest()->paginate(15);
-        // }
+        if (\Gate::allows('isSuperAdmin')) {
+            return Courses::latest()->paginate(15);
+        }
         
     }
 
     public function store(Request $request)
     {
         $this->validate($request,[
-            'program_code' => 'required|string|max:191',
+            'course_code' => 'required|string|max:191',
             'descriptive_title' => 'required|string|max:191',
+            'lec_hr' => 'required',
+            'lab_hr' => 'required',
+            'course_unit' => 'required',
         ]);
-        return Program::create([
-            'program_code' => $request['program_code'],
+        return Courses::create([
+            'course_code' => $request['course_code'],
             'descriptive_title' => $request['descriptive_title'],
+            'lec_hr' => $request['lec_hr'],
+            'lab_hr' => $request['lab_hr'],
+            'course_unit' => $request['course_unit'],
+            'course_pre_req' => $request['course_pre_req'],
         ]);
 
 
@@ -48,15 +55,19 @@ class ProgramController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $program = Program::findOrFail($id);
+        $courses = Courses::findOrFail($id);
         
 
         $this->validate($request,[
-            'program_code' => 'required|string|max:191',
+            'course_code' => 'required|string|max:191',
             'descriptive_title' => 'required|string|max:191',
+            'lec_hr' => 'required',
+            'lab_hr' => 'required',
+            'course_unit' => 'required',
         ]);
 
-        $program->update($request->all());
+        $courses->update($request->all());
+        return ['message'=>'Updated the program info'];
     }
 
     /**
@@ -68,15 +79,13 @@ class ProgramController extends Controller
     public function destroy($id)
     {
         $this->authorize('isSuperAdmin');
-        $program = Program::findOrFail($id);
+        $courses = Courses::findOrFail($id);
 
         // delete the user
 
-        $program->delete();
+        $courses->delete();
 
 
-        // return ['message'=>'Program Deleted!'];
+        return ['message'=>'Courses Deleted!'];
     }
-
-
 }
