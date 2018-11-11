@@ -35,7 +35,7 @@
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
                         <h5 class="description-header">Year Level</h5>
-                        <span class="description-text">{{this.form.year_level}}</span>
+                        <span class="description-text">{{this.form.studyearlevel.title}}</span>
                         </div>
                         <!-- /.description-block -->
                     </div>
@@ -43,7 +43,7 @@
                     <div class="col-sm-4 border-right">
                         <div class="description-block">
                         <h5 class="description-header">Section</h5>
-                        <span class="description-text">{{this.form.section}}</span>
+                        <span class="description-text">{{this.form.studsection.title}}</span>
                         </div>
                         <!-- /.description-block -->
                     </div>
@@ -279,6 +279,8 @@
         data(){
             return { 
             programs : {},
+            yearlevel : {},
+            section : {},
                  form: new Form({
                      //important details
                     id : '',
@@ -351,6 +353,8 @@
                     gu_occu:'',
                     gu_rel:'',
                     studprograms:{},
+                    studyearlevel:{},
+                    studsection:{},
 
 
                 }), 
@@ -386,6 +390,8 @@
         created() {
 
                 axios.get("api/program").then(({data}) =>(this.programs = data))
+                axios.get("api/yearlevel").then(({data}) =>(this.yearlevel = data))
+                axios.get("api/section").then(({data}) =>(this.section = data))
                 axios.get("api/student").then(({data}) => (this.form.fill(data)));
 
         }

@@ -90,6 +90,7 @@ class CreateAddProgramsTable extends Migration
             'updated_at' => date('Y-m-d H:m:s')
 
         ));
+        
     }
 
     /**

@@ -16,11 +16,11 @@ class CurriculumController extends Controller
     
     public function index()
     {
-        // $curriculum = Curriculum::with('currprograms','currcourses')->get();
+        // $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->get();
         // || \Gate::allows('isAuthor')
         if (\Gate::allows('isSuperAdmin')) {
             // dd($curriculum);
-            return Curriculum::with('currprograms','currcourses')->latest()->paginate(15);
+            return Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->latest()->paginate(15);
         }
         
     }
@@ -28,10 +28,10 @@ class CurriculumController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'semester' => 'required|string|max:191',
-            'curr_year' => 'required|max:191',
-            'curr_program_id' => 'required|max:191',
-            'curr_course_id' => 'required|max:191',
+            'semester' => 'required',
+            'curr_year' => 'required',
+            'curr_program_id' => 'required',
+            'curr_course_id' => 'required',
 
         ]);
         return Curriculum::create([

@@ -7,7 +7,7 @@
                 <h3 class="card-title">Enrollment Table</h3>
 
                 <div class="card-tools">
-                   <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
+                   <button class="btn btn-success" @click="newModal" onclick="getElementById('random-number').value=Math.floor(Math.random()*100000)">Add New <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -69,41 +69,7 @@
               </div>
               <form @submit.prevent="editmode ? updateEnroll() : createEnroll()">
               <div class="modal-body">
-
-                    <!-- <div class="form-group">
-                    <select  type="text" name="curr_year" class="form-control"  required v-model="form.curr_year" >
-                            <option value="">Please select year level*</option>
-                            <option value="First Year">First Year</option>
-                            <option value="Second Year">Second Year</option>
-                            <option value="Third Year">Third Year</option>
-                            <option value="Fourth Year">Fourth Year</option>
-                            <option value="Grade 11">Grade 11</option>
-                            <option value="Grade 12">Grade 12</option>
-                    </select>
-                    </div>
-
-                    <div class="form-group">
-                    <select  type="text" name="semester" class="form-control"  required v-model="form.semester" >
-                            <option value="">Please select semester*</option>
-                            <option value="1st Sem">1st Sem</option>
-                            <option value="2nd Sem">2nd Sem</option>
-                    </select>
-                    </div>
-
-                    <div class="form-group">
-                    <select  type="text" class="form-control" v-model="form.curr_program_id">
-                        <option v-for="program in programs.data" :key="program.id" v-bind:value="program.id">{{program.program_code}} - {{program.descriptive_title}}</option>
-                    </select>
-                    </div>
-
-                    <div class="form-group">
-                    <select  type="text" class="form-control" v-model="form.curr_course_id">
-                        <option v-for="course in courses.data" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
-                    </select>
-                    </div> -->
-  
-
-                    
+                <input id="random-number" value="" />                    
               </div>
               <div class="modal-footer">
                     <button v-show="editmode" type="submit" class="btn btn-success">Update <i class="fas fa-pen fa-fw"></i></button>
@@ -135,6 +101,9 @@
           }
         },
         methods: {
+            randomNumber : function(){
+                return Math.floor(Math.random() * 10000);
+            },
           getResults(page = 1) {
             axios.get('api/enrollment?page=' + page)
                 .then(response => {

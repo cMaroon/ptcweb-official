@@ -15,16 +15,16 @@ class CreateCurriculumInformationTable extends Migration
     {
         Schema::create('curriculum_information', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('semester');
-            $table->string('curr_year');
+            $table->integer('semester')->unsigned();
+            $table->integer('curr_year')->unsigned();
             $table->integer('curr_program_id')->unsigned();
             $table->integer('curr_course_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('curr_program_id')->references('id')->on('programs_information')->onDelete('cascade');
             $table->foreign('curr_course_id')->references('id')->on('courses_information')->onDelete('cascade');
-
-
+            $table->foreign('semester')->references('id')->on('semester')->onDelete('cascade');
+            $table->foreign('curr_year')->references('id')->on('year_level')->onDelete('cascade');
         });
     }
 
@@ -36,6 +36,5 @@ class CreateCurriculumInformationTable extends Migration
     public function down()
     {
         Schema::dropIfExists('curriculum_information');
-        
     }
 }

@@ -14,7 +14,7 @@
               <div class="card-body table-responsive p-0">
                 <table class="table table-hover">
                   <tbody><tr>
-                    <th>Curriculum Year</th>
+                    <th>Curriculum Year Level</th>
                     <th>Semester</th>
                     <th>Program</th>
                     <th>Course</th>
@@ -22,8 +22,8 @@
                   </tr>
                   <tr v-for="curr in curriculum.data" :key = "curr.id">
                  
-                    <td>{{curr.curr_year}}</td>
-                    <td>{{curr.semester}}</td>
+                    <td>{{curr.curryearlevel.title}}</td>
+                    <td>{{curr.currsemester.title}}</td>
                     <td>{{curr.currprograms.program_code}}</td>
                     <td>{{curr.currcourses.course_code}}</td>
                     <td>
@@ -75,31 +75,29 @@
                     <div class="form-group">
                     <select  type="text" name="curr_year" class="form-control"  required v-model="form.curr_year" >
                             <option value="">Please select year level*</option>
-                            <option value="First Year">First Year</option>
-                            <option value="Second Year">Second Year</option>
-                            <option value="Third Year">Third Year</option>
-                            <option value="Fourth Year">Fourth Year</option>
-                            <option value="Grade 11">Grade 11</option>
-                            <option value="Grade 12">Grade 12</option>
+                        <option v-for="yearlevel in yearlevel.data" :key="yearlevel.id" v-bind:value="yearlevel.id">{{yearlevel.title}}</option>
+
                     </select>
                     </div>
 
                     <div class="form-group">
                     <select  type="text" name="semester" class="form-control"  required v-model="form.semester" >
                             <option value="">Please select semester*</option>
-                            <option value="1st Sem">1st Sem</option>
-                            <option value="2nd Sem">2nd Sem</option>
+                        <option v-for="sem in semester.data" :key="sem.id" v-bind:value="sem.id">{{sem.title}}</option>
+
                     </select>
                     </div>
 
                     <div class="form-group">
                     <select  type="text" class="form-control" v-model="form.curr_program_id">
+                            <option value="">Please select program*</option>
                         <option v-for="program in programs.data" :key="program.id" v-bind:value="program.id">{{program.program_code}} - {{program.descriptive_title}}</option>
                     </select>
                     </div>
 
                     <div class="form-group">
                     <select  type="text" class="form-control" v-model="form.curr_course_id">
+                            <option value="">Please select course*</option>
                         <option v-for="course in courses.data" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
                     </select>
                     </div>
@@ -125,6 +123,8 @@
             editmode: false,
             programs : {},
             courses : {},
+            yearlevel : {},
+            semester : {},
             curriculum : {},
             totalrecord:'',
             form: new Form({
@@ -203,6 +203,8 @@
             if(this.$gate.isSuperAdmin()){
                 axios.get("api/courses").then(({data}) =>(this.courses = data))
                 axios.get("api/program").then(({data}) =>(this.programs = data))                
+                axios.get("api/yearlevel").then(({data}) =>(this.yearlevel = data))                
+                axios.get("api/semester").then(({data}) =>(this.semester = data))                
                 axios.get("api/curriculum").then(({data}) =>(this.curriculum = data))
                 .then($data=>{this.totalrecord=$data.total});
             }

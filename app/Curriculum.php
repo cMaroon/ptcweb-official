@@ -28,5 +28,17 @@ class Curriculum extends Model
 
     }
 
+    public function currsemester()
+    {
+        return $this->belongsTo('App\Semester','semester');
+
+    }
+
+    public function curryearlevel()
+    {
+        return $this->belongsTo('App\YearLevel','curr_year');
+
+    }
+
 
 }

@@ -28,7 +28,7 @@ class StudentController extends Controller
         // $student = Student::on('mysql2'); // Connects to ptcweb_students_db
 
         // $student = Student::select('student_type')->where('id_num', '=', $user_id_num)->first();
-        $student = Student::with('studprograms')->where('id_num', '=', $user_id_num)->first();
+        $student = Student::with('studprograms','studyearlevel','studsection')->where('id_num', '=', $user_id_num)->first();
         // dd($student);
 
         return $student;
@@ -38,7 +38,7 @@ class StudentController extends Controller
     {
         if (\Gate::allows('isSuperAdmin')) {
             
-            return Student::latest()->paginate(10);
+            return Student::with('studprograms','studyearlevel','studsection')->latest()->paginate(10);
         }
 
     }

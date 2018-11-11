@@ -29,4 +29,14 @@ class Student extends Model
         return $this->belongsTo('App\Program','program_id');
     }
 
+    public function studyearlevel()
+    {
+        return $this->belongsTo('App\YearLevel','year_level');
+    }
+
+    public function studsection()
+    {
+        return $this->belongsTo('App\Section','section');
+    }
+
 }

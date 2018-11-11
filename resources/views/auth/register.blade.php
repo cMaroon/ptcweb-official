@@ -27,26 +27,28 @@
                         <div class="form-group row">
                                 <label for="yearlevel" class="col-md-4 col-form-label text-md-right">{{ __('Year Level and Section') }}</label>
                                 <div class="col-md-3">
+                            @if(count(App\YearLevel::get()) > 0)
+
                                 <select type="text" id="year_level" name="year_level"  class="form-control{{ $errors->has('yearlevel') ? ' is-invalid' : '' }}" required="" >
-                                        <option value="">Please select year level*</option>
-                                        <option value="First Year">First Year</option>
-                                        <option value="Second Year">Second Year</option>
-                                        <option value="Third Year">Third Year</option>
-                                        <option value="Fourth Year">Fourth Year</option>
-                                        <option value="Grade 11">Grade 11</option>
-                                        <option value="Grade 12">Grade 12</option>
+                                        <option value="">Please select your year level*</option>
+                                        @foreach (App\YearLevel::get() as $yearlevel) 
+                                            <option value='{{$yearlevel->id}}'>{{$yearlevel->title}}</option>
+                                        @endforeach
                                 </select>
+
+                            @endif
                                 </div>
                                 <div class="col-md-3">
+                            @if(count(App\Section::get()) > 0)
+
                                 <select type="text" id="section" name="section" class="form-control{{ $errors->has('section') ? ' is-invalid' : '' }}"required="" >
-                                        <option value="">Please select section*</option>
-                                        <option value="A">A</option>
-                                        <option value="B">B</option>
-                                        <option value="C">C</option>
-                                        <option value="D">D</option>
-                                        <option value="Executive">Executive</option>
-                                        <option value="SHS">Senior High School</option>
+                                        <option value="">Please select your year level*</option>
+                                        @foreach (App\Section::get() as $section) 
+                                            <option value='{{$section->id}}'>{{$section->title}}</option>
+                                        @endforeach
                                 </select>
+
+                            @endif
                                 </div>
                            
                         </div>
@@ -57,7 +59,7 @@
                                 <select type="text" id="program_id" name="program_id" class="form-control{{ $errors->has('program_id') ? ' is-invalid' : '' }}" required="">
                                     <option value="">Please select your program*</option>
                                     @foreach (App\Program::get() as $program) 
-                                        <option value='{{$program->id}}'>{{$program->descriptive_title}}</option>
+                                        <option value='{{$program->id}}'>{{$program->program_code}} - {{$program->descriptive_title}}</option>
                                     @endforeach
 
                                 </select>

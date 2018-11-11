@@ -15,6 +15,8 @@ class CreateAssocEnrCouTable extends Migration
     {
         Schema::create('assoc_enr_cou', function (Blueprint $table) {
             $table->increments('id');
+            $table->integer('semester')->unsigned();
+            $table->integer('enr_year')->unsigned();
             $table->integer('assoc_form_id')->unsigned();
             $table->integer('assoc_course_id')->unsigned();
             $table->integer('assoc_curr_id')->unsigned();
@@ -26,6 +28,8 @@ class CreateAssocEnrCouTable extends Migration
             $table->foreign('assoc_form_id')->references('id')->on('enrollment_information')->onDelete('cascade');
             $table->foreign('assoc_course_id')->references('id')->on('courses_information')->onDelete('cascade');
             $table->foreign('assoc_curr_id')->references('id')->on('curriculum_information')->onDelete('cascade');
+            $table->foreign('semester')->references('id')->on('semester')->onDelete('cascade');
+            $table->foreign('enr_year')->references('id')->on('year_level')->onDelete('cascade');
             $table->foreign('assoc_prof_id')->references('id')->on('instructor_information')->onDelete('cascade');
 
 

@@ -27,8 +27,8 @@
                     <!-- <template v-if="user.usertype!=='superadmin'"> -->
                     <td>{{student.id_num}}</td>
                     <td>{{student.firstname}} {{student.middlename}} {{student.lastname}} {{student.suffixname}}</td>
-                    <td>{{student.program_id}}</td>
-                    <td>{{student.year_level}} - {{student.section}}</td>
+                    <td>{{student.studprograms.program_code}}</td>
+                    <td>{{student.studyearlevel.title}} - {{student.studsection.title}}</td>
                     <td>{{student.created_at | setDate}}</td>
                     <td>
                       <a href="#" @click="editModal(student)">
@@ -156,6 +156,8 @@
             editmode: false,
             studentlist : {},
             programs : {},
+            yearlevel:{},
+            section:{},
             totalrecord:'',
             form: new Form({
                 id: '',
@@ -238,6 +240,8 @@
           loadStudents(){
             if(this.$gate.isSuperAdmin()){
                 axios.get("api/program").then(({data}) =>(this.programs = data))
+                axios.get("api/yearlevel").then(({data}) =>(this.yearlevel = data))
+                axios.get("api/section").then(({data}) =>(this.section = data))
                 axios.get("api/studentlist").then(({data}) =>(this.studentlist = data))
                 .then($data=>{this.totalrecord=$data.total});
 
