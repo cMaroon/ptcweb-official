@@ -94,7 +94,10 @@
 
 @auth
 <script>
-  window.user = @json(auth()->user()) 
+  window.user = {!! json_encode([
+        'id_num' => auth()->user()->id_num,
+        'usertype'=> auth()->user()->usertype,
+    ]) !!};
 </script>   
 @endauth
 

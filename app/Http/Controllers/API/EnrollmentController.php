@@ -34,18 +34,11 @@ class EnrollmentController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'semester' => 'required|string|max:191',
-            'curr_year' => 'required|max:191',
-            'curr_program_id' => 'required|max:191',
-            'curr_course_id' => 'required|max:191',
 
-        ]);
-        return Curriculum::create([
-            'semester' => $request['semester'],
-            'curr_year' => $request['curr_year'],
-            'curr_program_id' => $request['curr_program_id'],
-            'curr_course_id' => $request['curr_course_id'],
+        return Enrollment::create([
+            'enr_form_id' => $request['enr_form_id'],
+            'enr_id_num' => $request['enr_id_num'],
+            'enr_program_id' => $request['enr_program_id'],
         ]);
 
 
@@ -61,17 +54,17 @@ class EnrollmentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $curriculum = Curriculum::findOrFail($id);
+        // $curriculum = Curriculum::findOrFail($id);
         
 
-        $this->validate($request,[
-            'semester' => 'required|string|max:191',
-            'curr_year' => 'required|max:191',
-            'curr_program_id' => 'required|max:191',
-            'curr_course_id' => 'required|max:191',
-        ]);
+        // $this->validate($request,[
+        //     'semester' => 'required|string|max:191',
+        //     'curr_year' => 'required|max:191',
+        //     'curr_program_id' => 'required|max:191',
+        //     'curr_course_id' => 'required|max:191',
+        // ]);
 
-        $curriculum->update($request->all());
+        // $curriculum->update($request->all());
     }
 
     /**
@@ -82,12 +75,12 @@ class EnrollmentController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isSuperAdmin');
-        $curriculum = Curriculum::findOrFail($id);
+        // $this->authorize('isSuperAdmin');
+        // $curriculum = Curriculum::findOrFail($id);
 
-        // delete the user
+        // // delete the user
 
-        $curriculum->delete();
+        // $curriculum->delete();
 
 
     }

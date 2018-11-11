@@ -18,10 +18,10 @@ class CurriculumController extends Controller
     {
         // $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->get();
         // || \Gate::allows('isAuthor')
-        if (\Gate::allows('isSuperAdmin')) {
+        // if (\Gate::allows('isSuperAdmin')) {
             // dd($curriculum);
             return Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->latest()->paginate(15);
-        }
+        // }
         
     }
 

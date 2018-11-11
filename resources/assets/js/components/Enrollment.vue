@@ -7,7 +7,7 @@
                 <h3 class="card-title">Enrollment Table</h3>
 
                 <div class="card-tools">
-                   <button class="btn btn-success" @click="newModal" onclick="getElementById('random-number').value=Math.floor(Math.random()*100000)">Add New <i class="fas fa-plus-square fa-fw"></i></button>
+                   <button class="btn btn-success" @click="newModal" >Generate Form ID <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -27,7 +27,7 @@
                     <td>{{enroll.enrollprograms.program_code}}</td>
                     <td>{{enroll.fee_status}}</td>
                     <td>
-                <router-link :to="`/mycurr/${enroll.enr_form_id}`" >
+                <router-link :to="{name: 'mycurr', params:{id: enroll.id}}" >
                      
                            Add Curriculum
          
@@ -61,15 +61,24 @@
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                    <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
-                    <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Curriculum's Info</h5>
+                    <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Generate Form ID</h5>
+                    <!-- <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Curriculum's Info</h5> -->
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
                 </button>
               </div>
               <form @submit.prevent="editmode ? updateEnroll() : createEnroll()">
               <div class="modal-body">
-                <input id="random-number" value="" />                    
+
+                <div class="form-group">
+                      <input v-model="form.enr_form_id" id="random-number" type="text" name="enr_form_id"
+                      placeholder="Form ID"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('enr_form_id') }" readonly>
+                      <has-error :form="form" field="enr_form_id"></has-error>
+                </div> 
+
+    
+
               </div>
               <div class="modal-footer">
                     <button v-show="editmode" type="submit" class="btn btn-success">Update <i class="fas fa-pen fa-fw"></i></button>
@@ -87,6 +96,7 @@
         data(){
           return{
             editmode: false,
+            student:{},
             programs : {},
             enrollment : {},
             totalrecord:'',
@@ -101,9 +111,7 @@
           }
         },
         methods: {
-            randomNumber : function(){
-                return Math.floor(Math.random() * 10000);
-            },
+
           getResults(page = 1) {
             axios.get('api/enrollment?page=' + page)
                 .then(response => {
@@ -138,6 +146,9 @@
             newModal(){
                 this.editmode = false;
                 this.form.reset();
+                this.form.enr_form_id = Math.floor(Math.random() * 100000);
+                this.form.enr_id_num = this.student.id_num;
+                this.form.enr_program_id = this.student.studprograms.id;
                 $('#addNew').modal('show');
             },
              deleteEnroll(id){
@@ -168,6 +179,7 @@
           loadEnrollment(){
             if(this.$gate.isStudent()){
                 // axios.get("api/courses").then(({data}) =>(this.courses = data))
+                axios.get("api/student").then(({data}) => (this.student = data));
                 axios.get("api/program").then(({data}) =>(this.programs = data))                
                 axios.get("api/enrollment").then(({data}) =>(this.enrollment = data))
                 .then($data=>{this.totalrecord=$data.total});
@@ -183,7 +195,7 @@
                     $('#addNew').modal('hide')
                     toast({
                         type: 'success',
-                        title: 'Enrollment Form Created in successfully'
+                        title: 'Enrollment Form ID Created in successfully'
                         })
                     this.$Progress.finish();
                 })

@@ -16,16 +16,21 @@ class EnrollmentAssocController extends Controller
         $this->middleware('auth:api');
     }
     
-    public function index()
+    public function show($id)
     {
         // $user_id_num = Auth::user()->id_num;
         // dd($user_id_num);
+
     
-        $enrollmentassoc = EnrollmentAssoc::latest()->paginate(15);
+        $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid')->where('assoc_form_id','=',$id)->latest()->paginate(15);
+        // $enrollmentassoc = EnrollmentAssoc::findOrFail($id);
+        // dd($enrollmentassoc);
 
         return $enrollmentassoc;
         
     }
+
+  
 
     // public function student(){
     //     return Auth('api')->user(); 
@@ -34,18 +39,15 @@ class EnrollmentAssocController extends Controller
 
     public function store(Request $request)
     {
-        $this->validate($request,[
-            'semester' => 'required|string|max:191',
-            'curr_year' => 'required|max:191',
-            'curr_program_id' => 'required|max:191',
-            'curr_course_id' => 'required|max:191',
 
-        ]);
-        return Curriculum::create([
+        return EnrollmentAssoc::create([
             'semester' => $request['semester'],
-            'curr_year' => $request['curr_year'],
-            'curr_program_id' => $request['curr_program_id'],
-            'curr_course_id' => $request['curr_course_id'],
+            'enr_year' => $request['enr_year'],
+            'assoc_form_id' => $request['assoc_form_id'],
+            'assoc_curr_id' => $request['assoc_curr_id'],
+            'assoc_course_id' => $request['assoc_course_id'],
+            'assoc_prof_id' => $request['assoc_final_grade'],
+            'advising_status' => $request['advising_status'],
         ]);
 
 
@@ -61,17 +63,17 @@ class EnrollmentAssocController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $curriculum = Curriculum::findOrFail($id);
+        // $curriculum = Curriculum::findOrFail($id);
         
 
-        $this->validate($request,[
-            'semester' => 'required|string|max:191',
-            'curr_year' => 'required|max:191',
-            'curr_program_id' => 'required|max:191',
-            'curr_course_id' => 'required|max:191',
-        ]);
+        // $this->validate($request,[
+        //     'semester' => 'required|string|max:191',
+        //     'curr_year' => 'required|max:191',
+        //     'curr_program_id' => 'required|max:191',
+        //     'curr_course_id' => 'required|max:191',
+        // ]);
 
-        $curriculum->update($request->all());
+        // $curriculum->update($request->all());
     }
 
     /**
@@ -82,12 +84,12 @@ class EnrollmentAssocController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isSuperAdmin');
-        $curriculum = Curriculum::findOrFail($id);
+        // $this->authorize('isSuperAdmin');
+        // $curriculum = Curriculum::findOrFail($id);
 
-        // delete the user
+        // // delete the user
 
-        $curriculum->delete();
+        // $curriculum->delete();
 
 
     }

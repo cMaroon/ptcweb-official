@@ -4,10 +4,10 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title">EnrollmentAssoc Table</h3>
+                <h3 class="card-title" >My Curriculum </h3>
 
                 <div class="card-tools">
-                   <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
+                   <button class="btn btn-success" @click="newModal">Add Curriculum <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -15,24 +15,22 @@
                 <table class="table table-hover">
                   <tbody><tr>
                     <th>Form ID</th>
-                    <th>ID Number</th>
-                    <th>Program Code</th>
-                    <th>Fee Status</th>
-                    <th>My Curriculum</th>
+                    <th>Semester</th>
+                    <th>Year Level</th>
+                    <th>Course</th>
+                    <th>Instructor</th>
+                    <th>General Average</th>
+                    <th>Advising Status</th>
                   </tr>
-                  <tr v-for="enroll in enrollment.data" :key = "enroll.id">
+                  <tr v-for="enrollassoc in enrollmentassoc.data" :key = "enrollassoc.id">
                  
-                    <td>{{enroll.enr_form_id}}</td>
-                    <td>{{enroll.enr_id_num}}</td>
-                    <td>{{enroll.enrollprograms.program_code}}</td>
-                    <td>{{enroll.fee_status}}</td>
-                    <td>
-                <router-link to="/dashboard" >
-                     
-                           Add Curriculum
-         
-                </router-link>
-                    </td>
+                    <td>{{enrollassoc.assoc_form_id}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{enrollassoc.assoc_prof_id}}</td>
+                    <td>{{enrollassoc.assoc_final_grade}}</td>
+                    <td>{{enrollassoc.advising_status}}</td>
                  
                   </tr>
                   
@@ -40,9 +38,9 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <p>Total Enrollment : {{totalrecord}}</p>
+                <p>Total My Curriculum : {{totalrecord}}</p>
 
-                  <pagination :data="enrollment" :limit="2" @pagination-change-page="getResults">
+                  <pagination :data="enrollmentassoc" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
                   </pagination>
@@ -61,7 +59,7 @@
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                    <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add New</h5>
+                    <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add Curriculum</h5>
                     <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Curriculum's Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -121,30 +119,33 @@
         data(){
           return{
             editmode: false,
-            programs : {},
+            courses:{},
+            yearlevel:{},
+            semester:{},
             enrollment : {},
+            enrollmentassoc : {},
             totalrecord:'',
             form: new Form({
                 id : '',
-                enr_form_id:'',
-                enr_id_num:'',
-                enr_program_id:'',
-                fee_status:'',
-
+                assoc_form_id:'',
+                assoc_curr_id:'',
+                assoc_prof_id:'',
+                assoc_final_grade:'',
+                advising_status:'',
             })
           }
         },
         methods: {
           getResults(page = 1) {
-            axios.get('api/enrollment?page=' + page)
+            axios.get('api/enrollmentassoc?page=' + page)
                 .then(response => {
-                    this.enrollment = response.data;
+                    this.enrollmentassoc = response.data;
                 });
           },
           updateEnroll(){
                 this.$Progress.start();
                 // console.log('Editing data');
-                this.form.put('api/enrollment/'+this.form.id)
+                this.form.put('api/enrollmentassoc/'+this.form.id)
                 .then(() => {
                     // success
                     $('#addNew').modal('hide');
@@ -183,7 +184,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/enrollment/'+id).then(()=>{
+                                this.form.delete('api/enrollmentassoc/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',
@@ -197,24 +198,26 @@
                     })
             },
           loadEnrollment(){
-            if(this.$gate.isStudent()){
-                // axios.get("api/courses").then(({data}) =>(this.courses = data))
-                axios.get("api/program").then(({data}) =>(this.programs = data))                
-                axios.get("api/enrollment").then(({data}) =>(this.enrollment = data))
+            // if(this.$gate.isStudent()){
+                axios.get("/api/courses").then(({data}) =>(this.courses = data))
+                axios.get("/api/enrollment").then(({data}) =>(this.enrollment = data))                
+                axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
+                axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
+                axios.get("/api/enrollmentassoc/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
                 .then($data=>{this.totalrecord=$data.total});
-            }
-            
+            // }
+
           },
 
           createEnroll(){
                 this.$Progress.start();
-                this.form.post('api/enrollment')
+                this.form.post('api/enrollmentassoc')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
                     toast({
                         type: 'success',
-                        title: 'Enrollment Form Created in successfully'
+                        title: 'Curriculum Added in successfully'
                         })
                     this.$Progress.finish();
                 })

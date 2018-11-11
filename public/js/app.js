@@ -30755,7 +30755,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_5_vue_progressbar___default.a, {
   height: '4px'
 });
 
-var routes = [{ path: '/dashboard', component: __webpack_require__(174) }, { path: '/developer', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }, { path: '/users', component: __webpack_require__(186) }, { path: '/studentlist', component: __webpack_require__(189) }, { path: '/program', component: __webpack_require__(192) }, { path: '/courses', component: __webpack_require__(195) }, { path: '/curriculum', component: __webpack_require__(198) }, { path: '/enrollment', component: __webpack_require__(201) }, { path: '/mycurr/:id', component: __webpack_require__(204) }];
+var routes = [{ path: '/dashboard', component: __webpack_require__(174) }, { path: '/developer', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }, { path: '/users', component: __webpack_require__(186) }, { path: '/studentlist', component: __webpack_require__(189) }, { path: '/program', component: __webpack_require__(192) }, { path: '/courses', component: __webpack_require__(195) }, { path: '/curriculum', component: __webpack_require__(198) }, { path: '/enrollment', component: __webpack_require__(201) }, { name: 'mycurr', path: '/mycurr/:id', component: __webpack_require__(204) }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_4_vue_router__["a" /* default */]({
   mode: 'history',
@@ -80285,11 +80285,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editmode: false,
+            student: {},
             programs: {},
             enrollment: {},
             totalrecord: '',
@@ -80305,9 +80315,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        randomNumber: function randomNumber() {
-            return Math.floor(Math.random() * 10000);
-        },
         getResults: function getResults() {
             var _this = this;
 
@@ -80341,6 +80348,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         newModal: function newModal() {
             this.editmode = false;
             this.form.reset();
+            this.form.enr_form_id = Math.floor(Math.random() * 100000);
+            this.form.enr_id_num = this.student.id_num;
+            this.form.enr_program_id = this.student.studprograms.id;
             $('#addNew').modal('show');
         },
         deleteEnroll: function deleteEnroll(id) {
@@ -80371,12 +80381,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             if (this.$gate.isStudent()) {
                 // axios.get("api/courses").then(({data}) =>(this.courses = data))
-                axios.get("api/program").then(function (_ref) {
+                axios.get("api/student").then(function (_ref) {
                     var data = _ref.data;
+                    return _this4.student = data;
+                });
+                axios.get("api/program").then(function (_ref2) {
+                    var data = _ref2.data;
                     return _this4.programs = data;
                 });
-                axios.get("api/enrollment").then(function (_ref2) {
-                    var data = _ref2.data;
+                axios.get("api/enrollment").then(function (_ref3) {
+                    var data = _ref3.data;
                     return _this4.enrollment = data;
                 }).then(function ($data) {
                     _this4.totalrecord = $data.total;
@@ -80392,7 +80406,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 $('#addNew').modal('hide');
                 toast({
                     type: 'success',
-                    title: 'Enrollment Form Created in successfully'
+                    title: 'Enrollment Form ID Created in successfully'
                 });
                 _this5.$Progress.finish();
             }).catch(function () {
@@ -80434,14 +80448,10 @@ var render = function() {
                     "button",
                     {
                       staticClass: "btn btn-success",
-                      attrs: {
-                        onclick:
-                          "getElementById('random-number').value=Math.floor(Math.random()*100000)"
-                      },
                       on: { click: _vm.newModal }
                     },
                     [
-                      _vm._v("Add New "),
+                      _vm._v("Generate Form ID "),
                       _c("i", { staticClass: "fas fa-plus-square fa-fw" })
                     ]
                   )
@@ -80473,7 +80483,12 @@ var render = function() {
                               _c(
                                 "router-link",
                                 {
-                                  attrs: { to: "/mycurr/" + enroll.enr_form_id }
+                                  attrs: {
+                                    to: {
+                                      name: "mycurr",
+                                      params: { id: enroll.id }
+                                    }
+                                  }
                                 },
                                 [
                                   _vm._v(
@@ -80570,24 +80585,7 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "addNewLabel" }
                   },
-                  [_vm._v("Add New")]
-                ),
-                _vm._v(" "),
-                _c(
-                  "h5",
-                  {
-                    directives: [
-                      {
-                        name: "show",
-                        rawName: "v-show",
-                        value: _vm.editmode,
-                        expression: "editmode"
-                      }
-                    ],
-                    staticClass: "modal-title",
-                    attrs: { id: "addNewLabel" }
-                  },
-                  [_vm._v("Update Curriculum's Info")]
+                  [_vm._v("Generate Form ID")]
                 ),
                 _vm._v(" "),
                 _vm._m(1)
@@ -80604,7 +80602,53 @@ var render = function() {
                   }
                 },
                 [
-                  _vm._m(2),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.enr_form_id,
+                              expression: "form.enr_form_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("enr_form_id")
+                          },
+                          attrs: {
+                            id: "random-number",
+                            type: "text",
+                            name: "enr_form_id",
+                            placeholder: "Form ID",
+                            readonly: ""
+                          },
+                          domProps: { value: _vm.form.enr_form_id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "enr_form_id",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "enr_form_id" }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
                     _c(
@@ -80689,14 +80733,6 @@ var staticRenderFns = [
       },
       [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
     )
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-body" }, [
-      _c("input", { attrs: { id: "random-number", value: "" } })
-    ])
   }
 ]
 render._withStripped = true
@@ -80877,23 +80913,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editmode: false,
-            programs: {},
+            courses: {},
+            yearlevel: {},
+            semester: {},
             enrollment: {},
+            enrollmentassoc: {},
             totalrecord: '',
             form: new Form({
                 id: '',
-                enr_form_id: '',
-                enr_id_num: '',
-                enr_program_id: '',
-                fee_status: ''
-
+                assoc_form_id: '',
+                assoc_curr_id: '',
+                assoc_prof_id: '',
+                assoc_final_grade: '',
+                advising_status: ''
             })
         };
     },
@@ -80904,8 +80941,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
-            axios.get('api/enrollment?page=' + page).then(function (response) {
-                _this.enrollment = response.data;
+            axios.get('api/enrollmentassoc?page=' + page).then(function (response) {
+                _this.enrollmentassoc = response.data;
             });
         },
         updateEnroll: function updateEnroll() {
@@ -80913,7 +80950,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             this.$Progress.start();
             // console.log('Editing data');
-            this.form.put('api/enrollment/' + this.form.id).then(function () {
+            this.form.put('api/enrollmentassoc/' + this.form.id).then(function () {
                 // success
                 $('#addNew').modal('hide');
                 swal('Updated!', 'Information has been updated.', 'success');
@@ -80948,7 +80985,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/enrollment/' + id).then(function () {
+                    _this3.form.delete('api/enrollmentassoc/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -80960,30 +80997,41 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         loadEnrollment: function loadEnrollment() {
             var _this4 = this;
 
-            if (this.$gate.isStudent()) {
-                // axios.get("api/courses").then(({data}) =>(this.courses = data))
-                axios.get("api/program").then(function (_ref) {
-                    var data = _ref.data;
-                    return _this4.programs = data;
-                });
-                axios.get("api/enrollment").then(function (_ref2) {
-                    var data = _ref2.data;
-                    return _this4.enrollment = data;
-                }).then(function ($data) {
-                    _this4.totalrecord = $data.total;
-                });
-            }
+            // if(this.$gate.isStudent()){
+            axios.get("/api/courses").then(function (_ref) {
+                var data = _ref.data;
+                return _this4.courses = data;
+            });
+            axios.get("/api/enrollment").then(function (_ref2) {
+                var data = _ref2.data;
+                return _this4.enrollment = data;
+            });
+            axios.get("/api/yearlevel").then(function (_ref3) {
+                var data = _ref3.data;
+                return _this4.yearlevel = data;
+            });
+            axios.get("/api/semester").then(function (_ref4) {
+                var data = _ref4.data;
+                return _this4.semester = data;
+            });
+            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref5) {
+                var data = _ref5.data;
+                return _this4.enrollmentassoc = data;
+            }).then(function ($data) {
+                _this4.totalrecord = $data.total;
+            });
+            // }
         },
         createEnroll: function createEnroll() {
             var _this5 = this;
 
             this.$Progress.start();
-            this.form.post('api/enrollment').then(function () {
+            this.form.post('api/enrollmentassoc').then(function () {
                 Fire.$emit('AfterCreate');
                 $('#addNew').modal('hide');
                 toast({
                     type: 'success',
-                    title: 'Enrollment Form Created in successfully'
+                    title: 'Curriculum Added in successfully'
                 });
                 _this5.$Progress.finish();
             }).catch(function () {
@@ -81016,9 +81064,7 @@ var render = function() {
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
               _c("div", { staticClass: "card-header" }, [
-                _c("h3", { staticClass: "card-title" }, [
-                  _vm._v("EnrollmentAssoc Table")
-                ]),
+                _c("h3", { staticClass: "card-title" }, [_vm._v("Form ID : ")]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-tools" }, [
                   _c(
@@ -81028,7 +81074,7 @@ var render = function() {
                       on: { click: _vm.newModal }
                     },
                     [
-                      _vm._v("Add New "),
+                      _vm._v("Add Curriculum "),
                       _c("i", { staticClass: "fas fa-plus-square fa-fw" })
                     ]
                   )
@@ -81042,33 +81088,25 @@ var render = function() {
                     [
                       _vm._m(0),
                       _vm._v(" "),
-                      _vm._l(_vm.enrollment.data, function(enroll) {
-                        return _c("tr", { key: enroll.id }, [
-                          _c("td", [_vm._v(_vm._s(enroll.enr_form_id))]),
+                      _vm._l(_vm.enrollmentassoc.data, function(enrollassoc) {
+                        return _c("tr", { key: enrollassoc.id }, [
+                          _c("td", [_vm._v(_vm._s(enrollassoc.assoc_form_id))]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(enroll.enr_id_num))]),
+                          _c("td"),
+                          _vm._v(" "),
+                          _c("td"),
+                          _vm._v(" "),
+                          _c("td"),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(enrollassoc.assoc_prof_id))]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(enroll.enrollprograms.program_code))
+                            _vm._v(_vm._s(enrollassoc.assoc_final_grade))
                           ]),
                           _vm._v(" "),
-                          _c("td", [_vm._v(_vm._s(enroll.fee_status))]),
-                          _vm._v(" "),
-                          _c(
-                            "td",
-                            [
-                              _c(
-                                "router-link",
-                                { attrs: { to: "/dashboard" } },
-                                [
-                                  _vm._v(
-                                    "\n                 \n                       Add Curriculum\n     \n            "
-                                  )
-                                ]
-                              )
-                            ],
-                            1
-                          )
+                          _c("td", [
+                            _vm._v(_vm._s(enrollassoc.advising_status))
+                          ])
                         ])
                       })
                     ],
@@ -81082,13 +81120,13 @@ var render = function() {
                 { staticClass: "card-footer" },
                 [
                   _c("p", [
-                    _vm._v("Total Enrollment : " + _vm._s(_vm.totalrecord))
+                    _vm._v("Total My Curriculum : " + _vm._s(_vm.totalrecord))
                   ]),
                   _vm._v(" "),
                   _c(
                     "pagination",
                     {
-                      attrs: { data: _vm.enrollment, limit: 2 },
+                      attrs: { data: _vm.enrollmentassoc, limit: 2 },
                       on: { "pagination-change-page": _vm.getResults }
                     },
                     [
@@ -81155,7 +81193,7 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "addNewLabel" }
                   },
-                  [_vm._v("Add New")]
+                  [_vm._v("Add Curriculum")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -81249,13 +81287,17 @@ var staticRenderFns = [
     return _c("tr", [
       _c("th", [_vm._v("Form ID")]),
       _vm._v(" "),
-      _c("th", [_vm._v("ID Number")]),
+      _c("th", [_vm._v("Semester")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Program Code")]),
+      _c("th", [_vm._v("Year Level")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Fee Status")]),
+      _c("th", [_vm._v("Course")]),
       _vm._v(" "),
-      _c("th", [_vm._v("My Curriculum")])
+      _c("th", [_vm._v("Instructor")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("General Average")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Advising Status")])
     ])
   },
   function() {

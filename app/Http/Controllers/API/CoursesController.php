@@ -16,11 +16,11 @@ class CoursesController extends Controller
     
     public function index()
     {
-        $courses = Courses::all();
+        // $courses = Courses::all();
         // || \Gate::allows('isAuthor')
-        if (\Gate::allows('isSuperAdmin')) {
+        // if (\Gate::allows('isSuperAdmin')) {
             return Courses::latest()->paginate(15);
-        }
+        // }
         
     }
 

@@ -16,7 +16,7 @@ class ProgramController extends Controller
     
     public function index()
     {
-        $program = Program::all();
+        // $program = Program::all();
         // || \Gate::allows('isAuthor')
         // if (\Gate::allows('isSuperAdmin')) {
             return Program::latest()->paginate(15);
