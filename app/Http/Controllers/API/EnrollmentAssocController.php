@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\EnrollmentAssoc;
+use App\Enrollment;
 use Auth;
 
 
@@ -15,16 +16,23 @@ class EnrollmentAssocController extends Controller
     {
         $this->middleware('auth:api');
     }
+
+    public function index()
+    {
+    
+        $enrollmentassoc = EnrollmentAssoc::with('assocformid.studinfo.studsection','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->latest()->paginate(15);
+
+        return $enrollmentassoc;
+        
+    }
     
     public function show($id)
     {
-        // $user_id_num = Auth::user()->id_num;
-        // dd($user_id_num);
+
 
     
-        $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->where('assoc_form_id','=',$id)->latest()->paginate(15);
-        // $enrollmentassoc = EnrollmentAssoc::findOrFail($id);
-        // dd($enrollmentassoc);
+        $enrollmentassoc = EnrollmentAssoc::with('assocformid.studinfo.studsection','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->where('assoc_form_id','=',$id)->latest()->paginate(15);
+
 
         return $enrollmentassoc;
         
@@ -84,13 +92,32 @@ class EnrollmentAssocController extends Controller
      */
     public function destroy($id)
     {
-        // $this->authorize('isSuperAdmin');
-        // $curriculum = Curriculum::findOrFail($id);
+        $this->authorize('isSuperAdmin');
+        $enrollmentassoc = EnrollmentAssoc::findOrFail($id);
 
-        // // delete the user
+        // delete the user
 
-        // $curriculum->delete();
+        $enrollmentassoc->delete();
 
+
+    }
+
+    public function search(){
+
+        if ($search = \Request::get('q')) {
+
+            $enrollment_id = Enrollment::where(function($query) use ($search){
+                $query->where('enr_form_id','LIKE',"%$search%");
+            })->first()->id;
+
+            // return $enrollment_id;
+
+            $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->where('assoc_form_id','=', $enrollment_id)->paginate(20);
+        }else{
+            $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->latest()->paginate(10);            
+        }
+
+        return $enrollmentassoc;
 
     }
 }

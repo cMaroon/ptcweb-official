@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Controllers\Controller;
 use App\Curriculum;
+use App\Program;
 
 class CurriculumController extends Controller
 {
@@ -20,7 +21,7 @@ class CurriculumController extends Controller
         // || \Gate::allows('isAuthor')
         // if (\Gate::allows('isSuperAdmin')) {
             // dd($curriculum);
-            return Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->latest()->paginate(15);
+            return Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->latest()->paginate(10);
         // }
         
     }
@@ -32,6 +33,9 @@ class CurriculumController extends Controller
             'curr_year' => 'required',
             'curr_program_id' => 'required',
             'curr_course_id' => 'required',
+            'sched_days' => 'required',
+            'sched_time' => 'required',
+            'sched_room' => 'required',
 
         ]);
         return Curriculum::create([
@@ -39,6 +43,9 @@ class CurriculumController extends Controller
             'curr_year' => $request['curr_year'],
             'curr_program_id' => $request['curr_program_id'],
             'curr_course_id' => $request['curr_course_id'],
+            'sched_days' => $request['sched_days'],
+            'sched_time' => $request['sched_time'],
+            'sched_room' => $request['sched_room'],
         ]);
 
 
@@ -82,6 +89,25 @@ class CurriculumController extends Controller
 
         $curriculum->delete();
 
+
+    }
+
+    public function search(){
+
+        if ($search = \Request::get('q')) {
+
+            $program_id = Program::where(function($query) use ($search){
+                $query->where('program_code','LIKE',"%$search%");
+            })->first()->id;
+
+            // return $enrollment_id;
+
+            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->where('curr_program_id','=', $program_id)->paginate(20);
+        }else{
+            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->latest()->paginate(10);            
+        }
+
+        return $curriculum;
 
     }
 }

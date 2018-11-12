@@ -15,7 +15,7 @@ class CreateEnrollmentInformationTable extends Migration
     {
         Schema::create('enrollment_information', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('enr_form_id')->unsigned();
+            $table->integer('enr_form_id')->unsigned()->unique();
             $table->string('enr_id_num');
             $table->integer('enr_program_id')->unsigned();
             $table->string('fee_status')->default('not yet paid');

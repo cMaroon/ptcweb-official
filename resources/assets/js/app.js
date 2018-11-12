@@ -56,6 +56,8 @@ let routes = [
   { path: '/curriculum', component: require('./components/Curriculum.vue') },
   { path: '/enrollment', component: require('./components/Enrollment.vue') },
   { name: 'mycurr', path: '/mycurr/:id', component: require('./components/EnrollmentAssoc.vue') },
+  { name: 'printenroll', path: '/printenroll/:id', component: require('./components/PrintEnroll.vue') },
+  { path: '/manage_enrollment', component: require('./components/EnrollmentAssocManage.vue') },
 
 
 ]
@@ -115,9 +117,7 @@ const app = new Vue({
               Fire.$emit('searching');
           },1000),
 
-          printme() {
-              window.print();
-          }
+
       }
 });
 

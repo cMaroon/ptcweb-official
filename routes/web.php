@@ -17,6 +17,8 @@
 
 Auth::routes();
 
+Route::get('enrollprint/{id}', "API\EnrollmentAssocController@show");
+
 // Route::get('/dashboard', 'HomeController@index')->name('dashboard');
 
 Route::get('/{path}',"HomeController@index")->where('path','([A-z\d-\/_.]+)?');

@@ -8,8 +8,9 @@ class Student extends Model
 {
     
     // protected $connection = 'mysql2';
+    // public $primaryKey = 'id_num';
+
     protected $table = 'student_information';
-    public $primaryKey = 'id';
 
     //Database Tables
     protected $fillable = [
@@ -38,5 +39,11 @@ class Student extends Model
     {
         return $this->belongsTo('App\Section','section');
     }
+
+    public function studenroll()
+    {
+        return $this->hasMany('App\Enrollment','id_num');
+    }
+
 
 }

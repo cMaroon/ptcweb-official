@@ -13,7 +13,7 @@ class Curriculum extends Model
 
     //Database Tables
     protected $fillable = [
-        'semester','curr_year','curr_program_id','curr_course_id'
+        'semester','curr_year','curr_program_id','curr_course_id','sched_days','sched_time','sched_room'
 
     ];
 

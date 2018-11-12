@@ -19,7 +19,18 @@ class CoursesController extends Controller
         // $courses = Courses::all();
         // || \Gate::allows('isAuthor')
         // if (\Gate::allows('isSuperAdmin')) {
-            return Courses::latest()->paginate(15);
+            return Courses::latest()->paginate(10);
+        // }
+        
+    }
+
+    public function CourseList()
+    {
+        $courses = Courses::all();
+        return $courses;
+        // || \Gate::allows('isAuthor')
+        // if (\Gate::allows('isSuperAdmin')) {
+            // return Courses::latest()->paginate(50);
         // }
         
     }
@@ -87,5 +98,20 @@ class CoursesController extends Controller
 
 
         return ['message'=>'Courses Deleted!'];
+    }
+
+    public function search(){
+
+        if ($search = \Request::get('q')) {
+            $courses = Courses::where(function($query) use ($search){
+                $query->where('course_code','LIKE',"%$search%")
+                        ->orWhere('descriptive_title','LIKE',"%$search%");
+            })->paginate(20);
+        }else{
+            $courses = Courses::latest()->paginate(10);            
+        }
+
+        return $courses;
+
     }
 }

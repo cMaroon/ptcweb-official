@@ -64,7 +64,7 @@ class StudentController extends Controller
 
     public function show($id)
     {
-       
+        $student = Student::with('studprograms','studyearlevel','studsection')->find($id)->first();
     }
 
     public function update(Request $request, $id)

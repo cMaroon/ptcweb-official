@@ -237,6 +237,18 @@
             }
         },
         created() {
+          Fire.$on('searching',() => {
+                let query = this.$parent.search;
+                axios.get('api/findCourse?q=' + query)
+                .then((data) => {
+                    this.courses = data.data
+                    this.totalrecord= data.data.total
+
+                })
+                .catch(() => {
+                  swal("Failed!", "No Record Found!.", "warning");
+                })
+            })
            this.loadCourses();
            Fire.$on('AfterCreate',() => {
                this.loadCourses();

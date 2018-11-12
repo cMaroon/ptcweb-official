@@ -1,13 +1,13 @@
 <template>
     <div class="container">
-      <div class="row mt-3" v-if="$gate.isStudent()">
+      <div class="row mt-3" v-if="$gate.isSuperAdmin()">
           <div class="col-md-12">
             <div class="card">
               <div class="card-header">
-                <h3 class="card-title" >My Curriculum </h3>
+                <h3 class="card-title" >Students Curriculum </h3>
 
                 <div class="card-tools">
-                   <button class="btn btn-success" @click="newModal">Add Course <i class="fas fa-plus-square fa-fw"></i></button>
+                   <!-- <button class="btn btn-success" @click="'/enrollprint'+ query">Print <i class="fas fa-print fa-fw"></i></button> -->
                 </div>
               </div>
               <!-- /.card-header -->
@@ -18,12 +18,10 @@
                     <th>Semester</th>
                     <th>Year Level</th>
                     <th>Course</th>
-                    <th>Days</th>
-                    <th>Time</th>
-                    <th>Room</th>
                     <th>Instructor</th>
                     <th>General Average</th>
                     <th>Advising Status</th>
+                    <th>Modify</th>
                   </tr>
                   <tr v-for="enrollassoc in enrollmentassoc.data" :key = "enrollassoc.id">
                  
@@ -31,12 +29,22 @@
                     <td>{{enrollassoc.assoccurrid.currsemester.title}}</td>
                     <td>{{enrollassoc.assoccurrid.curryearlevel.title}}</td>
                     <td>{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
-                    <td>{{enrollassoc.assoccurrid.sched_days}}</td>
-                    <td>{{enrollassoc.assoccurrid.sched_time}}</td>
-                    <td>{{enrollassoc.assoccurrid.sched_room}}</td>
                     <td>{{enrollassoc.assoc_prof_id}}</td>
                     <td>{{enrollassoc.assoc_final_grade}}</td>
                     <td>{{enrollassoc.advising_status}}</td>
+                    <td>
+                      <a href="#" @click="editModal(enrollassoc)">
+                            <i class="fa fa-edit icon-blue"></i>
+                        </a>
+                      |
+                       <a href="#" @click="deleteEnroll(enrollassoc.id)">
+                            <i class="fa fa-trash icon-red"></i>
+                        </a>
+                        |
+                        <router-link :to="{name: 'printenroll', params:{id: enrollassoc.assoc_form_id}}" >
+                            <i class="fas fa-print icon-green"></i>
+                        </router-link>
+                    </td>
                  
                   </tr>
                   
@@ -44,7 +52,7 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
-                <p>Total My Curriculum : {{totalrecord}}</p>
+                <p>Total Student Curriculum : {{totalrecord}}</p>
 
                   <pagination :data="enrollmentassoc" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
@@ -56,7 +64,7 @@
           </div>
         </div>
 
-        <div v-if="!$gate.isStudent()">
+        <div v-if="!$gate.isSuperAdmin()">
             <not-found></not-found>
         </div>
 
@@ -74,29 +82,14 @@
               <form @submit.prevent="editmode ? updateEnroll() : createEnroll()">
               <div class="modal-body">
 
-                <div class="form-group">
-                      <input v-model="form.assoc_form_id" type="text" name="assoc_form_id"
-                      placeholder="Form ID"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('assoc_form_id') }" readonly hidden>
-                      <has-error :form="form" field="assoc_form_id"></has-error>
-                </div> 
 
                     <div class="form-group">
-                    <select  type="text" class="form-control" v-model="form.assoc_curr_id">
-                            <option value="">Please select course*</option>
-
-                        <option v-for="curr in curriculum.data" v-if="curr.currprograms.id===form.enr_program_id" :key="curr.id" v-bind:value="curr.id">
-                            
-                            {{curr.currprograms.program_code}} - {{curr.currcourses.course_code}} - {{curr.currcourses.descriptive_title}}
-                            </option>
+                    <select  type="text" class="form-control" v-model="form.advising_status">
+                        <option value="approved" >Approved</option>
+                        <option value="not yet approve" >Not Yet Approve</option>
                     </select>
                     </div>
 
-                    <!-- <div class="form-group">
-                    <select  type="text" class="form-control" v-model="form.curr_course_id">
-                        <option v-for="course in courses.data" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
-                    </select>
-                    </div> -->
   
 
                     
@@ -130,6 +123,7 @@
                 assoc_curr_id:'',
                 assoc_prof_id:'',
                 assoc_final_grade:'',
+                advising_status:'',
             enr_program_id:'',
 
             })
@@ -161,11 +155,11 @@
                     this.$Progress.fail();
                 });
             },
-            editModal(enroll){
-                // this.editmode = true;
-                // this.form.reset();
-                // $('#addNew').modal('show');
-                // this.form.fill(enroll);
+            editModal(enrollassoc){
+                this.editmode = true;
+                this.form.reset();
+                $('#addNew').modal('show');
+                this.form.fill(enrollassoc);
             },
             newModal(){
                 this.editmode = false;
@@ -202,12 +196,12 @@
             },
           loadEnrollment(){
             // if(this.$gate.isStudent()){
-                axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
-                axios.get("/api/courses").then(({data}) =>(this.courses = data))
-                axios.get("/api/enrollment").then(({data}) =>(this.enrollment = data))               
-                axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
-                axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
-                axios.get("/api/enrollmentassoc/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
+                axios.get("api/curriculum").then(({data}) =>(this.curriculum = data))
+                axios.get("api/courses").then(({data}) =>(this.courses = data))
+                axios.get("api/enrollment").then(({data}) =>(this.enrollment = data))               
+                axios.get("api/yearlevel").then(({data}) =>(this.yearlevel = data))                
+                axios.get("api/semester").then(({data}) =>(this.semester = data))                                      
+                axios.get("api/enrollmentassoc").then(({data}) =>(this.enrollmentassoc = data))
                 .then($data=>{this.totalrecord=$data.total});
             // }
 
@@ -215,7 +209,7 @@
 
           createEnroll(){
                 this.$Progress.start();
-                this.form.post('/api/enrollmentassoc')
+                this.form.post('api/enrollmentassoc')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
@@ -231,6 +225,18 @@
             }
         },
         created() {
+            Fire.$on('searching',() => {
+                let query = this.$parent.search;
+                axios.get('api/findFormID?q=' + query)
+                .then((data) => {
+                    this.enrollmentassoc = data.data
+                    this.totalrecord= data.data.total
+
+                })
+                .catch(() => {
+                        swal("Failed!", "No Record Found!.", "warning");
+                })
+            })
            this.loadEnrollment();
            Fire.$on('AfterCreate',() => {
                this.loadEnrollment();

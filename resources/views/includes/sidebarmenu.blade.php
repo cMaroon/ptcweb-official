@@ -40,6 +40,12 @@
             <p>Manage Curriculum</p>
           </router-link>
         </li>
+        <li class="nav-item">
+          <router-link to="/manage_enrollment" class="nav-link">
+            <i class="fas fa-archive nav-icon icon-cyan"></i>
+            <p>Manage Enrollment</p>
+          </router-link>
+        </li>
           <li class="nav-item">
             <router-link to="/developer" class="nav-link">
                 <i class="nav-icon fas fa-cogs icon-pink"></i>

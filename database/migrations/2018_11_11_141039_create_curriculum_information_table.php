@@ -19,6 +19,9 @@ class CreateCurriculumInformationTable extends Migration
             $table->integer('curr_year')->unsigned();
             $table->integer('curr_program_id')->unsigned();
             $table->integer('curr_course_id')->unsigned();
+            $table->string('sched_days')->nullable();
+            $table->string('sched_time')->nullable();
+            $table->string('sched_room')->nullable();
             $table->timestamps();
 
             $table->foreign('curr_program_id')->references('id')->on('programs_information')->onDelete('cascade');

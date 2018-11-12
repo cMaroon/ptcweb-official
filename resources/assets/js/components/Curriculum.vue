@@ -18,6 +18,9 @@
                     <th>Semester</th>
                     <th>Program</th>
                     <th>Course</th>
+                    <th>Days</th>
+                    <th>Time</th>
+                    <th>Room</th>
                     <th>Modify</th>
                   </tr>
                   <tr v-for="curr in curriculum.data" :key = "curr.id">
@@ -26,6 +29,9 @@
                     <td>{{curr.currsemester.title}}</td>
                     <td>{{curr.currprograms.program_code}}</td>
                     <td>{{curr.currcourses.course_code}}</td>
+                    <td>{{curr.sched_days}}</td>
+                    <td>{{curr.sched_time}}</td>
+                    <td>{{curr.sched_room}}</td>
                     <td>
                       <a href="#" @click="editModal(curr)">
                             <i class="fa fa-edit icon-blue"></i>
@@ -98,10 +104,30 @@
                     <div class="form-group">
                     <select  type="text" class="form-control" v-model="form.curr_course_id">
                             <option value="">Please select course*</option>
-                        <option v-for="course in courses.data" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
+                        <option v-for="course in courses" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
                     </select>
                     </div>
-  
+
+                    <div class="form-group">
+                      <input v-model="form.sched_days" type="text" name="sched_days"
+                      placeholder="Schedule Days"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('sched_days') }">
+                      <has-error :form="form" field="sched_days"></has-error>
+                    </div>
+
+                    <div class="form-group">
+                      <input v-model="form.sched_time" type="text" name="sched_time"
+                      placeholder="Schedule Time"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('sched_time') }">
+                      <has-error :form="form" field="sched_time"></has-error>
+                    </div>
+
+                    <div class="form-group">
+                      <input v-model="form.sched_room" type="text" name="sched_room"
+                      placeholder="Schedule Room"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('sched_room') }">
+                      <has-error :form="form" field="sched_room"></has-error>
+                    </div>
 
                     
               </div>
@@ -133,6 +159,9 @@
                 semester : '',
                 curr_program_id : '',
                 curr_course_id : '',
+                sched_days:'',
+                sched_time:'',
+                sched_room:''
 
             })
           }
@@ -201,7 +230,7 @@
             },
           loadCurriculum(){
             if(this.$gate.isSuperAdmin()){
-                axios.get("api/courses").then(({data}) =>(this.courses = data))
+                axios.get("api/courselist").then(({data}) =>(this.courses = data))
                 axios.get("api/program").then(({data}) =>(this.programs = data))                
                 axios.get("api/yearlevel").then(({data}) =>(this.yearlevel = data))                
                 axios.get("api/semester").then(({data}) =>(this.semester = data))                
@@ -229,6 +258,17 @@
             }
         },
         created() {
+          Fire.$on('searching',() => {
+                let query = this.$parent.search;
+                axios.get('api/findCurr?q=' + query)
+                .then((data) => {
+                    this.curriculum = data.data
+                    this.totalrecord= data.data.total
+                })
+               .catch(() => {
+                swal("Failed!", "No Record Found!.", "warning");
+                })
+            })
            this.loadCurriculum();
            Fire.$on('AfterCreate',() => {
                this.loadCurriculum();

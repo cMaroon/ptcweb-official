@@ -21,7 +21,8 @@ class EnrollmentController extends Controller
         $user_id_num = Auth::user()->id_num;
         // dd($user_id_num);
     
-        $enrollment = Enrollment::with('enrollprograms')->where('enr_id_num', '=', $user_id_num)->latest()->paginate(15);
+        $enrollment = Enrollment::with('enrollprograms','studinfo.studsection')->where('enr_id_num', '=', $user_id_num)->latest()->paginate(15);
+        
 
         return $enrollment;
         
@@ -41,6 +42,18 @@ class EnrollmentController extends Controller
             'enr_program_id' => $request['enr_program_id'],
         ]);
 
+
+    }
+
+    public function EnrollList()
+    {
+        if (\Gate::allows('isSuperAdmin')) {
+            
+            $enroll = Enrollment::with('enrollprograms','studinfo.studsection')->latest()->paginate(10);
+
+            // dd($studentlist);
+            return $enroll;
+        }
 
     }
 

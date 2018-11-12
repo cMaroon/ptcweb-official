@@ -79,7 +79,7 @@
                     <div class="form-group">
                       <input v-model="form.id_num" type="text" name="id_num"
                       placeholder="ID Number"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }">
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }" readonly>
                       <has-error :form="form" field="id_num"></has-error>
                     </div>
                     
@@ -263,9 +263,11 @@
                 axios.get('api/findStudent?q=' + query)
                 .then((data) => {
                     this.studentlist = data.data
+                    this.totalrecord= data.data.total
+
                 })
                 .catch(() => {
-
+                  swal("Failed!", "No Record Found!.", "warning");
                 })
             })
            this.loadStudents();
