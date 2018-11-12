@@ -38,7 +38,10 @@ class StudentController extends Controller
     {
         if (\Gate::allows('isSuperAdmin')) {
             
-            return Student::with('studprograms','studyearlevel','studsection')->latest()->paginate(10);
+            $studentlist = Student::with('studprograms','studyearlevel','studsection')->latest()->paginate(10);
+
+            // dd($studentlist);
+            return $studentlist;
         }
 
     }
@@ -74,6 +77,22 @@ class StudentController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+    public function search(){
+
+        if ($search = \Request::get('q')) {
+            $studentlist = Student::with('studprograms','studyearlevel','studsection')->where(function($query) use ($search){
+                $query->where('id_num','LIKE',"%$search%")
+                        ->orWhere('firstname','LIKE',"%$search%")
+                        ->orWhere('lastname','LIKE',"%$search%");
+            })->paginate(20);
+        }else{
+            $studentlist = Student::with('studprograms','studyearlevel','studsection')->latest()->paginate(10);            
+        }
+
+        return $studentlist;
+
     }
 
     

@@ -112,27 +112,17 @@
                     </div>
 
                     <div class="form-group">
-                    <select  type="text"  name="year_level" class="form-control"  required v-model="form.year_level" >
+                    <select  type="text" name="curr_year" class="form-control"  required v-model="form.year_level" >
                             <option value="">Please select year level*</option>
-                            <option value="First Year">First Year</option>
-                            <option value="Second Year">Second Year</option>
-                            <option value="Third Year">Third Year</option>
-                            <option value="Fourth Year">Fourth Year</option>
-                            <option value="Grade 11">Grade 11</option>
-                            <option value="Grade 12">Grade 12</option>
-                    </select>
+                        <option v-for="yl in yearlevel.data" :key="yl.id" v-bind:value="yl.id">{{yl.title}}</option>
 
-                    </div> 
+                    </select>
+                    </div>
 
                     <div class="form-group">
                             <select  type="text" name="section" class="form-control"  required  v-model="form.section">
                                     <option value="">Please select section*</option>
-                                    <option value="A">A</option>
-                                    <option value="B">B</option>
-                                    <option value="C">C</option>
-                                    <option value="D">D</option>
-                                    <option value="Executive">Executive</option>
-                                    <option value="SHS">Senior High School</option>
+                          <option v-for="sec in section.data" :key="sec.id" v-bind:value="sec.id">{{sec.title}}</option>
                             </select>
 
                     </div>
@@ -268,6 +258,16 @@
           //   }
         },
         created() {
+            Fire.$on('searching',() => {
+                let query = this.$parent.search;
+                axios.get('api/findStudent?q=' + query)
+                .then((data) => {
+                    this.studentlist = data.data
+                })
+                .catch(() => {
+
+                })
+            })
            this.loadStudents();
            Fire.$on('AfterCreate',() => {
                this.loadStudents();

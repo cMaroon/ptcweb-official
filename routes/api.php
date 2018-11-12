@@ -34,4 +34,6 @@ Route::apiResources(['section'=>'API\SectionController']);
 
 Route::get('studentlist','API\StudentController@StudentList');
 Route::get('profile','API\StudentController@student');
+Route::get('findStudent', 'API\StudentController@search');
+
 // Route::get('enrollmentassoc/{id}','API\EntrollmentAssocController@show');
