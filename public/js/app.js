@@ -70076,19 +70076,19 @@ __webpack_require__.r(__webpack_exports__);
 // EXTERNAL MODULE: ./node_modules/@vue/cli-service/lib/commands/build/setPublicPath.js
 var setPublicPath = __webpack_require__("1eb2");
 
-// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0595ba96-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/LaravelVuePagination.vue?vue&type=template&id=411fa826&
-var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('renderless-laravel-vue-pagination',{attrs:{"data":_vm.data,"limit":_vm.limit},on:{"pagination-change-page":_vm.onPaginationChangePage},scopedSlots:_vm._u([{key:"default",fn:function(ref){
+// CONCATENATED MODULE: ./node_modules/cache-loader/dist/cjs.js?{"cacheDirectory":"node_modules/.cache/vue-loader","cacheIdentifier":"0595ba96-vue-loader-template"}!./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/cache-loader/dist/cjs.js??ref--0-0!./node_modules/vue-loader/lib??vue-loader-options!./src/LaravelVuePagination.vue?vue&type=template&id=07aadf89&
+var render = function () {var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;return _c('renderless-laravel-vue-pagination',{attrs:{"data":_vm.data,"limit":_vm.limit,"show-disabled":_vm.showDisabled},on:{"pagination-change-page":_vm.onPaginationChangePage},scopedSlots:_vm._u([{key:"default",fn:function(ref){
 var data = ref.data;
 var limit = ref.limit;
 var computed = ref.computed;
 var prevButtonEvents = ref.prevButtonEvents;
 var nextButtonEvents = ref.nextButtonEvents;
 var pageButtonEvents = ref.pageButtonEvents;
-return (computed.total > computed.perPage)?_c('ul',{staticClass:"pagination"},[(computed.prevPageUrl)?_c('li',{staticClass:"page-item pagination-prev-nav"},[_c('a',_vm._g({staticClass:"page-link",attrs:{"href":"#","aria-label":"Previous"}},prevButtonEvents),[_vm._t("prev-nav",[_c('span',{attrs:{"aria-hidden":"true"}},[_vm._v("«")]),_c('span',{staticClass:"sr-only"},[_vm._v("Previous")])])],2)]):_vm._e(),_vm._l((computed.pageRange),function(page,key){return _c('li',{key:key,staticClass:"page-item pagination-page-nav",class:{ 'active': page == computed.currentPage }},[_c('a',_vm._g({staticClass:"page-link",attrs:{"href":"#"}},pageButtonEvents(page)),[_vm._v(_vm._s(page))])])}),(computed.nextPageUrl)?_c('li',{staticClass:"page-item pagination-next-nav"},[_c('a',_vm._g({staticClass:"page-link",attrs:{"href":"#","aria-label":"Next"}},nextButtonEvents),[_vm._t("next-nav",[_c('span',{attrs:{"aria-hidden":"true"}},[_vm._v("»")]),_c('span',{staticClass:"sr-only"},[_vm._v("Next")])])],2)]):_vm._e()],2):_vm._e()}}])})}
+return (computed.total > computed.perPage)?_c('ul',{staticClass:"pagination"},[(computed.prevPageUrl || _vm.showDisabled)?_c('li',{staticClass:"page-item pagination-prev-nav",class:{'disabled': !computed.prevPageUrl}},[_c('a',_vm._g({staticClass:"page-link",attrs:{"href":"#","aria-label":"Previous","tabindex":!computed.prevPageUrl && -1}},prevButtonEvents),[_vm._t("prev-nav",[_c('span',{attrs:{"aria-hidden":"true"}},[_vm._v("«")]),_c('span',{staticClass:"sr-only"},[_vm._v("Previous")])])],2)]):_vm._e(),_vm._l((computed.pageRange),function(page,key){return _c('li',{key:key,staticClass:"page-item pagination-page-nav",class:{ 'active': page == computed.currentPage }},[_c('a',_vm._g({staticClass:"page-link",attrs:{"href":"#"}},pageButtonEvents(page)),[_vm._v(_vm._s(page))])])}),(computed.nextPageUrl || _vm.showDisabled)?_c('li',{staticClass:"page-item pagination-next-nav",class:{'disabled': !computed.nextPageUrl}},[_c('a',_vm._g({staticClass:"page-link",attrs:{"href":"#","aria-label":"Next","tabindex":!computed.nextPageUrl && -1}},nextButtonEvents),[_vm._t("next-nav",[_c('span',{attrs:{"aria-hidden":"true"}},[_vm._v("»")]),_c('span',{staticClass:"sr-only"},[_vm._v("Next")])])],2)]):_vm._e()],2):_vm._e()}}])})}
 var staticRenderFns = []
 
 
-// CONCATENATED MODULE: ./src/LaravelVuePagination.vue?vue&type=template&id=411fa826&
+// CONCATENATED MODULE: ./src/LaravelVuePagination.vue?vue&type=template&id=07aadf89&
 
 // EXTERNAL MODULE: ./node_modules/core-js/modules/es6.number.constructor.js
 var es6_number_constructor = __webpack_require__("c5f6");
@@ -70104,6 +70104,10 @@ var es6_number_constructor = __webpack_require__("c5f6");
     limit: {
       type: Number,
       default: 0
+    },
+    showDisabled: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
@@ -70396,6 +70400,10 @@ component.options.__file = "RenderlessLaravelVuePagination.vue"
     limit: {
       type: Number,
       default: 0
+    },
+    showDisabled: {
+      type: Boolean,
+      default: false
     }
   },
   methods: {
@@ -80875,14 +80883,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -80891,8 +80891,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             courses: {},
             yearlevel: {},
             semester: {},
-            enrollment: {},
+            enrollment: [],
             enrollmentassoc: {},
+            curriculum: {},
             totalrecord: '',
             form: new Form({
                 id: '',
@@ -80900,7 +80901,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 assoc_curr_id: '',
                 assoc_prof_id: '',
                 assoc_final_grade: '',
-                advising_status: ''
+                enr_program_id: ''
+
             })
         };
     },
@@ -80939,6 +80941,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         newModal: function newModal() {
             this.editmode = false;
             this.form.reset();
+            this.form.enr_program_id = this.enrollment.data[0].enr_program_id;
+            this.form.assoc_form_id = this.$route.params.id;
+
             $('#addNew').modal('show');
         },
         deleteEnroll: function deleteEnroll(id) {
@@ -80968,24 +80973,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this4 = this;
 
             // if(this.$gate.isStudent()){
-            axios.get("/api/courses").then(function (_ref) {
+            axios.get("/api/curriculum").then(function (_ref) {
                 var data = _ref.data;
+                return _this4.curriculum = data;
+            });
+            axios.get("/api/courses").then(function (_ref2) {
+                var data = _ref2.data;
                 return _this4.courses = data;
             });
-            axios.get("/api/enrollment").then(function (_ref2) {
-                var data = _ref2.data;
+            axios.get("/api/enrollment").then(function (_ref3) {
+                var data = _ref3.data;
                 return _this4.enrollment = data;
             });
-            axios.get("/api/yearlevel").then(function (_ref3) {
-                var data = _ref3.data;
+            axios.get("/api/yearlevel").then(function (_ref4) {
+                var data = _ref4.data;
                 return _this4.yearlevel = data;
             });
-            axios.get("/api/semester").then(function (_ref4) {
-                var data = _ref4.data;
+            axios.get("/api/semester").then(function (_ref5) {
+                var data = _ref5.data;
                 return _this4.semester = data;
             });
-            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref5) {
-                var data = _ref5.data;
+            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref6) {
+                var data = _ref6.data;
                 return _this4.enrollmentassoc = data;
             }).then(function ($data) {
                 _this4.totalrecord = $data.total;
@@ -80996,12 +81005,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this5 = this;
 
             this.$Progress.start();
-            this.form.post('api/enrollmentassoc').then(function () {
+            this.form.post('/api/enrollmentassoc').then(function () {
                 Fire.$emit('AfterCreate');
                 $('#addNew').modal('hide');
                 toast({
                     type: 'success',
-                    title: 'Curriculum Added in successfully'
+                    title: 'Course Added in successfully'
                 });
                 _this5.$Progress.finish();
             }).catch(function () {
@@ -81046,7 +81055,7 @@ var render = function() {
                       on: { click: _vm.newModal }
                     },
                     [
-                      _vm._v("Add Curriculum "),
+                      _vm._v("Add Course "),
                       _c("i", { staticClass: "fas fa-plus-square fa-fw" })
                     ]
                   )
@@ -81062,13 +81071,31 @@ var render = function() {
                       _vm._v(" "),
                       _vm._l(_vm.enrollmentassoc.data, function(enrollassoc) {
                         return _c("tr", { key: enrollassoc.id }, [
-                          _c("td", [_vm._v(_vm._s(enrollassoc.assoc_form_id))]),
+                          _c("td", [
+                            _vm._v(_vm._s(enrollassoc.assocformid.enr_form_id))
+                          ]),
                           _vm._v(" "),
-                          _c("td"),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(enrollassoc.assoccurrid.currsemester.title)
+                            )
+                          ]),
                           _vm._v(" "),
-                          _c("td"),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                enrollassoc.assoccurrid.curryearlevel.title
+                              )
+                            )
+                          ]),
                           _vm._v(" "),
-                          _c("td"),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                enrollassoc.assoccurrid.currcourses.course_code
+                              )
+                            )
+                          ]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(enrollassoc.assoc_prof_id))]),
                           _vm._v(" "),
@@ -81165,7 +81192,7 @@ var render = function() {
                     staticClass: "modal-title",
                     attrs: { id: "addNewLabel" }
                   },
-                  [_vm._v("Add Curriculum")]
+                  [_vm._v("Add Course")]
                 ),
                 _vm._v(" "),
                 _c(
@@ -81199,7 +81226,122 @@ var render = function() {
                   }
                 },
                 [
-                  _c("div", { staticClass: "modal-body" }),
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.assoc_form_id,
+                              expression: "form.assoc_form_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("assoc_form_id")
+                          },
+                          attrs: {
+                            type: "text",
+                            name: "assoc_form_id",
+                            placeholder: "Form ID",
+                            readonly: "",
+                            hidden: ""
+                          },
+                          domProps: { value: _vm.form.assoc_form_id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "assoc_form_id",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "assoc_form_id" }
+                        })
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.assoc_curr_id,
+                              expression: "form.assoc_curr_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "assoc_curr_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Please select course*")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.curriculum.data, function(curr) {
+                            return curr.currprograms.id ===
+                              _vm.form.enr_program_id
+                              ? _c(
+                                  "option",
+                                  {
+                                    key: curr.id,
+                                    domProps: { value: curr.id }
+                                  },
+                                  [
+                                    _vm._v(
+                                      "\n                        \n                        " +
+                                        _vm._s(curr.currprograms.program_code) +
+                                        " - " +
+                                        _vm._s(curr.currcourses.course_code) +
+                                        " - " +
+                                        _vm._s(
+                                          curr.currcourses.descriptive_title
+                                        ) +
+                                        "\n                        "
+                                    )
+                                  ]
+                                )
+                              : _vm._e()
+                          })
+                        ],
+                        2
+                      )
+                    ])
+                  ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "modal-footer" }, [
                     _c(

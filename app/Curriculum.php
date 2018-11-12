@@ -41,4 +41,5 @@ class Curriculum extends Model
     }
 
 
+
 }

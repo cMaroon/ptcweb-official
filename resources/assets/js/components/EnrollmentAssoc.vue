@@ -7,7 +7,7 @@
                 <h3 class="card-title" >My Curriculum </h3>
 
                 <div class="card-tools">
-                   <button class="btn btn-success" @click="newModal">Add Curriculum <i class="fas fa-plus-square fa-fw"></i></button>
+                   <button class="btn btn-success" @click="newModal">Add Course <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
               <!-- /.card-header -->
@@ -24,10 +24,10 @@
                   </tr>
                   <tr v-for="enrollassoc in enrollmentassoc.data" :key = "enrollassoc.id">
                  
-                    <td>{{enrollassoc.assoc_form_id}}</td>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                    <td>{{enrollassoc.assocformid.enr_form_id}}</td>
+                    <td>{{enrollassoc.assoccurrid.currsemester.title}}</td>
+                    <td>{{enrollassoc.assoccurrid.curryearlevel.title}}</td>
+                    <td>{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
                     <td>{{enrollassoc.assoc_prof_id}}</td>
                     <td>{{enrollassoc.assoc_final_grade}}</td>
                     <td>{{enrollassoc.advising_status}}</td>
@@ -59,7 +59,7 @@
           <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content">
               <div class="modal-header">
-                    <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add Curriculum</h5>
+                    <h5 class="modal-title" v-show="!editmode" id="addNewLabel">Add Course</h5>
                     <h5 class="modal-title" v-show="editmode" id="addNewLabel">Update Curriculum's Info</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span>
@@ -68,33 +68,25 @@
               <form @submit.prevent="editmode ? updateEnroll() : createEnroll()">
               <div class="modal-body">
 
+                <div class="form-group">
+                      <input v-model="form.assoc_form_id" type="text" name="assoc_form_id"
+                      placeholder="Form ID"
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('assoc_form_id') }" readonly hidden>
+                      <has-error :form="form" field="assoc_form_id"></has-error>
+                </div> 
+
+                    <div class="form-group">
+                    <select  type="text" class="form-control" v-model="form.assoc_curr_id">
+                            <option value="">Please select course*</option>
+
+                        <option v-for="curr in curriculum.data" v-if="curr.currprograms.id===form.enr_program_id" :key="curr.id" v-bind:value="curr.id">
+                            
+                            {{curr.currprograms.program_code}} - {{curr.currcourses.course_code}} - {{curr.currcourses.descriptive_title}}
+                            </option>
+                    </select>
+                    </div>
+
                     <!-- <div class="form-group">
-                    <select  type="text" name="curr_year" class="form-control"  required v-model="form.curr_year" >
-                            <option value="">Please select year level*</option>
-                            <option value="First Year">First Year</option>
-                            <option value="Second Year">Second Year</option>
-                            <option value="Third Year">Third Year</option>
-                            <option value="Fourth Year">Fourth Year</option>
-                            <option value="Grade 11">Grade 11</option>
-                            <option value="Grade 12">Grade 12</option>
-                    </select>
-                    </div>
-
-                    <div class="form-group">
-                    <select  type="text" name="semester" class="form-control"  required v-model="form.semester" >
-                            <option value="">Please select semester*</option>
-                            <option value="1st Sem">1st Sem</option>
-                            <option value="2nd Sem">2nd Sem</option>
-                    </select>
-                    </div>
-
-                    <div class="form-group">
-                    <select  type="text" class="form-control" v-model="form.curr_program_id">
-                        <option v-for="program in programs.data" :key="program.id" v-bind:value="program.id">{{program.program_code}} - {{program.descriptive_title}}</option>
-                    </select>
-                    </div>
-
-                    <div class="form-group">
                     <select  type="text" class="form-control" v-model="form.curr_course_id">
                         <option v-for="course in courses.data" :key="course.id" v-bind:value="course.id">{{course.course_code}} - {{course.descriptive_title}}</option>
                     </select>
@@ -122,8 +114,9 @@
             courses:{},
             yearlevel:{},
             semester:{},
-            enrollment : {},
+            enrollment : [],
             enrollmentassoc : {},
+            curriculum:{},
             totalrecord:'',
             form: new Form({
                 id : '',
@@ -131,7 +124,8 @@
                 assoc_curr_id:'',
                 assoc_prof_id:'',
                 assoc_final_grade:'',
-                advising_status:'',
+            enr_program_id:'',
+
             })
           }
         },
@@ -170,6 +164,9 @@
             newModal(){
                 this.editmode = false;
                 this.form.reset();
+                this.form.enr_program_id = this.enrollment.data[0].enr_program_id;
+                this.form.assoc_form_id = this.$route.params.id;
+
                 $('#addNew').modal('show');
             },
              deleteEnroll(id){
@@ -199,8 +196,9 @@
             },
           loadEnrollment(){
             // if(this.$gate.isStudent()){
+                axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
                 axios.get("/api/courses").then(({data}) =>(this.courses = data))
-                axios.get("/api/enrollment").then(({data}) =>(this.enrollment = data))                
+                axios.get("/api/enrollment").then(({data}) =>(this.enrollment = data))               
                 axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
                 axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
                 axios.get("/api/enrollmentassoc/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
@@ -211,13 +209,13 @@
 
           createEnroll(){
                 this.$Progress.start();
-                this.form.post('api/enrollmentassoc')
+                this.form.post('/api/enrollmentassoc')
                 .then(()=>{
                     Fire.$emit('AfterCreate');
                     $('#addNew').modal('hide')
                     toast({
                         type: 'success',
-                        title: 'Curriculum Added in successfully'
+                        title: 'Course Added in successfully'
                         })
                     this.$Progress.finish();
                 })

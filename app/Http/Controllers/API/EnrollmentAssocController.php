@@ -22,7 +22,7 @@ class EnrollmentAssocController extends Controller
         // dd($user_id_num);
 
     
-        $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid')->where('assoc_form_id','=',$id)->latest()->paginate(15);
+        $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->where('assoc_form_id','=',$id)->latest()->paginate(15);
         // $enrollmentassoc = EnrollmentAssoc::findOrFail($id);
         // dd($enrollmentassoc);
 
@@ -47,7 +47,7 @@ class EnrollmentAssocController extends Controller
             'assoc_curr_id' => $request['assoc_curr_id'],
             'assoc_course_id' => $request['assoc_course_id'],
             'assoc_prof_id' => $request['assoc_final_grade'],
-            'advising_status' => $request['advising_status'],
+            // 'advising_status' => $request['advising_status'],
         ]);
 
 

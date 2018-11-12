@@ -58,10 +58,10 @@ class CurriculumController extends Controller
         
 
         $this->validate($request,[
-            'semester' => 'required|string|max:191',
-            'curr_year' => 'required|max:191',
-            'curr_program_id' => 'required|max:191',
-            'curr_course_id' => 'required|max:191',
+            'semester' => 'required',
+            'curr_year' => 'required',
+            'curr_program_id' => 'required',
+            'curr_course_id' => 'required',
         ]);
 
         $curriculum->update($request->all());
