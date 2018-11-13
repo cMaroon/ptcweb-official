@@ -1,17 +1,17 @@
 <template>
-    <div class="container">
+    <div class="container" >
         <div class="row mt-3" v-if="$gate.isSuperAdmin()">
-                    <div class="container">
-                            <div class="row">
-                                    <div class="col-12">
+                    <div class="container" >
+                            <div class="row" >
+                                <div class="col-12" >
 
                                             <!-- Main content -->
-                                            <div class="invoice p-3 mb-3">
+                                    <div class="invoice p-3 mb-3" style="background-image:url('/img/logo_ptcbw.png');  background-position:relative; background-size: auto; "  >
                                             <!-- title row -->
-                                            <div class="row">
+                                            <div class="row" >
 
                                         <div class="col-md-2">
-                                            <img src="/img/logo.png" style="width:100px" class="img-circle elevation-2" alt="User Image">
+                                            <img src="/img/logo.png" style="width:100px" class="img-circle elevation-2" >
                                                 <!-- </h4> -->
                                                 </div>
                                         <div class="col-md-10">
@@ -29,8 +29,8 @@
 
                                             <!-- info row -->
                                             <template v-if="enrollmentassoc.data">
-                                            <div class="row invoice-info">
-                                                <div class="col-sm-8 invoice-col">
+                                            <div class="row invoice-info" >
+                                                <div class="col-sm-8 invoice-col" >
                                                 <strong>Student Information</strong>
                                                 <address>
                                                     <strong>Student ID Number: </strong>
@@ -44,7 +44,7 @@
                                                     {{enrollmentassoc.data[0].assocformid.studinfo.ca_st_num}} 
                                                     {{enrollmentassoc.data[0].assocformid.studinfo.ca_st_name}} 
                                                     {{enrollmentassoc.data[0].assocformid.studinfo.ca_subd}} 
-                                                    {{enrollmentassoc.data[0].assocformid.studinfo.ca_bgry}} 
+                                                    {{enrollmentassoc.data[0].assocformid.studinfo.ca_brgy}} 
                                                     {{enrollmentassoc.data[0].assocformid.studinfo.ca_city}}<br>
                                                 </address>
                                                 </div>
@@ -54,8 +54,7 @@
                                                 
                                                 <b>Form ID# {{enrollmentassoc.data[0].assocformid.enr_form_id}}</b><br>
                                                 <b>Program Code: </b> {{enrollmentassoc.data[0].assoccurrid.currprograms.program_code}}<br>
-                                                <b>Year and Section</b> {{enrollmentassoc.data[0].assoccurrid.curryearlevel.title}} - 
-                                                {{enrollmentassoc.data[0].assocformid.studinfo.studsection.title}}<br>
+                                                <b>Year Level</b> {{enrollmentassoc.data[0].assoccurrid.curryearlevel.title}}<br>
                                                 
 
                                                 </div>
@@ -65,9 +64,9 @@
                                             <!-- /.row -->
 
                                             <!-- Table row -->
-                                            <div class="row">
-                                                <div class="col-12 table-responsive">
-                                                <table class="table table-striped">
+                                            <div class="row" >
+                                                <div class="col-12 table-responsive" >
+                                                <table class="table table-striped" >
                                                     <thead>
                                                     <tr>
                                                     <th>Course Code</th>
@@ -75,6 +74,7 @@
                                                     <th>Unit</th>
                                                     <th>Lec</th>
                                                     <th>Lab</th>
+                                                    <th>Section</th>
                                                     <th>Day</th>
                                                     <th style="text-align:center;">Time</th>
                                                     <th>Room</th>
@@ -87,11 +87,13 @@
                                                     <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currcourses.course_unit}}</td>
                                                     <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currcourses.lec_hr}}</td>
                                                     <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currcourses.lab_hr}}</td>
+                                                    <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currsection.title}}</td>
                                                     <td style="width:10px; ">{{enrollassoc.assoccurrid.sched_days}}</td>
-                                                    <td style="text-align:center;">{{enrollassoc.assoccurrid.sched_time}}</td>
+                                                    <td style="width:150px; text-align:center;">{{enrollassoc.assoccurrid.sched_time}}</td>
                                                     <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.sched_room}}</td>
+                                                        
                                                     </tr>
-                                                
+                                                        
                                                     </tbody>
                                                 </table>
                                                 </div>
@@ -99,7 +101,7 @@
                                             </div>
                                             <!-- /.row -->
 
-                                            <div class="row">
+                                            <div class="row" >
                                                 <div class="col-4">
                                                 <p class="lead">Semestral Fees:</p>
                                                 <div class="col-12">    
@@ -133,8 +135,7 @@
                                                 </div>
                                                 <!-- /.col -->
                                                 <div class="col-4">
-                                                    <p class="lead">&nbsp;</p>
-
+                                                <p class="lead" style=" text-align: center">Total Units: {{totalunits}} </p>
                                                     <div class="table-responsive">
                                                     <table class="table">
                                                         <tbody><tr>
@@ -169,7 +170,7 @@
                                                     <table class="table">
                                                     <tbody><tr>
                                                         <th style="width:50%">
-                                                        Assed by: </th>
+                                                        Advising Officer: </th>
                                                         <td></td>
                                                     </tr>
                                                     <tr>
@@ -180,12 +181,17 @@
                                                         <th>College Registrar: </th>
                                                         <td></td>
                                                     </tr>
+                                                    <tr>
+                                                        <th>Total: </th>
+                                                        <td></td>
+                                                    </tr>
+
 
                                                     </tbody></table>
                                                 </div>
                                                 </div>
                                                 <!-- /.col -->
-                                            <small>College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389</small>
+                                            <small >College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389</small>
 
                                             </div>
                                             <!-- /.row -->
@@ -202,7 +208,7 @@
 
                                             </div>
                                             <!-- /.invoice --> 
-                                        </div>
+                        </div>
 
 
                             </div>
@@ -216,13 +222,14 @@
         data(){
           return{
             editmode: false,
-            courses:{},
-            yearlevel:{},
-            semester:{},
-            enrollment : [],
+            // courses:{},
+            // yearlevel:{},
+            // semester:{},
+            // enrollment : [],
             enrollmentassoc : {},
-            curriculum:{},
-            student:{},
+            // curriculum:{},
+            // student:{},
+            // totalunit:{},
             datetoday: new Date('2011-04-11T10:20:30Z'),
             form: new Form({
                 id : '',
@@ -231,34 +238,38 @@
                 assoc_prof_id:'',
                 assoc_final_grade:'',
                 enr_program_id:'',
+            
 
             })
 
           }
         },
         methods: {
+
             printme() {
               window.print();
+
           },
 
           loadEnrollment(){
             // if(this.$gate.isStudent()){
-                axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
-                axios.get("/api/courses").then(({data}) =>(this.courses = data))
-                axios.get("/api/enrollList").then(({data}) =>(this.enrollment = data))               
-                axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
-                axios.get("/api/studentlist").then(({data}) => (this.student = data))
-                axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
+                // axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
+                // axios.get("/api/courses").then(({data}) =>(this.courses = data))
+                // axios.get("/api/enrollList").then(({data}) =>(this.enrollment = data))               
+                // axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
+                // axios.get("/api/studentlist").then(({data}) => (this.student = data))
+                // axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
                 axios.get("/api/enrollmentassoc/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
                 .then($data=>{this.totalrecord=$data.total});
             // }
 
-            
 
+            
           }
 
          
         },
+
         created() {
            this.loadEnrollment();
            Fire.$on('AfterCreate',() => {
@@ -266,8 +277,16 @@
            });
           //  setInterval(() => this.loadUsers(), 15000);
         },
-        computed:{
+        computed: {
+           totalunits:function(){
+               let sum = 0;
+               for (let i = 0; i < this.enrollmentassoc.total; i++){
+                   sum += (parseInt(this.enrollmentassoc.data[i].assoccurrid.currcourses.course_unit));
+               }
 
+               return sum;
+           }
         }
+
     }
 </script>

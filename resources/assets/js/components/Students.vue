@@ -79,7 +79,7 @@
                     <div class="form-group">
                       <input v-model="form.id_num" type="text" name="id_num"
                       placeholder="ID Number"
-                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }" readonly>
+                        class="form-control" :class="{ 'is-invalid': form.errors.has('id_num') }" >
                       <has-error :form="form" field="id_num"></has-error>
                     </div>
                     
@@ -112,7 +112,15 @@
                     </div>
 
                     <div class="form-group">
-                    <select  type="text" name="curr_year" class="form-control"  required v-model="form.year_level" >
+                    <select  type="text" name="program_id" class="form-control"  required v-model="form.program_id" >
+                            <option value="">Please select program*</option>
+                        <option v-for="pr in programs.data" :key="pr.id" v-bind:value="pr.id">{{pr.descriptive_title}}</option>
+
+                    </select>
+                    </div>
+
+                    <div class="form-group">
+                    <select  type="text" name="year_level" class="form-control"  required v-model="form.year_level" >
                             <option value="">Please select year level*</option>
                         <option v-for="yl in yearlevel.data" :key="yl.id" v-bind:value="yl.id">{{yl.title}}</option>
 
@@ -267,7 +275,7 @@
 
                 })
                 .catch(() => {
-                  swal("Failed!", "No Record Found!.", "warning");
+                  // swal("Failed!", "No Record Found!.", "warning");
                 })
             })
            this.loadStudents();

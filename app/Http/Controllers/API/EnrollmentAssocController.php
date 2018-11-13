@@ -20,7 +20,7 @@ class EnrollmentAssocController extends Controller
     public function index()
     {
     
-        $enrollmentassoc = EnrollmentAssoc::with('assocformid.studinfo.studsection','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->latest()->paginate(15);
+        $enrollmentassoc = EnrollmentAssoc::with('assocformid.studinfo.studsection','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms','assoccurrid.currsection')->latest()->paginate(15);
 
         return $enrollmentassoc;
         
@@ -31,7 +31,7 @@ class EnrollmentAssocController extends Controller
 
 
     
-        $enrollmentassoc = EnrollmentAssoc::with('assocformid.studinfo.studsection','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->where('assoc_form_id','=',$id)->latest()->paginate(15);
+        $enrollmentassoc = EnrollmentAssoc::with('assocformid.studinfo.studsection','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms','assoccurrid.currsection')->where('assoc_form_id','=',$id)->latest()->paginate(15);
 
 
         return $enrollmentassoc;
@@ -112,9 +112,9 @@ class EnrollmentAssocController extends Controller
 
             // return $enrollment_id;
 
-            $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->where('assoc_form_id','=', $enrollment_id)->paginate(20);
+            $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms','assoccurrid.currsection')->where('assoc_form_id','=', $enrollment_id)->paginate(20);
         }else{
-            $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms')->latest()->paginate(10);            
+            $enrollmentassoc = EnrollmentAssoc::with('assocformid','assoccurrid.curryearlevel','assoccurrid.currsemester','assoccurrid.currcourses','assoccurrid.currprograms','assoccurrid.currsection')->latest()->paginate(10);            
         }
 
         return $enrollmentassoc;

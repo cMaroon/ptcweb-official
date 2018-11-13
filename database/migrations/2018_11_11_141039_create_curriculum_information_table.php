@@ -19,6 +19,7 @@ class CreateCurriculumInformationTable extends Migration
             $table->integer('curr_year')->unsigned();
             $table->integer('curr_program_id')->unsigned();
             $table->integer('curr_course_id')->unsigned();
+            $table->integer('curr_section_id')->unsigned();
             $table->string('sched_days')->nullable();
             $table->string('sched_time')->nullable();
             $table->string('sched_room')->nullable();
@@ -26,6 +27,7 @@ class CreateCurriculumInformationTable extends Migration
 
             $table->foreign('curr_program_id')->references('id')->on('programs_information')->onDelete('cascade');
             $table->foreign('curr_course_id')->references('id')->on('courses_information')->onDelete('cascade');
+            $table->foreign('curr_section_id')->references('id')->on('section')->onDelete('cascade');
             $table->foreign('semester')->references('id')->on('semester')->onDelete('cascade');
             $table->foreign('curr_year')->references('id')->on('year_level')->onDelete('cascade');
         });

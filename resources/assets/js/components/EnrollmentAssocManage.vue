@@ -7,6 +7,9 @@
                 <h3 class="card-title" >Students Curriculum </h3>
 
                 <div class="card-tools">
+                    <router-link :to="{name: 'printenroll', params:{id: this.$route.params.id}}" >
+                            Print Preview  <i class="fas fa-print icon-green"></i>
+                        </router-link>
                    <!-- <button class="btn btn-success" @click="'/enrollprint'+ query">Print <i class="fas fa-print fa-fw"></i></button> -->
                 </div>
               </div>
@@ -40,10 +43,7 @@
                        <a href="#" @click="deleteEnroll(enrollassoc.id)">
                             <i class="fa fa-trash icon-red"></i>
                         </a>
-                        |
-                        <router-link :to="{name: 'printenroll', params:{id: enrollassoc.assoc_form_id}}" >
-                            <i class="fas fa-print icon-green"></i>
-                        </router-link>
+                        
                     </td>
                  
                   </tr>
@@ -181,7 +181,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/enrollmentassoc/'+id).then(()=>{
+                                this.form.delete('/api/enrollmentassoc/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',
@@ -196,12 +196,12 @@
             },
           loadEnrollment(){
             // if(this.$gate.isStudent()){
-                axios.get("api/curriculum").then(({data}) =>(this.curriculum = data))
-                axios.get("api/courses").then(({data}) =>(this.courses = data))
-                axios.get("api/enrollment").then(({data}) =>(this.enrollment = data))               
-                axios.get("api/yearlevel").then(({data}) =>(this.yearlevel = data))                
-                axios.get("api/semester").then(({data}) =>(this.semester = data))                                      
-                axios.get("api/enrollmentassoc").then(({data}) =>(this.enrollmentassoc = data))
+                axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
+                axios.get("/api/courses").then(({data}) =>(this.courses = data))
+                axios.get("/api/enrollment").then(({data}) =>(this.enrollment = data))               
+                axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
+                axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
+                axios.get("/api/enrollmentassoc/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
                 .then($data=>{this.totalrecord=$data.total});
             // }
 
@@ -225,18 +225,18 @@
             }
         },
         created() {
-            Fire.$on('searching',() => {
-                let query = this.$parent.search;
-                axios.get('api/findFormID?q=' + query)
-                .then((data) => {
-                    this.enrollmentassoc = data.data
-                    this.totalrecord= data.data.total
+            // Fire.$on('searching',() => {
+            //     let query = this.$parent.search;
+            //     axios.get('api/findFormID?q=' + query)
+            //     .then((data) => {
+            //         this.enrollmentassoc = data.data
+            //         this.totalrecord= data.data.total
 
-                })
-                .catch(() => {
-                        swal("Failed!", "No Record Found!.", "warning");
-                })
-            })
+            //     })
+            //     .catch(() => {
+            //             swal("Failed!", "No Record Found!.", "warning");
+            //     })
+            // })
            this.loadEnrollment();
            Fire.$on('AfterCreate',() => {
                this.loadEnrollment();

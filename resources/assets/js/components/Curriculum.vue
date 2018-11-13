@@ -18,6 +18,7 @@
                     <th>Semester</th>
                     <th>Program</th>
                     <th>Course</th>
+                    <th>Section</th>
                     <th>Days</th>
                     <th>Time</th>
                     <th>Room</th>
@@ -29,6 +30,7 @@
                     <td>{{curr.currsemester.title}}</td>
                     <td>{{curr.currprograms.program_code}}</td>
                     <td>{{curr.currcourses.course_code}}</td>
+                    <td>{{curr.currsection.title}}</td>
                     <td>{{curr.sched_days}}</td>
                     <td>{{curr.sched_time}}</td>
                     <td>{{curr.sched_room}}</td>
@@ -109,6 +111,13 @@
                     </div>
 
                     <div class="form-group">
+                    <select  type="text" class="form-control" v-model="form.curr_section_id">
+                            <option value="">Please select section*</option>
+                        <option v-for="sec in section.data" :key="sec.id" v-bind:value="sec.id">{{sec.title}}</option>
+                    </select>
+                    </div>
+
+                    <div class="form-group">
                       <input v-model="form.sched_days" type="text" name="sched_days"
                       placeholder="Schedule Days"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('sched_days') }">
@@ -150,6 +159,7 @@
             programs : {},
             courses : {},
             yearlevel : {},
+            section:{},
             semester : {},
             curriculum : {},
             totalrecord:'',
@@ -159,6 +169,7 @@
                 semester : '',
                 curr_program_id : '',
                 curr_course_id : '',
+                curr_section_id : '',
                 sched_days:'',
                 sched_time:'',
                 sched_room:''
@@ -231,6 +242,7 @@
           loadCurriculum(){
             if(this.$gate.isSuperAdmin()){
                 axios.get("api/courselist").then(({data}) =>(this.courses = data))
+                axios.get("api/section").then(({data}) =>(this.section = data))
                 axios.get("api/program").then(({data}) =>(this.programs = data))                
                 axios.get("api/yearlevel").then(({data}) =>(this.yearlevel = data))                
                 axios.get("api/semester").then(({data}) =>(this.semester = data))                
@@ -266,7 +278,7 @@
                     this.totalrecord= data.data.total
                 })
                .catch(() => {
-                swal("Failed!", "No Record Found!.", "warning");
+                // swal("Failed!", "No Record Found!.", "warning");
                 })
             })
            this.loadCurriculum();

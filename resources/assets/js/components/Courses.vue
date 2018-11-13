@@ -246,7 +246,7 @@
 
                 })
                 .catch(() => {
-                  swal("Failed!", "No Record Found!.", "warning");
+                  // swal("Failed!", "No Record Found!.", "warning");
                 })
             })
            this.loadCourses();

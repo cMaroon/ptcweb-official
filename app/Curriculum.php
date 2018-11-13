@@ -13,7 +13,7 @@ class Curriculum extends Model
 
     //Database Tables
     protected $fillable = [
-        'semester','curr_year','curr_program_id','curr_course_id','sched_days','sched_time','sched_room'
+        'semester','curr_year','curr_program_id','curr_course_id','curr_section_id','sched_days','sched_time','sched_room'
 
     ];
 
@@ -37,6 +37,12 @@ class Curriculum extends Model
     public function curryearlevel()
     {
         return $this->belongsTo('App\YearLevel','curr_year');
+
+    }
+
+    public function currsection()
+    {
+        return $this->belongsTo('App\Section','curr_section_id');
 
     }
 

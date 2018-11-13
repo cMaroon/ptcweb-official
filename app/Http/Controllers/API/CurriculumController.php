@@ -21,7 +21,18 @@ class CurriculumController extends Controller
         // || \Gate::allows('isAuthor')
         // if (\Gate::allows('isSuperAdmin')) {
             // dd($curriculum);
-            return Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->latest()->paginate(10);
+            return Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->latest()->paginate(10);
+        // }
+        
+    }
+
+    public function CurriculumList()
+    {
+        $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->get();
+        return $curriculum;
+        // || \Gate::allows('isAuthor')
+        // if (\Gate::allows('isSuperAdmin')) {
+            // return Courses::latest()->paginate(50);
         // }
         
     }
@@ -33,9 +44,10 @@ class CurriculumController extends Controller
             'curr_year' => 'required',
             'curr_program_id' => 'required',
             'curr_course_id' => 'required',
-            'sched_days' => 'required',
-            'sched_time' => 'required',
-            'sched_room' => 'required',
+            'curr_section_id' => 'required',
+            // 'sched_days' => 'required',
+            // 'sched_time' => 'required',
+            // 'sched_room' => 'required',
 
         ]);
         return Curriculum::create([
@@ -43,6 +55,7 @@ class CurriculumController extends Controller
             'curr_year' => $request['curr_year'],
             'curr_program_id' => $request['curr_program_id'],
             'curr_course_id' => $request['curr_course_id'],
+            'curr_section_id' => $request['curr_section_id'],
             'sched_days' => $request['sched_days'],
             'sched_time' => $request['sched_time'],
             'sched_room' => $request['sched_room'],
@@ -69,6 +82,8 @@ class CurriculumController extends Controller
             'curr_year' => 'required',
             'curr_program_id' => 'required',
             'curr_course_id' => 'required',
+            'curr_section_id' => 'required',
+
         ]);
 
         $curriculum->update($request->all());
@@ -102,9 +117,9 @@ class CurriculumController extends Controller
 
             // return $enrollment_id;
 
-            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->where('curr_program_id','=', $program_id)->paginate(20);
+            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->where('curr_program_id','=', $program_id)->paginate(20);
         }else{
-            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel')->latest()->paginate(10);            
+            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->latest()->paginate(10);            
         }
 
         return $curriculum;

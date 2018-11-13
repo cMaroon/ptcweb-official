@@ -30690,7 +30690,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(141);
-module.exports = __webpack_require__(234);
+module.exports = __webpack_require__(237);
 
 
 /***/ }),
@@ -30755,7 +30755,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_5_vue_progressbar___default.a, {
   height: '4px'
 });
 
-var routes = [{ path: '/dashboard', component: __webpack_require__(174) }, { path: '/developer', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }, { path: '/users', component: __webpack_require__(186) }, { path: '/studentlist', component: __webpack_require__(189) }, { path: '/program', component: __webpack_require__(192) }, { path: '/courses', component: __webpack_require__(195) }, { path: '/curriculum', component: __webpack_require__(198) }, { path: '/enrollment', component: __webpack_require__(201) }, { name: 'mycurr', path: '/mycurr/:id', component: __webpack_require__(204) }, { name: 'printenroll', path: '/printenroll/:id', component: __webpack_require__(207) }, { path: '/manage_enrollment', component: __webpack_require__(210) }];
+var routes = [{ path: '/dashboard', component: __webpack_require__(174) }, { path: '/developer', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }, { path: '/users', component: __webpack_require__(186) }, { path: '/studentlist', component: __webpack_require__(189) }, { path: '/program', component: __webpack_require__(192) }, { path: '/courses', component: __webpack_require__(195) }, { path: '/curriculum', component: __webpack_require__(198) }, { path: '/enrollment', component: __webpack_require__(201) }, { name: 'mycurr', path: '/mycurr/:id', component: __webpack_require__(204) }, { name: 'printenroll', path: '/printenroll/:id', component: __webpack_require__(207) }, { path: '/manage_enrollment', component: __webpack_require__(210) }, { name: 'manage_curr', path: '/manage_curr/:id', component: __webpack_require__(213) }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_4_vue_router__["a" /* default */]({
   mode: 'history',
@@ -30778,15 +30778,15 @@ window.Fire = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('passport-clients', __webpack_require__(213));
+Vue.component('passport-clients', __webpack_require__(216));
 
-Vue.component('passport-authorized-clients', __webpack_require__(218));
+Vue.component('passport-authorized-clients', __webpack_require__(221));
 
-Vue.component('passport-personal-access-tokens', __webpack_require__(223));
+Vue.component('passport-personal-access-tokens', __webpack_require__(226));
 
-Vue.component('not-found', __webpack_require__(228));
+Vue.component('not-found', __webpack_require__(231));
 
-Vue.component('example-component', __webpack_require__(231));
+Vue.component('example-component', __webpack_require__(234));
 
 var app = new Vue({
   el: '#app',
@@ -30795,10 +30795,9 @@ var app = new Vue({
     search: ''
   },
   methods: {
-    searchit: _.debounce(function () {
+    searchit: function searchit() {
       Fire.$emit('searching');
-    }, 1000)
-
+    }
   }
 });
 
@@ -76269,6 +76268,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this6 = this;
 
+        Fire.$on('searching', function () {
+            var query = _this6.$parent.search;
+            axios.get('api/findUser?q=' + query).then(function (data) {
+                _this6.users = data.data;
+                // this.totalrecord= data.data.total
+            }).catch(function () {
+                // swal("Failed!", "No Record Found!.", "warning");
+            });
+        });
         this.loadUsers();
         Fire.$on('AfterCreate', function () {
             _this6.loadUsers();
@@ -76984,6 +76992,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -77122,7 +77138,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this5.studentlist = data.data;
                 _this5.totalrecord = data.data.total;
             }).catch(function () {
-                swal("Failed!", "No Record Found!.", "warning");
+                // swal("Failed!", "No Record Found!.", "warning");
             });
         });
         this.loadStudents();
@@ -77359,8 +77375,7 @@ var render = function() {
                           attrs: {
                             type: "text",
                             name: "id_num",
-                            placeholder: "ID Number",
-                            readonly: ""
+                            placeholder: "ID Number"
                           },
                           domProps: { value: _vm.form.id_num },
                           on: {
@@ -77564,6 +77579,61 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
+                              value: _vm.form.program_id,
+                              expression: "form.program_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: {
+                            type: "text",
+                            name: "program_id",
+                            required: ""
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "program_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Please select program*")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.programs.data, function(pr) {
+                            return _c(
+                              "option",
+                              { key: pr.id, domProps: { value: pr.id } },
+                              [_vm._v(_vm._s(pr.descriptive_title))]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
                               value: _vm.form.year_level,
                               expression: "form.year_level"
                             }
@@ -77571,7 +77641,7 @@ var render = function() {
                           staticClass: "form-control",
                           attrs: {
                             type: "text",
-                            name: "curr_year",
+                            name: "year_level",
                             required: ""
                           },
                           on: {
@@ -78716,7 +78786,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this6.courses = data.data;
                 _this6.totalrecord = data.data.total;
             }).catch(function () {
-                swal("Failed!", "No Record Found!.", "warning");
+                // swal("Failed!", "No Record Found!.", "warning");
             });
         });
         this.loadCourses();
@@ -79485,6 +79555,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -79493,6 +79572,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             programs: {},
             courses: {},
             yearlevel: {},
+            section: {},
             semester: {},
             curriculum: {},
             totalrecord: '',
@@ -79502,6 +79582,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 semester: '',
                 curr_program_id: '',
                 curr_course_id: '',
+                curr_section_id: '',
                 sched_days: '',
                 sched_time: '',
                 sched_room: ''
@@ -79577,20 +79658,24 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     var data = _ref.data;
                     return _this4.courses = data;
                 });
-                axios.get("api/program").then(function (_ref2) {
+                axios.get("api/section").then(function (_ref2) {
                     var data = _ref2.data;
+                    return _this4.section = data;
+                });
+                axios.get("api/program").then(function (_ref3) {
+                    var data = _ref3.data;
                     return _this4.programs = data;
                 });
-                axios.get("api/yearlevel").then(function (_ref3) {
-                    var data = _ref3.data;
+                axios.get("api/yearlevel").then(function (_ref4) {
+                    var data = _ref4.data;
                     return _this4.yearlevel = data;
                 });
-                axios.get("api/semester").then(function (_ref4) {
-                    var data = _ref4.data;
+                axios.get("api/semester").then(function (_ref5) {
+                    var data = _ref5.data;
                     return _this4.semester = data;
                 });
-                axios.get("api/curriculum").then(function (_ref5) {
-                    var data = _ref5.data;
+                axios.get("api/curriculum").then(function (_ref6) {
+                    var data = _ref6.data;
                     return _this4.curriculum = data;
                 }).then(function ($data) {
                     _this4.totalrecord = $data.total;
@@ -79623,7 +79708,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 _this6.curriculum = data.data;
                 _this6.totalrecord = data.data.total;
             }).catch(function () {
-                swal("Failed!", "No Record Found!.", "warning");
+                // swal("Failed!", "No Record Found!.", "warning");
             });
         });
         this.loadCurriculum();
@@ -79687,6 +79772,8 @@ var render = function() {
                           _c("td", [
                             _vm._v(_vm._s(curr.currcourses.course_code))
                           ]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(curr.currsection.title))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(curr.sched_days))]),
                           _vm._v(" "),
@@ -80077,6 +80164,57 @@ var render = function() {
                       )
                     ]),
                     _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.curr_section_id,
+                              expression: "form.curr_section_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "curr_section_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "" } }, [
+                            _vm._v("Please select section*")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.section.data, function(sec) {
+                            return _c(
+                              "option",
+                              { key: sec.id, domProps: { value: sec.id } },
+                              [_vm._v(_vm._s(sec.title))]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
                     _c(
                       "div",
                       { staticClass: "form-group" },
@@ -80273,6 +80411,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Program")]),
       _vm._v(" "),
       _c("th", [_vm._v("Course")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Section")]),
       _vm._v(" "),
       _c("th", [_vm._v("Days")]),
       _vm._v(" "),
@@ -81073,6 +81213,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -81080,10 +81222,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             editmode: false,
             courses: {},
             yearlevel: {},
+            section: {},
             semester: {},
             enrollment: [],
             enrollmentassoc: {},
-            curriculum: {},
+            curriculumlist: {},
             totalrecord: '',
             form: new Form({
                 id: '',
@@ -81163,28 +81306,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this4 = this;
 
             // if(this.$gate.isStudent()){
-            axios.get("/api/curriculum").then(function (_ref) {
+            axios.get("/api/curriculumlist").then(function (_ref) {
                 var data = _ref.data;
-                return _this4.curriculum = data;
+                return _this4.curriculumlist = data;
             });
-            axios.get("/api/courses").then(function (_ref2) {
+            axios.get("/api/section").then(function (_ref2) {
                 var data = _ref2.data;
+                return _this4.section = data;
+            });
+            axios.get("/api/courses").then(function (_ref3) {
+                var data = _ref3.data;
                 return _this4.courses = data;
             });
-            axios.get("/api/enrollment").then(function (_ref3) {
-                var data = _ref3.data;
+            axios.get("/api/enrollment").then(function (_ref4) {
+                var data = _ref4.data;
                 return _this4.enrollment = data;
             });
-            axios.get("/api/yearlevel").then(function (_ref4) {
-                var data = _ref4.data;
+            axios.get("/api/yearlevel").then(function (_ref5) {
+                var data = _ref5.data;
                 return _this4.yearlevel = data;
             });
-            axios.get("/api/semester").then(function (_ref5) {
-                var data = _ref5.data;
+            axios.get("/api/semester").then(function (_ref6) {
+                var data = _ref6.data;
                 return _this4.semester = data;
             });
-            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref6) {
-                var data = _ref6.data;
+            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref7) {
+                var data = _ref7.data;
                 return _this4.enrollmentassoc = data;
             }).then(function ($data) {
                 _this4.totalrecord = $data.total;
@@ -81288,10 +81435,16 @@ var render = function() {
                           ]),
                           _vm._v(" "),
                           _c("td", [
-                            _vm._v(_vm._s(enrollassoc.assoccurrid.sched_days))
+                            _vm._v(
+                              _vm._s(enrollassoc.assoccurrid.currsection.title)
+                            )
                           ]),
                           _vm._v(" "),
                           _c("td", [
+                            _vm._v(_vm._s(enrollassoc.assoccurrid.sched_days))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", { staticStyle: { width: "150px" } }, [
                             _vm._v(_vm._s(enrollassoc.assoccurrid.sched_time))
                           ]),
                           _vm._v(" "),
@@ -81514,7 +81667,7 @@ var render = function() {
                             _vm._v("Please select course*")
                           ]),
                           _vm._v(" "),
-                          _vm._l(_vm.curriculum.data, function(curr) {
+                          _vm._l(_vm.curriculumlist, function(curr) {
                             return curr.currprograms.id ===
                               _vm.form.enr_program_id
                               ? _c(
@@ -81527,6 +81680,8 @@ var render = function() {
                                     _vm._v(
                                       "\n                        \n                        " +
                                         _vm._s(curr.currprograms.program_code) +
+                                        " - Section " +
+                                        _vm._s(curr.currsection.title) +
                                         " - " +
                                         _vm._s(curr.currcourses.course_code) +
                                         " - " +
@@ -81608,6 +81763,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Year Level")]),
       _vm._v(" "),
       _c("th", [_vm._v("Course")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Section")]),
       _vm._v(" "),
       _c("th", [_vm._v("Days")]),
       _vm._v(" "),
@@ -81915,18 +82072,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
         return {
             editmode: false,
-            courses: {},
-            yearlevel: {},
-            semester: {},
-            enrollment: [],
+            // courses:{},
+            // yearlevel:{},
+            // semester:{},
+            // enrollment : [],
             enrollmentassoc: {},
-            curriculum: {},
-            student: {},
+            // curriculum:{},
+            // student:{},
+            // totalunit:{},
             datetoday: new Date('2011-04-11T10:20:30Z'),
             form: new Form({
                 id: '',
@@ -81949,32 +82113,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this = this;
 
             // if(this.$gate.isStudent()){
-            axios.get("/api/curriculum").then(function (_ref) {
+            // axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
+            // axios.get("/api/courses").then(({data}) =>(this.courses = data))
+            // axios.get("/api/enrollList").then(({data}) =>(this.enrollment = data))               
+            // axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
+            // axios.get("/api/studentlist").then(({data}) => (this.student = data))
+            // axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
+            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref) {
                 var data = _ref.data;
-                return _this.curriculum = data;
-            });
-            axios.get("/api/courses").then(function (_ref2) {
-                var data = _ref2.data;
-                return _this.courses = data;
-            });
-            axios.get("/api/enrollList").then(function (_ref3) {
-                var data = _ref3.data;
-                return _this.enrollment = data;
-            });
-            axios.get("/api/yearlevel").then(function (_ref4) {
-                var data = _ref4.data;
-                return _this.yearlevel = data;
-            });
-            axios.get("/api/studentlist").then(function (_ref5) {
-                var data = _ref5.data;
-                return _this.student = data;
-            });
-            axios.get("/api/semester").then(function (_ref6) {
-                var data = _ref6.data;
-                return _this.semester = data;
-            });
-            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref7) {
-                var data = _ref7.data;
                 return _this.enrollmentassoc = data;
             }).then(function ($data) {
                 _this.totalrecord = $data.total;
@@ -81983,6 +82129,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
         }
     },
+
     created: function created() {
         var _this2 = this;
 
@@ -81993,7 +82140,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //  setInterval(() => this.loadUsers(), 15000);
     },
 
-    computed: {}
+    computed: {
+        totalunits: function totalunits() {
+            var sum = 0;
+            for (var i = 0; i < this.enrollmentassoc.total; i++) {
+                sum += parseInt(this.enrollmentassoc.data[i].assoccurrid.currcourses.course_unit);
+            }
+
+            return sum;
+        }
+    }
+
 });
 
 /***/ }),
@@ -82012,7 +82169,14 @@ var render = function() {
               _c("div", { staticClass: "col-12" }, [
                 _c(
                   "div",
-                  { staticClass: "invoice p-3 mb-3" },
+                  {
+                    staticClass: "invoice p-3 mb-3",
+                    staticStyle: {
+                      "background-image": "url('/img/logo_ptcbw.png')",
+                      "background-position": "relative",
+                      "background-size": "auto"
+                    }
+                  },
                   [
                     _c("div", { staticClass: "row" }, [
                       _vm._m(0),
@@ -82097,7 +82261,7 @@ var render = function() {
                                     " \n                                                " +
                                     _vm._s(
                                       _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.ca_bgry
+                                        .studinfo.ca_brgy
                                     ) +
                                     " \n                                                " +
                                     _vm._s(
@@ -82131,17 +82295,12 @@ var render = function() {
                               ),
                               _c("br"),
                               _vm._v(" "),
-                              _c("b", [_vm._v("Year and Section")]),
+                              _c("b", [_vm._v("Year Level")]),
                               _vm._v(
                                 " " +
                                   _vm._s(
                                     _vm.enrollmentassoc.data[0].assoccurrid
                                       .curryearlevel.title
-                                  ) +
-                                  " - \n                                            " +
-                                  _vm._s(
-                                    _vm.enrollmentassoc.data[0].assocformid
-                                      .studinfo.studsection.title
                                   )
                               ),
                               _c("br")
@@ -82233,6 +82392,24 @@ var render = function() {
                                   ]
                                 ),
                                 _vm._v(" "),
+                                _c(
+                                  "td",
+                                  {
+                                    staticStyle: {
+                                      width: "10px",
+                                      "text-align": "center"
+                                    }
+                                  },
+                                  [
+                                    _vm._v(
+                                      _vm._s(
+                                        enrollassoc.assoccurrid.currsection
+                                          .title
+                                      )
+                                    )
+                                  ]
+                                ),
+                                _vm._v(" "),
                                 _c("td", { staticStyle: { width: "10px" } }, [
                                   _vm._v(
                                     _vm._s(enrollassoc.assoccurrid.sched_days)
@@ -82241,7 +82418,12 @@ var render = function() {
                                 _vm._v(" "),
                                 _c(
                                   "td",
-                                  { staticStyle: { "text-align": "center" } },
+                                  {
+                                    staticStyle: {
+                                      width: "150px",
+                                      "text-align": "center"
+                                    }
+                                  },
                                   [
                                     _vm._v(
                                       _vm._s(enrollassoc.assoccurrid.sched_time)
@@ -82270,7 +82452,34 @@ var render = function() {
                       ])
                     ]),
                     _vm._v(" "),
-                    _vm._m(2),
+                    _c("div", { staticClass: "row" }, [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c("div", { staticClass: "col-4" }, [
+                        _c(
+                          "p",
+                          {
+                            staticClass: "lead",
+                            staticStyle: { "text-align": "center" }
+                          },
+                          [
+                            _vm._v(
+                              "Total Units: " + _vm._s(_vm.totalunits) + " "
+                            )
+                          ]
+                        ),
+                        _vm._v(" "),
+                        _vm._m(3)
+                      ]),
+                      _vm._v(" "),
+                      _vm._m(4),
+                      _vm._v(" "),
+                      _c("small", [
+                        _vm._v(
+                          "College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389"
+                        )
+                      ])
+                    ]),
                     _vm._v(" "),
                     _c("div", { staticClass: "row no-print" }, [
                       _c("div", { staticClass: "col-2" }),
@@ -82316,7 +82525,7 @@ var staticRenderFns = [
       _c("img", {
         staticClass: "img-circle elevation-2",
         staticStyle: { width: "100px" },
-        attrs: { src: "/img/logo.png", alt: "User Image" }
+        attrs: { src: "/img/logo.png" }
       })
     ])
   },
@@ -82336,6 +82545,8 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("Lab")]),
         _vm._v(" "),
+        _c("th", [_vm._v("Section")]),
+        _vm._v(" "),
         _c("th", [_vm._v("Day")]),
         _vm._v(" "),
         _c("th", { staticStyle: { "text-align": "center" } }, [_vm._v("Time")]),
@@ -82348,127 +82559,117 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "col-4" }, [
-        _c("p", { staticClass: "lead" }, [_vm._v("Semestral Fees:")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col-12" }, [
-          _c("div", { staticClass: "table-responsive" }, [
-            _c("table", { staticClass: "table" }, [
-              _c("tbody", [
-                _c("tr", [
-                  _c("th", { staticStyle: { width: "70%" } }, [
-                    _vm._v("Tuition Fee: ")
-                  ]),
-                  _vm._v(" "),
-                  _c("td")
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("th", [_vm._v("Registration Fee: ")]),
-                  _vm._v(" "),
-                  _c("td")
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("th", [_vm._v("Library Fee: ")]),
-                  _vm._v(" "),
-                  _c("td")
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("th", [_vm._v("Medical Fee: ")]),
-                  _vm._v(" "),
-                  _c("td")
-                ]),
-                _vm._v(" "),
-                _c("tr", [
-                  _c("th", [_vm._v("Cultural: ")]),
-                  _vm._v(" "),
-                  _c("td")
-                ])
-              ])
-            ])
-          ])
-        ])
-      ]),
+    return _c("div", { staticClass: "col-4" }, [
+      _c("p", { staticClass: "lead" }, [_vm._v("Semestral Fees:")]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-4" }, [
-        _c("p", { staticClass: "lead" }, [_vm._v(" ")]),
-        _vm._v(" "),
+      _c("div", { staticClass: "col-12" }, [
         _c("div", { staticClass: "table-responsive" }, [
           _c("table", { staticClass: "table" }, [
             _c("tbody", [
               _c("tr", [
-                _c("th", { staticStyle: { width: "50%" } }, [
-                  _vm._v(
-                    "\n                                                        Athletic:"
-                  )
+                _c("th", { staticStyle: { width: "70%" } }, [
+                  _vm._v("Tuition Fee: ")
                 ]),
                 _vm._v(" "),
                 _c("td")
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("th", [_vm._v("Book Rental: ")]),
+                _c("th", [_vm._v("Registration Fee: ")]),
                 _vm._v(" "),
                 _c("td")
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("th", [_vm._v("Laboratory: ")]),
+                _c("th", [_vm._v("Library Fee: ")]),
                 _vm._v(" "),
                 _c("td")
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("th", [_vm._v("Penalty: ")]),
-                _vm._v(" "),
-                _c("td")
-              ]),
-              _vm._v(" "),
-              _c("tr", [_c("th", [_vm._v("Others: ")]), _vm._v(" "), _c("td")])
-            ])
-          ])
-        ])
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-4" }, [
-        _c("p", { staticClass: "lead" }, [_vm._v(" ")]),
-        _vm._v(" "),
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table" }, [
-            _c("tbody", [
-              _c("tr", [
-                _c("th", { staticStyle: { width: "50%" } }, [
-                  _vm._v(
-                    "\n                                                    Assed by: "
-                  )
-                ]),
+                _c("th", [_vm._v("Medical Fee: ")]),
                 _vm._v(" "),
                 _c("td")
               ]),
               _vm._v(" "),
               _c("tr", [
-                _c("th", [_vm._v("Assessed By:  ")]),
-                _vm._v(" "),
-                _c("td")
-              ]),
-              _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("College Registrar: ")]),
+                _c("th", [_vm._v("Cultural: ")]),
                 _vm._v(" "),
                 _c("td")
               ])
             ])
           ])
         ])
-      ]),
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "table-responsive" }, [
+      _c("table", { staticClass: "table" }, [
+        _c("tbody", [
+          _c("tr", [
+            _c("th", { staticStyle: { width: "50%" } }, [
+              _vm._v(
+                "\n                                                        Athletic:"
+              )
+            ]),
+            _vm._v(" "),
+            _c("td")
+          ]),
+          _vm._v(" "),
+          _c("tr", [
+            _c("th", [_vm._v("Book Rental: ")]),
+            _vm._v(" "),
+            _c("td")
+          ]),
+          _vm._v(" "),
+          _c("tr", [_c("th", [_vm._v("Laboratory: ")]), _vm._v(" "), _c("td")]),
+          _vm._v(" "),
+          _c("tr", [_c("th", [_vm._v("Penalty: ")]), _vm._v(" "), _c("td")]),
+          _vm._v(" "),
+          _c("tr", [_c("th", [_vm._v("Others: ")]), _vm._v(" "), _c("td")])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-4" }, [
+      _c("p", { staticClass: "lead" }, [_vm._v(" ")]),
       _vm._v(" "),
-      _c("small", [
-        _vm._v(
-          "College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389"
-        )
+      _c("div", { staticClass: "table-responsive" }, [
+        _c("table", { staticClass: "table" }, [
+          _c("tbody", [
+            _c("tr", [
+              _c("th", { staticStyle: { width: "50%" } }, [
+                _vm._v(
+                  "\n                                                    Advising Officer: "
+                )
+              ]),
+              _vm._v(" "),
+              _c("td")
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("th", [_vm._v("Assessed By:  ")]),
+              _vm._v(" "),
+              _c("td")
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("th", [_vm._v("College Registrar: ")]),
+              _vm._v(" "),
+              _c("td")
+            ]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Total: ")]), _vm._v(" "), _c("td")])
+          ])
+        ])
       ])
     ])
   }
@@ -82508,6 +82709,610 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources/assets/js/components/EnrollmentManage.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-1389d180", Component.options)
+  } else {
+    hotAPI.reload("data-v-1389d180", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 211 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            editmode: false,
+            student: {},
+            programs: {},
+            enrollList: {},
+            totalrecord: '',
+            form: new Form({
+                id: '',
+                enr_form_id: '',
+                enr_id_num: '',
+                enr_program_id: '',
+                fee_status: ''
+
+            })
+        };
+    },
+
+    methods: {
+        getResults: function getResults() {
+            var _this = this;
+
+            var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
+
+            axios.get('api/enrollList?page=' + page).then(function (response) {
+                _this.enrollList = response.data;
+            });
+        },
+        updateEnroll: function updateEnroll() {
+            var _this2 = this;
+
+            this.$Progress.start();
+            // console.log('Editing data');
+            this.form.put('api/enrollList/' + this.form.id).then(function () {
+                // success
+                $('#addNew').modal('hide');
+                swal('Updated!', 'Information has been updated.', 'success');
+                _this2.$Progress.finish();
+                Fire.$emit('AfterCreate');
+            }).catch(function () {
+                _this2.$Progress.fail();
+            });
+        },
+        editModal: function editModal(enroll) {
+            // this.editmode = true;
+            // this.form.reset();
+            // $('#addNew').modal('show');
+            // this.form.fill(enroll);
+        },
+        newModal: function newModal() {
+            this.editmode = false;
+            this.form.reset();
+            this.form.enr_form_id = Math.floor(Math.random() * 100000);
+            this.form.enr_id_num = this.student.id_num;
+            this.form.enr_program_id = this.student.studprograms.id;
+            $('#addNew').modal('show');
+        },
+        deleteEnroll: function deleteEnroll(id) {
+            var _this3 = this;
+
+            swal({
+                title: 'Are you sure?',
+                text: "You won't be able to revert this!",
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Yes, delete it!'
+            }).then(function (result) {
+                // Send request to the server
+                if (result.value) {
+                    _this3.form.delete('api/enrollment/' + id).then(function () {
+                        swal('Deleted!', 'Your file has been deleted.', 'success');
+                        Fire.$emit('AfterCreate');
+                    }).catch(function () {
+                        swal("Failed!", "UNAUTHORIZED ACTION.", "warning");
+                    });
+                }
+            });
+        },
+        loadEnrollment: function loadEnrollment() {
+            var _this4 = this;
+
+            if (this.$gate.isSuperAdmin()) {
+                // axios.get("api/courses").then(({data}) =>(this.courses = data))
+                axios.get("api/student").then(function (_ref) {
+                    var data = _ref.data;
+                    return _this4.student = data;
+                });
+                axios.get("api/program").then(function (_ref2) {
+                    var data = _ref2.data;
+                    return _this4.programs = data;
+                });
+                axios.get("api/enrollList").then(function (_ref3) {
+                    var data = _ref3.data;
+                    return _this4.enrollList = data;
+                }).then(function ($data) {
+                    _this4.totalrecord = $data.total;
+                });
+            }
+        }
+    },
+    created: function created() {
+        var _this5 = this;
+
+        Fire.$on('searching', function () {
+            var query = _this5.$parent.search;
+            axios.get('api/findStudentID?q=' + query).then(function (data) {
+                _this5.enrollList = data.data;
+                _this5.totalrecord = data.data.total;
+            }).catch(function () {
+                // swal("Failed!", "No Record Found!.", "warning");
+            });
+        });
+        this.loadEnrollment();
+        Fire.$on('AfterCreate', function () {
+            _this5.loadEnrollment();
+        });
+        //  setInterval(() => this.loadUsers(), 15000);
+    }
+});
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _vm.$gate.isSuperAdmin()
+      ? _c("div", { staticClass: "row mt-3" }, [
+          _c("div", { staticClass: "col-md-12" }, [
+            _c("div", { staticClass: "card" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c("div", { staticClass: "card-body table-responsive p-0" }, [
+                _c("table", { staticClass: "table table-hover" }, [
+                  _c(
+                    "tbody",
+                    [
+                      _vm._m(1),
+                      _vm._v(" "),
+                      _vm._l(_vm.enrollList.data, function(enroll) {
+                        return _c("tr", { key: enroll.id }, [
+                          _c("td", [_vm._v(_vm._s(enroll.enr_form_id))]),
+                          _vm._v(" "),
+                          _c("td", [_vm._v(_vm._s(enroll.enr_id_num))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(enroll.studinfo.firstname) +
+                                " " +
+                                _vm._s(enroll.studinfo.lastname) +
+                                " " +
+                                _vm._s(enroll.studinfo.suffixname)
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _c(
+                                "router-link",
+                                {
+                                  attrs: {
+                                    to: {
+                                      name: "manage_curr",
+                                      params: { id: enroll.id }
+                                    }
+                                  }
+                                },
+                                [
+                                  _vm._v(
+                                    "\n                 \n                       View Curriculum\n     \n            "
+                                  )
+                                ]
+                              ),
+                              _vm._v(
+                                "\n                                  |\n                   "
+                              ),
+                              _c(
+                                "a",
+                                {
+                                  attrs: { href: "#" },
+                                  on: {
+                                    click: function($event) {
+                                      _vm.deleteEnroll(enroll.id)
+                                    }
+                                  }
+                                },
+                                [
+                                  _c("i", {
+                                    staticClass: "fa fa-trash icon-red"
+                                  })
+                                ]
+                              )
+                            ],
+                            1
+                          )
+                        ])
+                      })
+                    ],
+                    2
+                  )
+                ])
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "card-footer" },
+                [
+                  _c("p", [
+                    _vm._v("Total Enrollment : " + _vm._s(_vm.totalrecord))
+                  ]),
+                  _vm._v(" "),
+                  _c(
+                    "pagination",
+                    {
+                      attrs: { data: _vm.enrollList, limit: 2 },
+                      on: { "pagination-change-page": _vm.getResults }
+                    },
+                    [
+                      _c(
+                        "span",
+                        { attrs: { slot: "prev-nav" }, slot: "prev-nav" },
+                        [_c("i", { staticClass: "fas fa-chevron-circle-left" })]
+                      ),
+                      _vm._v(" "),
+                      _c(
+                        "span",
+                        { attrs: { slot: "next-nav" }, slot: "next-nav" },
+                        [
+                          _c("i", {
+                            staticClass: "fas fa-chevron-circle-right"
+                          })
+                        ]
+                      )
+                    ]
+                  )
+                ],
+                1
+              )
+            ])
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.$gate.isSuperAdmin() ? _c("div", [_c("not-found")], 1) : _vm._e(),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        staticClass: "modal fade",
+        attrs: {
+          id: "addNew",
+          tabindex: "-1",
+          role: "dialog",
+          "aria-labelledby": "addNewLabel",
+          "aria-hidden": "true"
+        }
+      },
+      [
+        _c(
+          "div",
+          {
+            staticClass: "modal-dialog modal-dialog-centered",
+            attrs: { role: "document" }
+          },
+          [
+            _c("div", { staticClass: "modal-content" }, [
+              _c("div", { staticClass: "modal-header" }, [
+                _c(
+                  "h5",
+                  {
+                    directives: [
+                      {
+                        name: "show",
+                        rawName: "v-show",
+                        value: !_vm.editmode,
+                        expression: "!editmode"
+                      }
+                    ],
+                    staticClass: "modal-title",
+                    attrs: { id: "addNewLabel" }
+                  },
+                  [_vm._v("Generate Form ID")]
+                ),
+                _vm._v(" "),
+                _vm._m(2)
+              ]),
+              _vm._v(" "),
+              _c(
+                "form",
+                {
+                  on: {
+                    submit: function($event) {
+                      $event.preventDefault()
+                      _vm.editmode ? _vm.updateEnroll() : _vm.createEnroll()
+                    }
+                  }
+                },
+                [
+                  _c("div", { staticClass: "modal-body" }, [
+                    _c(
+                      "div",
+                      { staticClass: "form-group" },
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.enr_form_id,
+                              expression: "form.enr_form_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          class: {
+                            "is-invalid": _vm.form.errors.has("enr_form_id")
+                          },
+                          attrs: {
+                            id: "random-number",
+                            type: "text",
+                            name: "enr_form_id",
+                            placeholder: "Form ID",
+                            readonly: ""
+                          },
+                          domProps: { value: _vm.form.enr_form_id },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.form,
+                                "enr_form_id",
+                                $event.target.value
+                              )
+                            }
+                          }
+                        }),
+                        _vm._v(" "),
+                        _c("has-error", {
+                          attrs: { form: _vm.form, field: "enr_form_id" }
+                        })
+                      ],
+                      1
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "modal-footer" }, [
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: _vm.editmode,
+                            expression: "editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-success",
+                        attrs: { type: "submit" }
+                      },
+                      [
+                        _vm._v("Update "),
+                        _c("i", { staticClass: "fas fa-pen fa-fw" })
+                      ]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        directives: [
+                          {
+                            name: "show",
+                            rawName: "v-show",
+                            value: !_vm.editmode,
+                            expression: "!editmode"
+                          }
+                        ],
+                        staticClass: "btn btn-primary",
+                        attrs: { type: "submit" }
+                      },
+                      [
+                        _vm._v("Create "),
+                        _c("i", { staticClass: "fas fa-save fa-fw" })
+                      ]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]
+        )
+      ]
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h3", { staticClass: "card-title" }, [_vm._v("Manage Enrollment")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-tools" })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Form ID")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("ID Number")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Student Name")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Manage Curriculum")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "button",
+      {
+        staticClass: "close",
+        attrs: {
+          type: "button",
+          "data-dismiss": "modal",
+          "aria-label": "Close"
+        }
+      },
+      [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
+    )
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-1389d180", module.exports)
+  }
+}
+
+/***/ }),
+/* 213 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(214)
+/* template */
+var __vue_template__ = __webpack_require__(215)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources/assets/js/components/EnrollmentAssocManage.vue"
 
 /* hot reload */
@@ -82530,7 +83335,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -82720,7 +83525,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/enrollmentassoc/' + id).then(function () {
+                    _this3.form.delete('/api/enrollmentassoc/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -82733,27 +83538,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var _this4 = this;
 
             // if(this.$gate.isStudent()){
-            axios.get("api/curriculum").then(function (_ref) {
+            axios.get("/api/curriculum").then(function (_ref) {
                 var data = _ref.data;
                 return _this4.curriculum = data;
             });
-            axios.get("api/courses").then(function (_ref2) {
+            axios.get("/api/courses").then(function (_ref2) {
                 var data = _ref2.data;
                 return _this4.courses = data;
             });
-            axios.get("api/enrollment").then(function (_ref3) {
+            axios.get("/api/enrollment").then(function (_ref3) {
                 var data = _ref3.data;
                 return _this4.enrollment = data;
             });
-            axios.get("api/yearlevel").then(function (_ref4) {
+            axios.get("/api/yearlevel").then(function (_ref4) {
                 var data = _ref4.data;
                 return _this4.yearlevel = data;
             });
-            axios.get("api/semester").then(function (_ref5) {
+            axios.get("/api/semester").then(function (_ref5) {
                 var data = _ref5.data;
                 return _this4.semester = data;
             });
-            axios.get("api/enrollmentassoc").then(function (_ref6) {
+            axios.get("/api/enrollmentassoc/" + this.$route.params.id).then(function (_ref6) {
                 var data = _ref6.data;
                 return _this4.enrollmentassoc = data;
             }).then(function ($data) {
@@ -82781,15 +83586,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     created: function created() {
         var _this6 = this;
 
-        Fire.$on('searching', function () {
-            var query = _this6.$parent.search;
-            axios.get('api/findFormID?q=' + query).then(function (data) {
-                _this6.enrollmentassoc = data.data;
-                _this6.totalrecord = data.data.total;
-            }).catch(function () {
-                swal("Failed!", "No Record Found!.", "warning");
-            });
-        });
+        // Fire.$on('searching',() => {
+        //     let query = this.$parent.search;
+        //     axios.get('api/findFormID?q=' + query)
+        //     .then((data) => {
+        //         this.enrollmentassoc = data.data
+        //         this.totalrecord= data.data.total
+
+        //     })
+        //     .catch(() => {
+        //             swal("Failed!", "No Record Found!.", "warning");
+        //     })
+        // })
         this.loadEnrollment();
         Fire.$on('AfterCreate', function () {
             _this6.loadEnrollment();
@@ -82799,7 +83607,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 212 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -82811,14 +83619,41 @@ var render = function() {
       ? _c("div", { staticClass: "row mt-3" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(0),
+              _c("div", { staticClass: "card-header" }, [
+                _c("h3", { staticClass: "card-title" }, [
+                  _vm._v("Students Curriculum ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "card-tools" },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "printenroll",
+                            params: { id: this.$route.params.id }
+                          }
+                        }
+                      },
+                      [
+                        _vm._v("\n                        Print Preview  "),
+                        _c("i", { staticClass: "fas fa-print icon-green" })
+                      ]
+                    )
+                  ],
+                  1
+                )
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body table-responsive p-0" }, [
                 _c("table", { staticClass: "table table-hover" }, [
                   _c(
                     "tbody",
                     [
-                      _vm._m(1),
+                      _vm._m(0),
                       _vm._v(" "),
                       _vm._l(_vm.enrollmentassoc.data, function(enrollassoc) {
                         return _c("tr", { key: enrollassoc.id }, [
@@ -82858,66 +83693,35 @@ var render = function() {
                             _vm._v(_vm._s(enrollassoc.advising_status))
                           ]),
                           _vm._v(" "),
-                          _c(
-                            "td",
-                            [
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.editModal(enrollassoc)
-                                    }
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.editModal(enrollassoc)
                                   }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-edit icon-blue"
-                                  })
-                                ]
-                              ),
-                              _vm._v(
-                                "\n                  |\n                   "
-                              ),
-                              _c(
-                                "a",
-                                {
-                                  attrs: { href: "#" },
-                                  on: {
-                                    click: function($event) {
-                                      _vm.deleteEnroll(enrollassoc.id)
-                                    }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-edit icon-blue" })]
+                            ),
+                            _vm._v(
+                              "\n                  |\n                   "
+                            ),
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteEnroll(enrollassoc.id)
                                   }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fa fa-trash icon-red"
-                                  })
-                                ]
-                              ),
-                              _vm._v(
-                                "\n                    |\n                    "
-                              ),
-                              _c(
-                                "router-link",
-                                {
-                                  attrs: {
-                                    to: {
-                                      name: "printenroll",
-                                      params: { id: enrollassoc.assoc_form_id }
-                                    }
-                                  }
-                                },
-                                [
-                                  _c("i", {
-                                    staticClass: "fas fa-print icon-green"
-                                  })
-                                ]
-                              )
-                            ],
-                            1
-                          )
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-trash icon-red" })]
+                            )
+                          ])
                         ])
                       })
                     ],
@@ -83026,7 +83830,7 @@ var render = function() {
                   [_vm._v("Update Curriculum's Info")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -83145,16 +83949,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Students Curriculum ")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", [
       _c("th", [_vm._v("Form ID")]),
       _vm._v(" "),
@@ -83201,19 +83995,19 @@ if (false) {
 }
 
 /***/ }),
-/* 213 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(214)
+  __webpack_require__(217)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(216)
+var __vue_script__ = __webpack_require__(219)
 /* template */
-var __vue_template__ = __webpack_require__(217)
+var __vue_template__ = __webpack_require__(220)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -83252,13 +84046,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 214 */
+/* 217 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(215);
+var content = __webpack_require__(218);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -83278,7 +84072,7 @@ if(false) {
 }
 
 /***/ }),
-/* 215 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -83292,7 +84086,7 @@ exports.push([module.i, "\n.action-link[data-v-5d1d7d82] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 216 */
+/* 219 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -83656,7 +84450,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 217 */
+/* 220 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -84217,19 +85011,19 @@ if (false) {
 }
 
 /***/ }),
-/* 218 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(219)
+  __webpack_require__(222)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(221)
+var __vue_script__ = __webpack_require__(224)
 /* template */
-var __vue_template__ = __webpack_require__(222)
+var __vue_template__ = __webpack_require__(225)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -84268,13 +85062,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 219 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(220);
+var content = __webpack_require__(223);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -84294,7 +85088,7 @@ if(false) {
 }
 
 /***/ }),
-/* 220 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -84308,7 +85102,7 @@ exports.push([module.i, "\n.action-link[data-v-2ee9fe67] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84428,7 +85222,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -84537,19 +85331,19 @@ if (false) {
 }
 
 /***/ }),
-/* 223 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(224)
+  __webpack_require__(227)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(226)
+var __vue_script__ = __webpack_require__(229)
 /* template */
-var __vue_template__ = __webpack_require__(227)
+var __vue_template__ = __webpack_require__(230)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -84588,13 +85382,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(225);
+var content = __webpack_require__(228);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -84614,7 +85408,7 @@ if(false) {
 }
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -84628,7 +85422,7 @@ exports.push([module.i, "\n.action-link[data-v-89c53f18] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84950,7 +85744,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85328,15 +86122,15 @@ if (false) {
 }
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(229)
+var __vue_script__ = __webpack_require__(232)
 /* template */
-var __vue_template__ = __webpack_require__(230)
+var __vue_template__ = __webpack_require__(233)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85375,7 +86169,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 229 */
+/* 232 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85397,7 +86191,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 230 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86097,15 +86891,15 @@ if (false) {
 }
 
 /***/ }),
-/* 231 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(232)
+var __vue_script__ = __webpack_require__(235)
 /* template */
-var __vue_template__ = __webpack_require__(233)
+var __vue_template__ = __webpack_require__(236)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -86144,7 +86938,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 232 */
+/* 235 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -86173,7 +86967,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 233 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86216,7 +87010,7 @@ if (false) {
 }
 
 /***/ }),
-/* 234 */
+/* 237 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin

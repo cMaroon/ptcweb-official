@@ -20,7 +20,7 @@
 
     <!-- SEARCH FORM -->
     <div class="input-group input-group-sm">
-      <input class="form-control form-control-navbar" @keyup="searchit" v-model="search" type="search" placeholder="Search" aria-label="Search">
+      <input class="form-control form-control-navbar" v-model="search" type="search" placeholder="Search" aria-label="Search">
       <div class="input-group-append">
         <button class="btn btn-navbar" @click="searchit">
           <i class="fa fa-search"></i>
@@ -35,7 +35,7 @@
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
     <a href="#" class="brand-link">
-      <img src="./img/logo_ptc.png" alt="PTC Logo" class="brand-image img-circle elevation-3"
+      <img src="../img/logo_ptc.png" alt="PTC Logo" class="brand-image img-circle elevation-3"
            style="opacity: .8">
       <span class="brand-text font-weight-light">PTC - Official</span>
     </a>
@@ -45,7 +45,7 @@
       <!-- Sidebar user panel (optional) -->
       <div class="user-panel mt-3 pb-3 mb-3 d-flex">
         <div class="image">
-          <img src="./img/student.svg" class="img-circle elevation-2" alt="User Image">
+          <img src="../img/student.svg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
         <a href="#" class="d-block">
@@ -66,7 +66,7 @@
   </aside>
 
   <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+  <div class="content-wrapper"  >
     <!-- Content Header (Page header) -->
     <div class="content-header">
       <div class="container-fluid">

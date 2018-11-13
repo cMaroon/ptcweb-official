@@ -18,6 +18,7 @@
                     <th>Semester</th>
                     <th>Year Level</th>
                     <th>Course</th>
+                    <th>Section</th>
                     <th>Days</th>
                     <th>Time</th>
                     <th>Room</th>
@@ -31,8 +32,9 @@
                     <td>{{enrollassoc.assoccurrid.currsemester.title}}</td>
                     <td>{{enrollassoc.assoccurrid.curryearlevel.title}}</td>
                     <td>{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
+                    <td>{{enrollassoc.assoccurrid.currsection.title}}</td>
                     <td>{{enrollassoc.assoccurrid.sched_days}}</td>
-                    <td>{{enrollassoc.assoccurrid.sched_time}}</td>
+                    <td style="width:150px; ">{{enrollassoc.assoccurrid.sched_time}}</td>
                     <td>{{enrollassoc.assoccurrid.sched_room}}</td>
                     <td>{{enrollassoc.assoc_prof_id}}</td>
                     <td>{{enrollassoc.assoc_final_grade}}</td>
@@ -85,9 +87,9 @@
                     <select  type="text" class="form-control" v-model="form.assoc_curr_id">
                             <option value="">Please select course*</option>
 
-                        <option v-for="curr in curriculum.data" v-if="curr.currprograms.id===form.enr_program_id" :key="curr.id" v-bind:value="curr.id">
+                        <option v-for="curr in curriculumlist" v-if="curr.currprograms.id === form.enr_program_id" :key="curr.id" v-bind:value="curr.id">
                             
-                            {{curr.currprograms.program_code}} - {{curr.currcourses.course_code}} - {{curr.currcourses.descriptive_title}}
+                            {{curr.currprograms.program_code}} - Section {{curr.currsection.title}} - {{curr.currcourses.course_code}} - {{curr.currcourses.descriptive_title}}
                             </option>
                     </select>
                     </div>
@@ -119,10 +121,11 @@
             editmode: false,
             courses:{},
             yearlevel:{},
+            section:{},
             semester:{},
             enrollment : [],
             enrollmentassoc : {},
-            curriculum:{},
+            curriculumlist:{},
             totalrecord:'',
             form: new Form({
                 id : '',
@@ -202,7 +205,8 @@
             },
           loadEnrollment(){
             // if(this.$gate.isStudent()){
-                axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
+                axios.get("/api/curriculumlist").then(({data}) =>(this.curriculumlist = data))
+                axios.get("/api/section").then(({data}) =>(this.section = data))
                 axios.get("/api/courses").then(({data}) =>(this.courses = data))
                 axios.get("/api/enrollment").then(({data}) =>(this.enrollment = data))               
                 axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                

@@ -58,6 +58,19 @@ class EnrollmentController extends Controller
     }
 
 
+    public function EnrollAll()
+    {
+        if (\Gate::allows('isSuperAdmin')) {
+            
+            $enroll = Enrollment::with('enrollprograms','studinfo.studsection')->get();
+
+            // dd($studentlist);
+            return $enroll;
+        }
+
+    }
+
+
     /**
      * Update the specified resource in storage.
      *
@@ -88,13 +101,28 @@ class EnrollmentController extends Controller
      */
     public function destroy($id)
     {
-        // $this->authorize('isSuperAdmin');
-        // $curriculum = Curriculum::findOrFail($id);
+        $this->authorize('isSuperAdmin');
+        $enrollment = Enrollment::findOrFail($id);
 
-        // // delete the user
+        // delete the user
 
-        // $curriculum->delete();
+        $enrollment->delete();
 
+
+    }
+
+    public function searchID(){
+
+        if ($search = \Request::get('q')) {
+            $enrollment = Enrollment::with('enrollprograms','studinfo.studsection')->where(function($query) use ($search){
+                $query->where('enr_id_num','LIKE',"%$search%")
+                        ->orWhere('enr_form_id','LIKE',"%$search%");
+            })->paginate(20);
+        }else{
+            $enrollment = Enrollment::with('enrollprograms','studinfo.studsection')->latest()->paginate(10);            
+        }
+
+        return $enrollment;
 
     }
 }

@@ -57,7 +57,8 @@ let routes = [
   { path: '/enrollment', component: require('./components/Enrollment.vue') },
   { name: 'mycurr', path: '/mycurr/:id', component: require('./components/EnrollmentAssoc.vue') },
   { name: 'printenroll', path: '/printenroll/:id', component: require('./components/PrintEnroll.vue') },
-  { path: '/manage_enrollment', component: require('./components/EnrollmentAssocManage.vue') },
+  { path: '/manage_enrollment', component: require('./components/EnrollmentManage.vue') },
+  { name: 'manage_curr' ,path: '/manage_curr/:id', component: require('./components/EnrollmentAssocManage.vue') },
 
 
 ]
@@ -113,9 +114,9 @@ const app = new Vue({
       search: ''
       },
       methods:{
-          searchit: _.debounce(() => {
+          searchit(){
               Fire.$emit('searching');
-          },1000),
+          }
 
 
       }

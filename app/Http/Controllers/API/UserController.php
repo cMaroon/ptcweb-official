@@ -101,4 +101,19 @@ class UserController extends Controller
 
 
     }
+
+    public function search(){
+
+        if ($search = \Request::get('q')) {
+            $user = User::where(function($query) use ($search){
+                $query->where('id_num','LIKE',"%$search%")
+                        ->orWhere('name','LIKE',"%$search%");
+            })->paginate(10);
+        }else{
+            $user = User::latest()->paginate(10);            
+        }
+
+        return $user;
+
+    }
 }
