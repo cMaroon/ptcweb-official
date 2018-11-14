@@ -117,7 +117,7 @@ class CurriculumController extends Controller
 
             // return $enrollment_id;
 
-            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->where('curr_program_id','=', $program_id)->paginate(20);
+            $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->where('curr_program_id','=', $program_id)->paginate(10000);
         }else{
             $curriculum = Curriculum::with('currprograms','currcourses','currsemester','curryearlevel','currsection')->latest()->paginate(10);            
         }

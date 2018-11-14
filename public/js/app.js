@@ -30791,14 +30791,8 @@ Vue.component('example-component', __webpack_require__(234));
 var app = new Vue({
   el: '#app',
   router: router,
-  data: {
-    search: ''
-  },
-  methods: {
-    searchit: function searchit() {
-      Fire.$emit('searching');
-    }
-  }
+  data: {},
+  methods: {}
 });
 
 /***/ }),
@@ -76158,6 +76152,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -76170,23 +76165,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 id_num: '',
                 email: '',
                 password: '123456',
-                usertype: 'student'
+                usertype: 'student',
+                search: ''
             })
         };
     },
 
     methods: {
-        getResults: function getResults() {
+        searchthis: function searchthis() {
             var _this = this;
+
+            var query = this.form.search;
+            axios.get('api/findUser?q=' + query).then(function (data) {
+                _this.users = data.data;
+                _this.totalrecord = data.data.total;
+            }).catch(function () {
+                swal("Failed!", "No Record Found!.", "warning");
+            });
+        },
+        getResults: function getResults() {
+            var _this2 = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/user?page=' + page).then(function (response) {
-                _this.users = response.data;
+                _this2.users = response.data;
             });
         },
         updateUser: function updateUser() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$Progress.start();
             // console.log('Editing data');
@@ -76195,10 +76202,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // success
                 $('#addNew').modal('hide');
                 swal('Updated!', 'Information has been updated.', 'success');
-                _this2.$Progress.finish();
+                _this3.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this2.$Progress.fail();
+                _this3.$Progress.fail();
             });
         },
         editModal: function editModal(user) {
@@ -76213,7 +76220,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#addNew').modal('show');
         },
         deleteUser: function deleteUser(id) {
-            var _this3 = this;
+            var _this4 = this;
 
             swal({
                 title: 'Are you sure?',
@@ -76226,7 +76233,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/user/' + id).then(function () {
+                    _this4.form.delete('api/user/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -76236,19 +76243,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         loadUsers: function loadUsers() {
-            var _this4 = this;
+            var _this5 = this;
 
             if (this.$gate.isSuperAdmin()) {
                 axios.get("api/user").then(function (_ref) {
                     var data = _ref.data;
-                    return _this4.users = data;
+                    return _this5.users = data;
                 }).then(function ($data) {
-                    _this4.totalrecord = $data.total - 1;
+                    _this5.totalrecord = $data.total - 1;
                 });
             }
         },
         createUser: function createUser() {
-            var _this5 = this;
+            var _this6 = this;
 
             this.$Progress.start();
             this.form.post('api/user');
@@ -76259,27 +76266,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     type: 'success',
                     title: 'User Created in successfully'
                 });
-                _this5.$Progress.finish();
+                _this6.$Progress.finish();
             }).catch(function () {
-                _this5.$Progress.fail();
+                _this6.$Progress.fail();
             });
         }
     },
     created: function created() {
-        var _this6 = this;
+        var _this7 = this;
 
-        Fire.$on('searching', function () {
-            var query = _this6.$parent.search;
-            axios.get('api/findUser?q=' + query).then(function (data) {
-                _this6.users = data.data;
-                // this.totalrecord= data.data.total
-            }).catch(function () {
-                // swal("Failed!", "No Record Found!.", "warning");
-            });
-        });
         this.loadUsers();
         Fire.$on('AfterCreate', function () {
-            _this6.loadUsers();
+            _this7.loadUsers();
         });
         //  setInterval(() => this.loadUsers(), 15000);
     }
@@ -76304,7 +76302,33 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-tools" }, [
-                  _c("p", [_vm._v("Total Users : " + _vm._s(_vm.totalrecord))])
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.search,
+                        expression: "form.search"
+                      }
+                    ],
+                    staticClass: "form-control form-control-navbar",
+                    staticStyle: { width: "250px" },
+                    attrs: {
+                      type: "search",
+                      placeholder: "Search ID Number or Fullname",
+                      "aria-label": "Search"
+                    },
+                    domProps: { value: _vm.form.search },
+                    on: {
+                      keyup: _vm.searchthis,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "search", $event.target.value)
+                      }
+                    }
+                  })
                 ])
               ]),
               _vm._v(" "),
@@ -76393,6 +76417,8 @@ var render = function() {
                 "div",
                 { staticClass: "card-footer" },
                 [
+                  _c("p", [_vm._v("Total Users : " + _vm._s(_vm.totalrecord))]),
+                  _vm._v(" "),
                   _c(
                     "pagination",
                     {
@@ -76998,8 +77024,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -77019,7 +77043,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 suffixname: '',
                 program_id: '',
                 year_level: '',
-                section: ''
+                section: '',
+                search: ''
 
             })
         };
@@ -77027,17 +77052,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
     methods: {
-        getResults: function getResults() {
+        searchthis: function searchthis() {
             var _this = this;
+
+            var query = this.form.search;
+            axios.get('api/findStudent?q=' + query).then(function (data) {
+                _this.studentlist = data.data;
+                _this.totalrecord = data.data.total;
+            }).catch(function () {
+                swal("Failed!", "No Record Found!.", "warning");
+            });
+        },
+        getResults: function getResults() {
+            var _this2 = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/studentlist?page=' + page).then(function (response) {
-                _this.studentlist = response.data;
+                _this2.studentlist = response.data;
             });
         },
         updateStudent: function updateStudent() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$Progress.start();
             // console.log('Editing data');
@@ -77045,10 +77081,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // success
                 $('#addNew').modal('hide');
                 swal('Updated!', 'Information has been updated.', 'success');
-                _this2.$Progress.finish();
+                _this3.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this2.$Progress.fail();
+                _this3.$Progress.fail();
             });
         },
         editModal: function editModal(student) {
@@ -77063,7 +77099,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#addNew').modal('show');
         },
         deleteStudent: function deleteStudent(id) {
-            var _this3 = this;
+            var _this4 = this;
 
             swal({
                 title: 'Are you sure?',
@@ -77076,7 +77112,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/studentlist/' + id).then(function () {
+                    _this4.form.delete('api/studentlist/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -77086,66 +77122,37 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         loadStudents: function loadStudents() {
-            var _this4 = this;
+            var _this5 = this;
 
             if (this.$gate.isSuperAdmin()) {
                 axios.get("api/program").then(function (_ref) {
                     var data = _ref.data;
-                    return _this4.programs = data;
+                    return _this5.programs = data;
                 });
                 axios.get("api/yearlevel").then(function (_ref2) {
                     var data = _ref2.data;
-                    return _this4.yearlevel = data;
+                    return _this5.yearlevel = data;
                 });
                 axios.get("api/section").then(function (_ref3) {
                     var data = _ref3.data;
-                    return _this4.section = data;
+                    return _this5.section = data;
                 });
                 axios.get("api/studentlist").then(function (_ref4) {
                     var data = _ref4.data;
-                    return _this4.studentlist = data;
+                    return _this5.studentlist = data;
                 }).then(function ($data) {
-                    _this4.totalrecord = $data.total;
+                    _this5.totalrecord = $data.total;
                 });
             }
         }
-
-        // createUser(){
-        //       this.$Progress.start();
-        //       // this.form.post('api/user')
-        //       // this.form.post('api/student')
-        //       .then(()=>{
-        //           Fire.$emit('AfterCreate');
-        //           $('#addNew').modal('hide')
-        //           toast({
-        //               type: 'success',
-        //               title: 'User Created in successfully'
-        //               })
-        //           this.$Progress.finish();
-        //       })
-        //       .catch(()=>{
-        //         this.$Progress.fail();
-        //       })
-        //   }
-
     },
     created: function created() {
-        var _this5 = this;
+        var _this6 = this;
 
-        Fire.$on('searching', function () {
-            var query = _this5.$parent.search;
-            axios.get('api/findStudent?q=' + query).then(function (data) {
-                _this5.studentlist = data.data;
-                _this5.totalrecord = data.data.total;
-            }).catch(function () {
-                // swal("Failed!", "No Record Found!.", "warning");
-            });
-        });
         this.loadStudents();
         Fire.$on('AfterCreate', function () {
-            _this5.loadStudents();
+            _this6.loadStudents();
         });
-        //  setInterval(() => this.loadUsers(), 15000);
     }
 });
 
@@ -77162,14 +77169,48 @@ var render = function() {
       ? _c("div", { staticClass: "row " }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(0),
+              _c("div", { staticClass: "card-header" }, [
+                _c("h3", { staticClass: "card-title" }, [
+                  _vm._v("Student List Table")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-tools" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.search,
+                        expression: "form.search"
+                      }
+                    ],
+                    staticClass: "form-control form-control-navbar",
+                    staticStyle: { width: "250px" },
+                    attrs: {
+                      type: "search",
+                      placeholder: "Search Form ID or ID Number",
+                      "aria-label": "Search"
+                    },
+                    domProps: { value: _vm.form.search },
+                    on: {
+                      keyup: _vm.searchthis,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "search", $event.target.value)
+                      }
+                    }
+                  })
+                ])
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body table-responsive p-0" }, [
                 _c("table", { staticClass: "table table-hover" }, [
                   _c(
                     "tbody",
                     [
-                      _vm._m(1),
+                      _vm._m(0),
                       _vm._v(" "),
                       _vm._l(_vm.studentlist.data, function(student) {
                         return _c("tr", { key: student.id }, [
@@ -77340,7 +77381,7 @@ var render = function() {
                   [_vm._v("Update Student's Info")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -77788,16 +77829,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Student List Table")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -78669,6 +78700,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -78690,17 +78723,28 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
-        getResults: function getResults() {
+        searchthis: function searchthis() {
             var _this = this;
+
+            var query = this.form.search;
+            axios.get('api/findCourse?q=' + query).then(function (data) {
+                _this.courses = data.data;
+                _this.totalrecord = data.data.total;
+            }).catch(function () {
+                swal("Failed!", "No Record Found!.", "warning");
+            });
+        },
+        getResults: function getResults() {
+            var _this2 = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/courses?page=' + page).then(function (response) {
-                _this.courses = response.data;
+                _this2.courses = response.data;
             });
         },
         updateCourse: function updateCourse() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$Progress.start();
             // console.log('Editing data');
@@ -78708,10 +78752,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // success
                 $('#addNew').modal('hide');
                 swal('Updated!', 'Information has been updated.', 'success');
-                _this2.$Progress.finish();
+                _this3.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this2.$Progress.fail();
+                _this3.$Progress.fail();
             });
         },
         editModal: function editModal(course) {
@@ -78726,7 +78770,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#addNew').modal('show');
         },
         deleteCourse: function deleteCourse(id) {
-            var _this3 = this;
+            var _this4 = this;
 
             swal({
                 title: 'Are you sure?',
@@ -78739,7 +78783,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/courses/' + id).then(function () {
+                    _this4.form.delete('api/courses/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -78749,19 +78793,19 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         loadCourses: function loadCourses() {
-            var _this4 = this;
+            var _this5 = this;
 
             if (this.$gate.isSuperAdmin()) {
                 axios.get("api/courses").then(function (_ref) {
                     var data = _ref.data;
-                    return _this4.courses = data;
+                    return _this5.courses = data;
                 }).then(function ($data) {
-                    _this4.totalrecord = $data.total;
+                    _this5.totalrecord = $data.total;
                 });
             }
         },
         createCourse: function createCourse() {
-            var _this5 = this;
+            var _this6 = this;
 
             this.$Progress.start();
             this.form.post('api/courses').then(function () {
@@ -78771,27 +78815,27 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     type: 'success',
                     title: 'Course Created in successfully'
                 });
-                _this5.$Progress.finish();
+                _this6.$Progress.finish();
             }).catch(function () {
-                _this5.$Progress.fail();
+                _this6.$Progress.fail();
             });
         }
     },
     created: function created() {
-        var _this6 = this;
+        var _this7 = this;
 
         Fire.$on('searching', function () {
-            var query = _this6.$parent.search;
+            var query = _this7.$parent.search;
             axios.get('api/findCourse?q=' + query).then(function (data) {
-                _this6.courses = data.data;
-                _this6.totalrecord = data.data.total;
+                _this7.courses = data.data;
+                _this7.totalrecord = data.data.total;
             }).catch(function () {
                 // swal("Failed!", "No Record Found!.", "warning");
             });
         });
         this.loadCourses();
         Fire.$on('AfterCreate', function () {
-            _this6.loadCourses();
+            _this7.loadCourses();
         });
         //  setInterval(() => this.loadUsers(), 15000);
     }
@@ -78816,6 +78860,34 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-tools" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.search,
+                        expression: "form.search"
+                      }
+                    ],
+                    staticClass: "form-control float-left",
+                    staticStyle: { width: "300px" },
+                    attrs: {
+                      type: "search",
+                      placeholder: "Search Course Code or Descriptive Title",
+                      "aria-label": "Search"
+                    },
+                    domProps: { value: _vm.form.search },
+                    on: {
+                      keyup: _vm.searchthis,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "search", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v("\n                 \n               "),
                   _c(
                     "button",
                     {
@@ -79564,6 +79636,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -79585,24 +79659,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 curr_section_id: '',
                 sched_days: '',
                 sched_time: '',
-                sched_room: ''
+                sched_room: '',
+                search: ''
 
             })
         };
     },
 
     methods: {
-        getResults: function getResults() {
+        searchthis: function searchthis() {
             var _this = this;
+
+            var query = this.form.search;
+            axios.get('api/findCurr?q=' + query).then(function (data) {
+                _this.curriculum = data.data;
+                _this.totalrecord = data.data.total;
+            }).catch(function () {
+                // swal("Failed!", "No Record Found!.", "warning");
+            });
+        },
+        getResults: function getResults() {
+            var _this2 = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/curriculum?page=' + page).then(function (response) {
-                _this.curriculum = response.data;
+                _this2.curriculum = response.data;
             });
         },
         updateCurr: function updateCurr() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$Progress.start();
             // console.log('Editing data');
@@ -79610,10 +79696,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // success
                 $('#addNew').modal('hide');
                 swal('Updated!', 'Information has been updated.', 'success');
-                _this2.$Progress.finish();
+                _this3.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this2.$Progress.fail();
+                _this3.$Progress.fail();
             });
         },
         editModal: function editModal(curr) {
@@ -79628,7 +79714,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#addNew').modal('show');
         },
         deleteCurr: function deleteCurr(id) {
-            var _this3 = this;
+            var _this4 = this;
 
             swal({
                 title: 'Are you sure?',
@@ -79641,7 +79727,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/curriculum/' + id).then(function () {
+                    _this4.form.delete('api/curriculum/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -79651,39 +79737,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         loadCurriculum: function loadCurriculum() {
-            var _this4 = this;
+            var _this5 = this;
 
             if (this.$gate.isSuperAdmin()) {
                 axios.get("api/courselist").then(function (_ref) {
                     var data = _ref.data;
-                    return _this4.courses = data;
+                    return _this5.courses = data;
                 });
                 axios.get("api/section").then(function (_ref2) {
                     var data = _ref2.data;
-                    return _this4.section = data;
+                    return _this5.section = data;
                 });
                 axios.get("api/program").then(function (_ref3) {
                     var data = _ref3.data;
-                    return _this4.programs = data;
+                    return _this5.programs = data;
                 });
                 axios.get("api/yearlevel").then(function (_ref4) {
                     var data = _ref4.data;
-                    return _this4.yearlevel = data;
+                    return _this5.yearlevel = data;
                 });
                 axios.get("api/semester").then(function (_ref5) {
                     var data = _ref5.data;
-                    return _this4.semester = data;
+                    return _this5.semester = data;
                 });
                 axios.get("api/curriculum").then(function (_ref6) {
                     var data = _ref6.data;
-                    return _this4.curriculum = data;
+                    return _this5.curriculum = data;
                 }).then(function ($data) {
-                    _this4.totalrecord = $data.total;
+                    _this5.totalrecord = $data.total;
                 });
             }
         },
         createCurr: function createCurr() {
-            var _this5 = this;
+            var _this6 = this;
 
             this.$Progress.start();
             this.form.post('api/curriculum').then(function () {
@@ -79693,27 +79779,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     type: 'success',
                     title: 'Curriculum Created in successfully'
                 });
-                _this5.$Progress.finish();
+                _this6.$Progress.finish();
             }).catch(function () {
-                _this5.$Progress.fail();
+                _this6.$Progress.fail();
             });
         }
     },
     created: function created() {
-        var _this6 = this;
+        var _this7 = this;
 
-        Fire.$on('searching', function () {
-            var query = _this6.$parent.search;
-            axios.get('api/findCurr?q=' + query).then(function (data) {
-                _this6.curriculum = data.data;
-                _this6.totalrecord = data.data.total;
-            }).catch(function () {
-                // swal("Failed!", "No Record Found!.", "warning");
-            });
-        });
         this.loadCurriculum();
         Fire.$on('AfterCreate', function () {
-            _this6.loadCurriculum();
+            _this7.loadCurriculum();
         });
         //  setInterval(() => this.loadUsers(), 15000);
     }
@@ -79738,6 +79815,34 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("div", { staticClass: "card-tools" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.search,
+                        expression: "form.search"
+                      }
+                    ],
+                    staticClass: "form-control float-left",
+                    staticStyle: { width: "250px" },
+                    attrs: {
+                      type: "search",
+                      placeholder: "Search Form ID or ID Number",
+                      "aria-label": "Search"
+                    },
+                    domProps: { value: _vm.form.search },
+                    on: {
+                      keyup: _vm.searchthis,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "search", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v("\n                 \n               "),
                   _c(
                     "button",
                     {
@@ -81215,6 +81320,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -81234,7 +81372,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 assoc_curr_id: '',
                 assoc_prof_id: '',
                 assoc_final_grade: '',
-                enr_program_id: ''
+                enr_program_id: '',
+                enr_section_id: '',
+                enr_yearlevel_id: '',
+                enr_semester: ''
 
             })
         };
@@ -81246,7 +81387,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
-            axios.get('api/enrollmentassoc?page=' + page).then(function (response) {
+            axios.get('/api/enrollmentassoc?page=' + page).then(function (response) {
                 _this.enrollmentassoc = response.data;
             });
         },
@@ -81444,7 +81585,7 @@ var render = function() {
                             _vm._v(_vm._s(enrollassoc.assoccurrid.sched_days))
                           ]),
                           _vm._v(" "),
-                          _c("td", { staticStyle: { width: "150px" } }, [
+                          _c("td", { staticStyle: { width: "180px" } }, [
                             _vm._v(_vm._s(enrollassoc.assoccurrid.sched_time))
                           ]),
                           _vm._v(" "),
@@ -81636,6 +81777,177 @@ var render = function() {
                             {
                               name: "model",
                               rawName: "v-model",
+                              value: _vm.form.enr_semester,
+                              expression: "form.enr_semester"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "enr_semester",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "", disabled: "" } }, [
+                            _vm._v("Please select semester first*")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.semester.data, function(sem) {
+                            return _c(
+                              "option",
+                              { key: sem.id, domProps: { value: sem.id } },
+                              [
+                                _vm._v(
+                                  "\n                        \n                        " +
+                                    _vm._s(sem.title) +
+                                    "\n                        \n                        "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.enr_yearlevel_id,
+                              expression: "form.enr_yearlevel_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "enr_yearlevel_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "", disabled: "" } }, [
+                            _vm._v("Then please select year level*")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.yearlevel.data, function(yl) {
+                            return _c(
+                              "option",
+                              { key: yl.id, domProps: { value: yl.id } },
+                              [
+                                _vm._v(
+                                  "\n                        \n                        " +
+                                    _vm._s(yl.title) +
+                                    "\n                        \n                        "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.form.enr_section_id,
+                              expression: "form.enr_section_id"
+                            }
+                          ],
+                          staticClass: "form-control",
+                          attrs: { type: "text" },
+                          on: {
+                            change: function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.$set(
+                                _vm.form,
+                                "enr_section_id",
+                                $event.target.multiple
+                                  ? $$selectedVal
+                                  : $$selectedVal[0]
+                              )
+                            }
+                          }
+                        },
+                        [
+                          _c("option", { attrs: { value: "", disabled: "" } }, [
+                            _vm._v("Then please select section*")
+                          ]),
+                          _vm._v(" "),
+                          _vm._l(_vm.section.data, function(sec) {
+                            return _c(
+                              "option",
+                              { key: sec.id, domProps: { value: sec.id } },
+                              [
+                                _vm._v(
+                                  "\n                        \n                        " +
+                                    _vm._s(sec.title) +
+                                    "\n                        \n                        "
+                                )
+                              ]
+                            )
+                          })
+                        ],
+                        2
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c("div", { staticClass: "form-group" }, [
+                      _c(
+                        "select",
+                        {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
                               value: _vm.form.assoc_curr_id,
                               expression: "form.assoc_curr_id"
                             }
@@ -81663,13 +81975,17 @@ var render = function() {
                           }
                         },
                         [
-                          _c("option", { attrs: { value: "" } }, [
+                          _c("option", { attrs: { value: "", disabled: "" } }, [
                             _vm._v("Please select course*")
                           ]),
                           _vm._v(" "),
                           _vm._l(_vm.curriculumlist, function(curr) {
-                            return curr.currprograms.id ===
-                              _vm.form.enr_program_id
+                            return curr.curr_program_id ===
+                              _vm.form.enr_program_id &&
+                              curr.curr_section_id ===
+                                _vm.form.enr_section_id &&
+                              curr.curr_year === _vm.form.enr_yearlevel_id &&
+                              curr.semester === _vm.form.enr_semester
                               ? _c(
                                   "option",
                                   {
@@ -81678,11 +81994,7 @@ var render = function() {
                                   },
                                   [
                                     _vm._v(
-                                      "\n                        \n                        " +
-                                        _vm._s(curr.currprograms.program_code) +
-                                        " - Section " +
-                                        _vm._s(curr.currsection.title) +
-                                        " - " +
+                                      "\n                        \n                       " +
                                         _vm._s(curr.currcourses.course_code) +
                                         " - " +
                                         _vm._s(
@@ -82078,6 +82390,102 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -82148,6 +82556,14 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }
 
             return sum;
+        },
+        totallab: function totallab() {
+            var sum = 0;
+            for (var i = 0; i < this.enrollmentassoc.total; i++) {
+                sum += parseInt(this.enrollmentassoc.data[i].assoccurrid.currcourses.lab_hr);
+            }
+
+            return sum;
         }
     }
 
@@ -82163,354 +82579,428 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _vm.$gate.isSuperAdmin()
-      ? _c("div", { staticClass: "row mt-3" }, [
-          _c("div", { staticClass: "container" }, [
-            _c("div", { staticClass: "row" }, [
-              _c("div", { staticClass: "col-12" }, [
-                _c(
-                  "div",
-                  {
-                    staticClass: "invoice p-3 mb-3",
-                    staticStyle: {
-                      "background-image": "url('/img/logo_ptcbw.png')",
-                      "background-position": "relative",
-                      "background-size": "auto"
+      ? _c("div", { staticClass: "row mt-2" }, [
+          _c("div", { staticClass: "row no-print" }, [
+            _c("div", { staticClass: "col-2" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger",
+                  attrs: { href: "", target: "_blank" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.printme($event)
                     }
-                  },
-                  [
-                    _c("div", { staticClass: "row" }, [
-                      _vm._m(0),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-md-10" }, [
-                        _c("small", { staticClass: "float-right" }, [
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-print" }), _vm._v(" Print")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "invoice p-3 mb-3",
+              staticStyle: {
+                "background-image": "url('/img/logo_ptcbw.png')",
+                "background-position": "relative",
+                "background-size": "auto"
+              }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-10" }, [
+                  _c("small", { staticClass: "float-right" }, [
+                    _vm._v(
+                      "Registration Date: " +
+                        _vm._s(_vm._f("setDate")(Date.now()))
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("h2", [_vm._v("Pateros Technological College")]),
+                  _vm._v(" "),
+                  _c("h4", [_vm._v("Certificate of Registration")])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _vm.enrollmentassoc.data
+                ? [
+                    _c("div", { staticClass: "row invoice-info" }, [
+                      _c("div", { staticClass: "col-sm-8 invoice-col" }, [
+                        _c("strong", [_vm._v("Student Information")]),
+                        _vm._v(" "),
+                        _c("address", [
+                          _c("strong", [_vm._v("Student ID Number: ")]),
                           _vm._v(
-                            "Registration Date: " +
-                              _vm._s(_vm._f("setDate")(Date.now()))
-                          )
-                        ]),
-                        _vm._v(" "),
-                        _c("br"),
-                        _vm._v(" "),
-                        _c("h2", [_vm._v("Pateros Technological College")]),
-                        _vm._v(" "),
-                        _c("h4", [_vm._v("Certificate of Registration")])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("br"),
-                    _vm._v(" "),
-                    _vm.enrollmentassoc.data
-                      ? [
-                          _c("div", { staticClass: "row invoice-info" }, [
-                            _c("div", { staticClass: "col-sm-8 invoice-col" }, [
-                              _c("strong", [_vm._v("Student Information")]),
-                              _vm._v(" "),
-                              _c("address", [
-                                _c("strong", [_vm._v("Student ID Number: ")]),
-                                _vm._v(
-                                  "\n                                                 " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .enr_id_num
-                                    )
-                                ),
-                                _c("br"),
-                                _vm._v(" "),
-                                _c("strong", [_vm._v("Name: ")]),
-                                _vm._v(
-                                  "\n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.lastname
-                                    ) +
-                                    " \n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.suffixname
-                                    ) +
-                                    ", \n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.firstname
-                                    ) +
-                                    " \n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.middlename
-                                    )
-                                ),
-                                _c("br"),
-                                _vm._v(" "),
-                                _c("strong", [_vm._v("Address: ")]),
-                                _vm._v(
-                                  "\n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.ca_st_num
-                                    ) +
-                                    " \n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.ca_st_name
-                                    ) +
-                                    " \n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.ca_subd
-                                    ) +
-                                    " \n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.ca_brgy
-                                    ) +
-                                    " \n                                                " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .studinfo.ca_city
-                                    )
-                                ),
-                                _c("br")
-                              ])
-                            ]),
-                            _vm._v(" "),
-                            _c("div", { staticClass: "col-sm-4 invoice-col" }, [
-                              _c("b", [
-                                _vm._v(
-                                  "Form ID# " +
-                                    _vm._s(
-                                      _vm.enrollmentassoc.data[0].assocformid
-                                        .enr_form_id
-                                    )
-                                )
-                              ]),
-                              _c("br"),
-                              _vm._v(" "),
-                              _c("b", [_vm._v("Program Code: ")]),
-                              _vm._v(
-                                " " +
-                                  _vm._s(
-                                    _vm.enrollmentassoc.data[0].assoccurrid
-                                      .currprograms.program_code
-                                  )
-                              ),
-                              _c("br"),
-                              _vm._v(" "),
-                              _c("b", [_vm._v("Year Level")]),
-                              _vm._v(
-                                " " +
-                                  _vm._s(
-                                    _vm.enrollmentassoc.data[0].assoccurrid
-                                      .curryearlevel.title
-                                  )
-                              ),
-                              _c("br")
-                            ])
-                          ])
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _c("div", { staticClass: "col-12 table-responsive" }, [
-                        _c("table", { staticClass: "table table-striped" }, [
-                          _vm._m(1),
+                            "\n                                                 " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid
+                                  .enr_id_num
+                              )
+                          ),
+                          _c("br"),
                           _vm._v(" "),
-                          _c(
-                            "tbody",
-                            _vm._l(_vm.enrollmentassoc.data, function(
-                              enrollassoc
-                            ) {
-                              return _c("tr", { key: enrollassoc.id }, [
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      enrollassoc.assoccurrid.currcourses
-                                        .course_code
-                                    )
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c("td", [
-                                  _vm._v(
-                                    _vm._s(
-                                      enrollassoc.assoccurrid.currcourses
-                                        .descriptive_title
-                                    )
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticStyle: {
-                                      width: "10px",
-                                      "text-align": "center"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        enrollassoc.assoccurrid.currcourses
-                                          .course_unit
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticStyle: {
-                                      width: "10px",
-                                      "text-align": "center"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        enrollassoc.assoccurrid.currcourses
-                                          .lec_hr
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticStyle: {
-                                      width: "10px",
-                                      "text-align": "center"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        enrollassoc.assoccurrid.currcourses
-                                          .lab_hr
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticStyle: {
-                                      width: "10px",
-                                      "text-align": "center"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(
-                                        enrollassoc.assoccurrid.currsection
-                                          .title
-                                      )
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c("td", { staticStyle: { width: "10px" } }, [
-                                  _vm._v(
-                                    _vm._s(enrollassoc.assoccurrid.sched_days)
-                                  )
-                                ]),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticStyle: {
-                                      width: "150px",
-                                      "text-align": "center"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(enrollassoc.assoccurrid.sched_time)
-                                    )
-                                  ]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "td",
-                                  {
-                                    staticStyle: {
-                                      width: "10px",
-                                      "text-align": "center"
-                                    }
-                                  },
-                                  [
-                                    _vm._v(
-                                      _vm._s(enrollassoc.assoccurrid.sched_room)
-                                    )
-                                  ]
-                                )
-                              ])
-                            })
-                          )
+                          _c("strong", [_vm._v("Name: ")]),
+                          _vm._v(
+                            "\n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .lastname
+                              ) +
+                              " \n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .suffixname
+                              ) +
+                              ", \n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .firstname
+                              ) +
+                              " \n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .middlename
+                              )
+                          ),
+                          _c("br"),
+                          _vm._v(" "),
+                          _c("strong", [_vm._v("Address: ")]),
+                          _vm._v(
+                            "\n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .ca_st_num
+                              ) +
+                              " \n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .ca_st_name
+                              ) +
+                              " \n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .ca_subd
+                              ) +
+                              " \n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .ca_brgy
+                              ) +
+                              " \n                                                " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                  .ca_city
+                              )
+                          ),
+                          _c("br")
                         ])
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row" }, [
-                      _vm._m(2),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-4" }, [
-                        _c(
-                          "p",
-                          {
-                            staticClass: "lead",
-                            staticStyle: { "text-align": "center" }
-                          },
-                          [
-                            _vm._v(
-                              "Total Units: " + _vm._s(_vm.totalunits) + " "
-                            )
-                          ]
-                        ),
-                        _vm._v(" "),
-                        _vm._m(3)
                       ]),
                       _vm._v(" "),
-                      _vm._m(4),
-                      _vm._v(" "),
-                      _c("small", [
+                      _c("div", { staticClass: "col-sm-4 invoice-col" }, [
+                        _c("b", [
+                          _vm._v(
+                            "Form ID# " +
+                              _vm._s(
+                                _vm.enrollmentassoc.data[0].assocformid
+                                  .enr_form_id
+                              )
+                          )
+                        ]),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("b", [_vm._v("Program Code: ")]),
                         _vm._v(
-                          "College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389"
-                        )
-                      ])
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "row no-print" }, [
-                      _c("div", { staticClass: "col-2" }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-8" }),
-                      _vm._v(" "),
-                      _c("div", { staticClass: "col-2" }, [
-                        _c(
-                          "a",
-                          {
-                            staticClass: "btn btn-danger",
-                            attrs: { href: "", target: "_blank" },
-                            on: {
-                              click: function($event) {
-                                $event.preventDefault()
-                                return _vm.printme($event)
-                              }
-                            }
-                          },
-                          [
-                            _c("i", { staticClass: "fa fa-print" }),
-                            _vm._v(" Print")
-                          ]
-                        )
+                          " " +
+                            _vm._s(
+                              _vm.enrollmentassoc.data[0].assoccurrid
+                                .currprograms.program_code
+                            )
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("b", [_vm._v("Year Level: ")]),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm.enrollmentassoc.data[0].assocformid.studinfo
+                                .studyearlevel.title
+                            )
+                        ),
+                        _c("br"),
+                        _vm._v(" "),
+                        _c("b", [_vm._v("Semester: ")]),
+                        _vm._v(
+                          " " +
+                            _vm._s(
+                              _vm.enrollmentassoc.data[0].assoccurrid
+                                .currsemester.title
+                            )
+                        ),
+                        _c("br")
                       ])
                     ])
-                  ],
-                  2
-                )
-              ])
-            ])
+                  ]
+                : _vm._e(),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-12 table-responsive" }, [
+                  _c("table", { staticClass: "table table-striped" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.enrollmentassoc.data, function(enrollassoc) {
+                        return _c("tr", { key: enrollassoc.id }, [
+                          _c(
+                            "td",
+                            {
+                              staticStyle: { width: "130px", padding: "15px" }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  enrollassoc.assoccurrid.currcourses
+                                    .course_code
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c("td", { staticStyle: { padding: "15px" } }, [
+                            _vm._v(
+                              _vm._s(
+                                enrollassoc.assoccurrid.currcourses
+                                  .descriptive_title
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                width: "10px",
+                                "text-align": "center",
+                                padding: "15px"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  enrollassoc.assoccurrid.currcourses
+                                    .course_unit
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                width: "10px",
+                                "text-align": "center",
+                                padding: "15px"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  enrollassoc.assoccurrid.currcourses.lec_hr
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                width: "10px",
+                                "text-align": "center",
+                                padding: "15px"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  enrollassoc.assoccurrid.currcourses.lab_hr
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                width: "10px",
+                                "text-align": "center",
+                                padding: "15px"
+                              }
+                            },
+                            [
+                              _vm._v(
+                                _vm._s(
+                                  enrollassoc.assoccurrid.currsection.title
+                                )
+                              )
+                            ]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                width: "10px",
+                                "text-align": "center",
+                                padding: "15px"
+                              }
+                            },
+                            [_vm._v(_vm._s(enrollassoc.assoccurrid.sched_days))]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                width: "160px",
+                                "text-align": "center",
+                                padding: "15px"
+                              }
+                            },
+                            [_vm._v(_vm._s(enrollassoc.assoccurrid.sched_time))]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            {
+                              staticStyle: {
+                                width: "10px",
+                                "text-align": "center",
+                                padding: "15px"
+                              }
+                            },
+                            [_vm._v(_vm._s(enrollassoc.assoccurrid.sched_room))]
+                          )
+                        ])
+                      })
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _vm._m(2),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-4" }, [
+                  _c(
+                    "p",
+                    {
+                      staticClass: "lead",
+                      staticStyle: { "text-align": "left" }
+                    },
+                    [_vm._v("Total Units: " + _vm._s(_vm.totalunits) + " ")]
+                  ),
+                  _vm._v(" "),
+                  _vm._m(3)
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-4" }, [
+                  _c(
+                    "p",
+                    {
+                      staticClass: "lead",
+                      staticStyle: { "text-align": "left" }
+                    },
+                    [_vm._v("Total Lab: " + _vm._s(_vm.totallab) + " ")]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "table-responsive" }, [
+                    _c("table", { staticClass: "table" }, [
+                      _c("tbody", [
+                        _c(
+                          "tr",
+                          [
+                            _c("th", { staticStyle: { width: "50%" } }, [
+                              _vm._v(
+                                "\n                                                    Advising Officer: "
+                              )
+                            ]),
+                            _vm._v(" "),
+                            _vm.enrollmentassoc.data
+                              ? [
+                                  _c("td", [
+                                    _c("small", [
+                                      _vm._v(
+                                        _vm._s(
+                                          _vm.enrollmentassoc.data[0]
+                                            .assocformid.studinfo.studprograms
+                                            .advisingid.advising_officer_name
+                                        )
+                                      )
+                                    ])
+                                  ])
+                                ]
+                              : _vm._e()
+                          ],
+                          2
+                        ),
+                        _vm._v(" "),
+                        _vm._m(4),
+                        _vm._v(" "),
+                        _vm._m(5),
+                        _vm._v(" "),
+                        _vm._m(6),
+                        _vm._v(" "),
+                        _vm._m(7)
+                      ])
+                    ])
+                  ])
+                ]),
+                _vm._v(" "),
+                _vm._m(8),
+                _vm._v(" "),
+                _vm._m(9),
+                _vm._v(" "),
+                _vm._m(10)
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "col-3" },
+                [
+                  _c("br"),
+                  _vm._v(
+                    "\n                                            ______________________________"
+                  ),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("center", [
+                    _c("p", { staticClass: "lead" }, [
+                      _vm._v("Student's Signature")
+                    ])
+                  ])
+                ],
+                1
+              )
+            ],
+            2
+          ),
+          _vm._v(" "),
+          _c("small", [
+            _vm._v(
+              "College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389"
+            )
           ])
         ])
       : _vm._e()
@@ -82535,23 +83025,31 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("thead", [
       _c("tr", [
-        _c("th", [_vm._v("Course Code")]),
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Course Code")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Description")]),
+        _c("th", { staticStyle: { padding: "15px", "text-align": "center" } }, [
+          _vm._v("Description")
+        ]),
         _vm._v(" "),
-        _c("th", [_vm._v("Unit")]),
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Unit")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Lec")]),
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Lec")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Lab")]),
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Lab")]),
         _vm._v(" "),
-        _c("th", [_vm._v("Section")]),
+        _c("th", { staticStyle: { padding: "15px", "text-align": "center" } }, [
+          _vm._v("Section")
+        ]),
         _vm._v(" "),
-        _c("th", [_vm._v("Day")]),
+        _c("th", { staticStyle: { padding: "15px", "text-align": "center" } }, [
+          _vm._v("Day")
+        ]),
         _vm._v(" "),
-        _c("th", { staticStyle: { "text-align": "center" } }, [_vm._v("Time")]),
+        _c("th", { staticStyle: { "text-align": "center", padding: "15px" } }, [
+          _vm._v("Time")
+        ]),
         _vm._v(" "),
-        _c("th", [_vm._v("Room")])
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Room")])
       ])
     ])
   },
@@ -82562,42 +83060,36 @@ var staticRenderFns = [
     return _c("div", { staticClass: "col-4" }, [
       _c("p", { staticClass: "lead" }, [_vm._v("Semestral Fees:")]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-12" }, [
-        _c("div", { staticClass: "table-responsive" }, [
-          _c("table", { staticClass: "table" }, [
-            _c("tbody", [
-              _c("tr", [
-                _c("th", { staticStyle: { width: "70%" } }, [
-                  _vm._v("Tuition Fee: ")
-                ]),
-                _vm._v(" "),
-                _c("td")
+      _c("div", { staticClass: "table-responsive" }, [
+        _c("table", { staticClass: "table" }, [
+          _c("tbody", [
+            _c("tr", [
+              _c("th", { staticStyle: { width: "50%" } }, [
+                _vm._v("Tuition Fee: ")
               ]),
               _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Registration Fee: ")]),
-                _vm._v(" "),
-                _c("td")
-              ]),
+              _c("td")
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("th", [_vm._v("Registration Fee: ")]),
               _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Library Fee: ")]),
-                _vm._v(" "),
-                _c("td")
-              ]),
+              _c("td")
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("th", [_vm._v("Library Fee: ")]),
               _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Medical Fee: ")]),
-                _vm._v(" "),
-                _c("td")
-              ]),
+              _c("td")
+            ]),
+            _vm._v(" "),
+            _c("tr", [
+              _c("th", [_vm._v("Medical Fee: ")]),
               _vm._v(" "),
-              _c("tr", [
-                _c("th", [_vm._v("Cultural: ")]),
-                _vm._v(" "),
-                _c("td")
-              ])
-            ])
+              _c("td")
+            ]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Cultural: ")]), _vm._v(" "), _c("td")])
           ])
         ])
       ])
@@ -82639,35 +83131,117 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Assessed By:  ")]),
+      _vm._v(" "),
+      _c("td")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("College Registrar: ")]),
+      _vm._v(" "),
+      _c("td")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [
+      _c("th", [_vm._v("Total Amount: ")]),
+      _vm._v(" "),
+      _c("td")
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("tr", [_c("th", [_vm._v(" ")]), _vm._v(" "), _c("td")])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col-4" }, [
-      _c("p", { staticClass: "lead" }, [_vm._v(" ")]),
+      _c("p", { staticClass: "lead" }, [_vm._v("Prelim:")]),
       _vm._v(" "),
       _c("div", { staticClass: "table-responsive" }, [
         _c("table", { staticClass: "table" }, [
           _c("tbody", [
             _c("tr", [
-              _c("th", { staticStyle: { width: "50%" } }, [
+              _c("th", { staticStyle: { width: "55%" } }, [
                 _vm._v(
-                  "\n                                                    Advising Officer: "
+                  "\n                                                   OR #:\n                                                   "
                 )
-              ]),
-              _vm._v(" "),
-              _c("td")
+              ])
             ]),
             _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Amount Paid: ")])]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Date: ")])]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Issued By: ")])])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-4" }, [
+      _c("p", { staticClass: "lead" }, [_vm._v("Midterm:")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive" }, [
+        _c("table", { staticClass: "table" }, [
+          _c("tbody", [
             _c("tr", [
-              _c("th", [_vm._v("Assessed By:  ")]),
-              _vm._v(" "),
-              _c("td")
+              _c("th", { staticStyle: { width: "55%" } }, [
+                _vm._v(
+                  "\n                                                   OR #:\n                                                   "
+                )
+              ])
             ]),
             _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Amount Paid: ")])]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Date: ")])]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Issued By: ")])])
+          ])
+        ])
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-4" }, [
+      _c("p", { staticClass: "lead" }, [_vm._v("Finals:")]),
+      _vm._v(" "),
+      _c("div", { staticClass: "table-responsive" }, [
+        _c("table", { staticClass: "table" }, [
+          _c("tbody", [
             _c("tr", [
-              _c("th", [_vm._v("College Registrar: ")]),
-              _vm._v(" "),
-              _c("td")
+              _c("th", { staticStyle: { width: "55%" } }, [
+                _vm._v(
+                  "\n                                                   OR #:\n                                                   "
+                )
+              ])
             ]),
             _vm._v(" "),
-            _c("tr", [_c("th", [_vm._v("Total: ")]), _vm._v(" "), _c("td")])
+            _c("tr", [_c("th", [_vm._v("Amount Paid: ")])]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Date: ")])]),
+            _vm._v(" "),
+            _c("tr", [_c("th", [_vm._v("Issued By: ")])])
           ])
         ])
       ])
@@ -82831,6 +83405,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -82845,24 +83423,36 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 enr_form_id: '',
                 enr_id_num: '',
                 enr_program_id: '',
-                fee_status: ''
+                fee_status: '',
+                search: ''
 
             })
         };
     },
 
     methods: {
-        getResults: function getResults() {
+        searchthis: function searchthis() {
             var _this = this;
+
+            var query = this.form.search;
+            axios.get('api/findStudentID?q=' + query).then(function (data) {
+                _this.enrollList = data.data;
+                _this.totalrecord = data.data.total;
+            }).catch(function () {
+                swal("Failed!", "No Record Found!.", "warning");
+            });
+        },
+        getResults: function getResults() {
+            var _this2 = this;
 
             var page = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 1;
 
             axios.get('api/enrollList?page=' + page).then(function (response) {
-                _this.enrollList = response.data;
+                _this2.enrollList = response.data;
             });
         },
         updateEnroll: function updateEnroll() {
-            var _this2 = this;
+            var _this3 = this;
 
             this.$Progress.start();
             // console.log('Editing data');
@@ -82870,10 +83460,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 // success
                 $('#addNew').modal('hide');
                 swal('Updated!', 'Information has been updated.', 'success');
-                _this2.$Progress.finish();
+                _this3.$Progress.finish();
                 Fire.$emit('AfterCreate');
             }).catch(function () {
-                _this2.$Progress.fail();
+                _this3.$Progress.fail();
             });
         },
         editModal: function editModal(enroll) {
@@ -82891,7 +83481,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             $('#addNew').modal('show');
         },
         deleteEnroll: function deleteEnroll(id) {
-            var _this3 = this;
+            var _this4 = this;
 
             swal({
                 title: 'Are you sure?',
@@ -82904,7 +83494,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/enrollment/' + id).then(function () {
+                    _this4.form.delete('api/enrollment/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -82914,42 +83504,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             });
         },
         loadEnrollment: function loadEnrollment() {
-            var _this4 = this;
+            var _this5 = this;
 
             if (this.$gate.isSuperAdmin()) {
                 // axios.get("api/courses").then(({data}) =>(this.courses = data))
                 axios.get("api/student").then(function (_ref) {
                     var data = _ref.data;
-                    return _this4.student = data;
+                    return _this5.student = data;
                 });
                 axios.get("api/program").then(function (_ref2) {
                     var data = _ref2.data;
-                    return _this4.programs = data;
+                    return _this5.programs = data;
                 });
                 axios.get("api/enrollList").then(function (_ref3) {
                     var data = _ref3.data;
-                    return _this4.enrollList = data;
+                    return _this5.enrollList = data;
                 }).then(function ($data) {
-                    _this4.totalrecord = $data.total;
+                    _this5.totalrecord = $data.total;
                 });
             }
         }
     },
-    created: function created() {
-        var _this5 = this;
 
-        Fire.$on('searching', function () {
-            var query = _this5.$parent.search;
-            axios.get('api/findStudentID?q=' + query).then(function (data) {
-                _this5.enrollList = data.data;
-                _this5.totalrecord = data.data.total;
-            }).catch(function () {
-                // swal("Failed!", "No Record Found!.", "warning");
-            });
-        });
+    created: function created() {
+        var _this6 = this;
+
         this.loadEnrollment();
         Fire.$on('AfterCreate', function () {
-            _this5.loadEnrollment();
+            _this6.loadEnrollment();
         });
         //  setInterval(() => this.loadUsers(), 15000);
     }
@@ -82968,14 +83550,50 @@ var render = function() {
       ? _c("div", { staticClass: "row mt-3" }, [
           _c("div", { staticClass: "col-md-12" }, [
             _c("div", { staticClass: "card" }, [
-              _vm._m(0),
+              _c("div", { staticClass: "card-header" }, [
+                _c("h3", { staticClass: "card-title" }, [
+                  _vm._v("Manage Enrollment")
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "card-tools" }, [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.form.search,
+                        expression: "form.search"
+                      }
+                    ],
+                    staticClass: "form-control float-left",
+                    staticStyle: { width: "250px" },
+                    attrs: {
+                      type: "search",
+                      placeholder: "Search Form ID or ID Number",
+                      "aria-label": "Search"
+                    },
+                    domProps: { value: _vm.form.search },
+                    on: {
+                      keyup: _vm.searchthis,
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(_vm.form, "search", $event.target.value)
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "input-group-append" })
+                ])
+              ]),
               _vm._v(" "),
               _c("div", { staticClass: "card-body table-responsive p-0" }, [
                 _c("table", { staticClass: "table table-hover" }, [
                   _c(
                     "tbody",
                     [
-                      _vm._m(1),
+                      _vm._m(0),
                       _vm._v(" "),
                       _vm._l(_vm.enrollList.data, function(enroll) {
                         return _c("tr", { key: enroll.id }, [
@@ -83007,13 +83625,13 @@ var render = function() {
                                   }
                                 },
                                 [
-                                  _vm._v(
-                                    "\n                 \n                       View Curriculum\n     \n            "
-                                  )
+                                  _c("i", {
+                                    staticClass: "fas fa-eye icon-green"
+                                  })
                                 ]
                               ),
                               _vm._v(
-                                "\n                                  |\n                   "
+                                "\n                                   | \n                   "
                               ),
                               _c(
                                 "a",
@@ -83123,7 +83741,7 @@ var render = function() {
                   [_vm._v("Generate Form ID")]
                 ),
                 _vm._v(" "),
-                _vm._m(2)
+                _vm._m(1)
               ]),
               _vm._v(" "),
               _c(
@@ -83240,16 +83858,6 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h3", { staticClass: "card-title" }, [_vm._v("Manage Enrollment")]),
-      _vm._v(" "),
-      _c("div", { staticClass: "card-tools" })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
     return _c("tr", [
       _c("th", [_vm._v("Form ID")]),
       _vm._v(" "),
@@ -83257,7 +83865,7 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Student Name")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Manage Curriculum")])
+      _c("th", [_vm._v("Modify")])
     ])
   },
   function() {
@@ -83340,6 +83948,8 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
 //
 //
 //
@@ -83683,6 +84293,12 @@ var render = function() {
                             )
                           ]),
                           _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(enrollassoc.assoccurrid.currsection.title)
+                            )
+                          ]),
+                          _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(enrollassoc.assoc_prof_id))]),
                           _vm._v(" "),
                           _c("td", [
@@ -83957,6 +84573,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Year Level")]),
       _vm._v(" "),
       _c("th", [_vm._v("Course")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Section")]),
       _vm._v(" "),
       _c("th", [_vm._v("Instructor")]),
       _vm._v(" "),

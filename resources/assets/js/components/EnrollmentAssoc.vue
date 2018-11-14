@@ -34,7 +34,7 @@
                     <td>{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
                     <td>{{enrollassoc.assoccurrid.currsection.title}}</td>
                     <td>{{enrollassoc.assoccurrid.sched_days}}</td>
-                    <td style="width:150px; ">{{enrollassoc.assoccurrid.sched_time}}</td>
+                    <td style="width:180px; ">{{enrollassoc.assoccurrid.sched_time}}</td>
                     <td>{{enrollassoc.assoccurrid.sched_room}}</td>
                     <td>{{enrollassoc.assoc_prof_id}}</td>
                     <td>{{enrollassoc.assoc_final_grade}}</td>
@@ -81,15 +81,48 @@
                       placeholder="Form ID"
                         class="form-control" :class="{ 'is-invalid': form.errors.has('assoc_form_id') }" readonly hidden>
                       <has-error :form="form" field="assoc_form_id"></has-error>
+                </div>
+                <div class="form-group">
+                    <select  type="text" class="form-control" v-model="form.enr_semester" >
+                            <option value="" disabled>Please select semester first*</option>
+
+                        <option v-for="sem in semester.data"  :key="sem.id" v-bind:value="sem.id">
+                            
+                            {{sem.title}}
+                            
+                            </option>
+                    </select>
                 </div> 
+                <div class="form-group">
+                    <select  type="text" class="form-control" v-model="form.enr_yearlevel_id" >
+                            <option value="" disabled>Then please select year level*</option>
+
+                        <option v-for="yl in yearlevel.data"  :key="yl.id" v-bind:value="yl.id">
+                            
+                            {{yl.title}}
+                            
+                            </option>
+                    </select>
+                </div> 
+                <div class="form-group">
+                    <select  type="text" class="form-control" v-model="form.enr_section_id" >
+                            <option value="" disabled>Then please select section*</option>
+
+                        <option v-for="sec in section.data"  :key="sec.id" v-bind:value="sec.id">
+                            
+                            {{sec.title}}
+                            
+                            </option>
+                    </select>
+                    </div>
 
                     <div class="form-group">
                     <select  type="text" class="form-control" v-model="form.assoc_curr_id">
-                            <option value="">Please select course*</option>
+                            <option value="" disabled>Please select course*</option>
 
-                        <option v-for="curr in curriculumlist" v-if="curr.currprograms.id === form.enr_program_id" :key="curr.id" v-bind:value="curr.id">
+                        <option v-for="curr in curriculumlist" v-if="curr.curr_program_id === form.enr_program_id && curr.curr_section_id === form.enr_section_id && curr.curr_year === form.enr_yearlevel_id && curr.semester === form.enr_semester" :key="curr.id" v-bind:value="curr.id">
                             
-                            {{curr.currprograms.program_code}} - Section {{curr.currsection.title}} - {{curr.currcourses.course_code}} - {{curr.currcourses.descriptive_title}}
+                           {{curr.currcourses.course_code}} - {{curr.currcourses.descriptive_title}}
                             </option>
                     </select>
                     </div>
@@ -134,13 +167,17 @@
                 assoc_prof_id:'',
                 assoc_final_grade:'',
             enr_program_id:'',
+            enr_section_id:'',
+            enr_yearlevel_id:'',
+            enr_semester:'',
 
             })
           }
         },
         methods: {
+
           getResults(page = 1) {
-            axios.get('api/enrollmentassoc?page=' + page)
+            axios.get('/api/enrollmentassoc?page=' + page)
                 .then(response => {
                     this.enrollmentassoc = response.data;
                 });

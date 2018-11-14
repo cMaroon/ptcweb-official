@@ -7,8 +7,7 @@
                 <h3 class="card-title">Users Table</h3>
 
                 <div class="card-tools">
-                <p>Total Users : {{totalrecord}}</p>
-                   <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
+                        <input style="width:250px" class="form-control form-control-navbar" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search ID Number or Fullname" aria-label="Search">
                 </div>
               </div>
               <!-- /.card-header -->
@@ -45,6 +44,8 @@
               </div>
               <!-- /.card-body -->
               <div class="card-footer">
+                <p>Total Users : {{totalrecord}}</p>
+
                   <pagination :data="users" :limit="2" @pagination-change-page="getResults">
                     <span slot="prev-nav"><i class="fas fa-chevron-circle-left"></i></span>
                     <span slot="next-nav"><i class="fas fa-chevron-circle-right"></i></span>
@@ -131,10 +132,24 @@
                 email : '',
                 password : '123456',
                 usertype : 'student',
+                search:''
             })
           }
         },
         methods: {
+          searchthis(){
+                let query = this.form.search;
+                axios.get('api/findUser?q=' + query)
+                .then((data) => {
+                    this.users = data.data
+                    this.totalrecord= data.data.total
+
+                })
+                .catch(() => {
+                        swal("Failed!", "No Record Found!.", "warning");
+                })
+
+        },
           getResults(page = 1) {
             axios.get('api/user?page=' + page)
                 .then(response => {
@@ -224,18 +239,7 @@
             }
         },
         created() {
-          Fire.$on('searching',() => {
-                let query = this.$parent.search;
-                axios.get('api/findUser?q=' + query)
-                .then((data) => {
-                    this.users = data.data
-                    // this.totalrecord= data.data.total
 
-                })
-                .catch(() => {
-                  // swal("Failed!", "No Record Found!.", "warning");
-                })
-            })
            this.loadUsers();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();

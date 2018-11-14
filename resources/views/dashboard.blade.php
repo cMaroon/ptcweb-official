@@ -18,15 +18,7 @@
       </li>
     </ul>
 
-    <!-- SEARCH FORM -->
-    <div class="input-group input-group-sm">
-      <input class="form-control form-control-navbar" v-model="search" type="search" placeholder="Search" aria-label="Search">
-      <div class="input-group-append">
-        <button class="btn btn-navbar" @click="searchit">
-          <i class="fa fa-search"></i>
-        </button>
-      </div>
-    </div>
+
 
   </nav>
   <!-- /.navbar -->

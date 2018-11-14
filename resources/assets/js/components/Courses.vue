@@ -7,6 +7,8 @@
                 <h3 class="card-title">Courses Table</h3>
 
                 <div class="card-tools">
+                    <input style="width:300px" class="form-control float-left" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search Course Code or Descriptive Title" aria-label="Search">
+                    &nbsp;
                    <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
@@ -150,6 +152,19 @@
           }
         },
         methods: {
+           searchthis(){
+                let query = this.form.search;
+                axios.get('api/findCourse?q=' + query)
+                .then((data) => {
+                    this.courses = data.data
+                    this.totalrecord= data.data.total
+
+                })
+                .catch(() => {
+                        swal("Failed!", "No Record Found!.", "warning");
+                })
+
+        },
           getResults(page = 1) {
             axios.get('api/courses?page=' + page)
                 .then(response => {

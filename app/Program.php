@@ -13,7 +13,7 @@ class Program extends Model
 
     //Database Tables
     protected $fillable = [
-        'program_code','descriptive_title'
+        'program_code','descriptive_title','adivising_id'
 
     ];
 
@@ -21,6 +21,13 @@ class Program extends Model
     {
         return $this->hasMany('App\Curriculum');
     }
+
+    public function advisingid()
+    {
+        return $this->belongsTo('App\Advising','advising_id');
+    }
+
+
 
 
 }

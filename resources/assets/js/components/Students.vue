@@ -7,9 +7,7 @@
                 <h3 class="card-title">Student List Table</h3>
 
                 <div class="card-tools">
-
-                 <!-- {{studentlist.data.id_num}} -->
-                   <!-- <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-user-plus fa-fw"></i></button> -->
+                        <input style="width:250px" class="form-control form-control-navbar" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search Form ID or ID Number" aria-label="Search">
                 </div>
               </div>
               <!-- /.card-header -->
@@ -167,12 +165,26 @@
                 program_id:'',
                 year_level:'',
                 section:'',
+                search:''
 
             })
           }
         },
 
         methods: {
+           searchthis(){
+                let query = this.form.search;
+                axios.get('api/findStudent?q=' + query)
+                .then((data) => {
+                    this.studentlist = data.data
+                    this.totalrecord= data.data.total
+
+                })
+                .catch(() => {
+                        swal("Failed!", "No Record Found!.", "warning");
+                })
+
+        },
           getResults(page = 1) {
             axios.get('api/studentlist?page=' + page)
                 .then(response => {
@@ -246,43 +258,13 @@
             }
             
           }
-
-          // createUser(){
-          //       this.$Progress.start();
-          //       // this.form.post('api/user')
-          //       // this.form.post('api/student')
-          //       .then(()=>{
-          //           Fire.$emit('AfterCreate');
-          //           $('#addNew').modal('hide')
-          //           toast({
-          //               type: 'success',
-          //               title: 'User Created in successfully'
-          //               })
-          //           this.$Progress.finish();
-          //       })
-          //       .catch(()=>{
-          //         this.$Progress.fail();
-          //       })
-          //   }
         },
         created() {
-            Fire.$on('searching',() => {
-                let query = this.$parent.search;
-                axios.get('api/findStudent?q=' + query)
-                .then((data) => {
-                    this.studentlist = data.data
-                    this.totalrecord= data.data.total
 
-                })
-                .catch(() => {
-                  // swal("Failed!", "No Record Found!.", "warning");
-                })
-            })
            this.loadStudents();
            Fire.$on('AfterCreate',() => {
                this.loadStudents();
            });
-          //  setInterval(() => this.loadUsers(), 15000);
         }
     }
 </script>

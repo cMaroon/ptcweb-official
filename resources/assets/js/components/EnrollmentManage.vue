@@ -7,6 +7,10 @@
                 <h3 class="card-title">Manage Enrollment</h3>
 
                 <div class="card-tools">
+                        <input style="width:250px" class="form-control float-left" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search Form ID or ID Number" aria-label="Search">
+            <div class="input-group-append">
+        
+      </div>
                    <!-- <button class="btn btn-success" @click="newModal" >Generate Form ID <i class="fas fa-plus-square fa-fw"></i></button> -->
                 </div>
               </div>
@@ -17,7 +21,7 @@
                     <th>Form ID</th>
                     <th>ID Number</th>
                     <th>Student Name</th>
-                    <th>Manage Curriculum</th>
+                    <th>Modify</th>
                   </tr>
                   <tr v-for="enroll in enrollList.data" :key = "enroll.id">
                  
@@ -27,12 +31,12 @@
                     <td>
                 <router-link :to="{name: 'manage_curr', params:{id: enroll.id}}" >
                      
-                           View Curriculum
+                            <i class="fas fa-eye icon-green"></i> 
          
                 </router-link>
-                                      |
+                                       | 
                        <a href="#" @click="deleteEnroll(enroll.id)">
-                            <i class="fa fa-trash icon-red"></i>
+                             <i class="fa fa-trash icon-red"></i>
                         </a>
                     </td>
                  
@@ -108,11 +112,25 @@
                 enr_id_num:'',
                 enr_program_id:'',
                 fee_status:'',
+                search:''
 
             })
           }
         },
         methods: {
+          searchthis(){
+                let query = this.form.search;
+                axios.get('api/findStudentID?q=' + query)
+                .then((data) => {
+                    this.enrollList = data.data
+                    this.totalrecord= data.data.total
+
+                })
+                .catch(() => {
+                        swal("Failed!", "No Record Found!.", "warning");
+                })
+
+        },
 
           getResults(page = 1) {
             axios.get('api/enrollList?page=' + page)
@@ -191,19 +209,9 @@
 
 
         },
-        created() {
-            Fire.$on('searching',() => {
-                let query = this.$parent.search;
-                axios.get('api/findStudentID?q=' + query)
-                .then((data) => {
-                    this.enrollList = data.data
-                    this.totalrecord= data.data.total
 
-                })
-                .catch(() => {
-                        // swal("Failed!", "No Record Found!.", "warning");
-                })
-            })
+        created() {
+
            this.loadEnrollment();
            Fire.$on('AfterCreate',() => {
                this.loadEnrollment();

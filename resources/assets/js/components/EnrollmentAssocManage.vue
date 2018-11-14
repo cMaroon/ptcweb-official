@@ -21,6 +21,7 @@
                     <th>Semester</th>
                     <th>Year Level</th>
                     <th>Course</th>
+                    <th>Section</th>
                     <th>Instructor</th>
                     <th>General Average</th>
                     <th>Advising Status</th>
@@ -32,6 +33,7 @@
                     <td>{{enrollassoc.assoccurrid.currsemester.title}}</td>
                     <td>{{enrollassoc.assoccurrid.curryearlevel.title}}</td>
                     <td>{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
+                    <td>{{enrollassoc.assoccurrid.currsection.title}}</td>
                     <td>{{enrollassoc.assoc_prof_id}}</td>
                     <td>{{enrollassoc.assoc_final_grade}}</td>
                     <td>{{enrollassoc.advising_status}}</td>

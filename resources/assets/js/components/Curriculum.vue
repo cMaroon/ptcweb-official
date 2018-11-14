@@ -7,6 +7,8 @@
                 <h3 class="card-title">Curriculum Table</h3>
 
                 <div class="card-tools">
+            <input style="width:250px" class="form-control float-left" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search Form ID or ID Number" aria-label="Search">
+                    &nbsp;
                    <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
               </div>
@@ -172,12 +174,26 @@
                 curr_section_id : '',
                 sched_days:'',
                 sched_time:'',
-                sched_room:''
+                sched_room:'',
+                search:''
 
             })
           }
         },
         methods: {
+             searchthis(){
+                let query = this.form.search;
+                axios.get('api/findCurr?q=' + query)
+                .then((data) => {
+                    this.curriculum = data.data
+                    this.totalrecord= data.data.total
+
+                })
+                .catch(() => {
+                        // swal("Failed!", "No Record Found!.", "warning");
+                })
+
+        },
           getResults(page = 1) {
             axios.get('api/curriculum?page=' + page)
                 .then(response => {
@@ -270,17 +286,7 @@
             }
         },
         created() {
-          Fire.$on('searching',() => {
-                let query = this.$parent.search;
-                axios.get('api/findCurr?q=' + query)
-                .then((data) => {
-                    this.curriculum = data.data
-                    this.totalrecord= data.data.total
-                })
-               .catch(() => {
-                // swal("Failed!", "No Record Found!.", "warning");
-                })
-            })
+
            this.loadCurriculum();
            Fire.$on('AfterCreate',() => {
                this.loadCurriculum();

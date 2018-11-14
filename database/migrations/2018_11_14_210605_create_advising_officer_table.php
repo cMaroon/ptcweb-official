@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateProgramsInformationTable extends Migration
+class CreateAdvisingOfficerTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,10 +13,9 @@ class CreateProgramsInformationTable extends Migration
      */
     public function up()
     {
-        Schema::create('programs_information', function (Blueprint $table) {
+        Schema::create('advising_officer', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('program_code');
-            $table->string('descriptive_title');
+            $table->string('advising_officer_name');
             $table->timestamps();
         });
     }
@@ -28,6 +27,6 @@ class CreateProgramsInformationTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('programs_information');
+        Schema::dropIfExists('advising_officer');
     }
 }

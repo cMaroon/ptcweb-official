@@ -1,10 +1,17 @@
 <template>
-    <div class="container" >
-        <div class="row mt-3" v-if="$gate.isSuperAdmin()">
-                    <div class="container" >
-                            <div class="row" >
-                                <div class="col-12" >
+    <div class="container">
+        <div class="row mt-2" v-if="$gate.isSuperAdmin()">
+                    <!-- <div class="container" >
+                            <div class="row" > -->
+                                <!-- <div class="col-12" > -->
+                                            <!-- this row will not appear when printing -->
+                                            <div class="row no-print">
+                                               
+                                                <div class="col-2">
+                                                <a href="" @click.prevent="printme" target="_blank" class="btn btn-danger"><i class="fa fa-print"></i> Print</a>
 
+                                                </div>
+                                            </div>
                                             <!-- Main content -->
                                     <div class="invoice p-3 mb-3" style="background-image:url('/img/logo_ptcbw.png');  background-position:relative; background-size: auto; "  >
                                             <!-- title row -->
@@ -54,7 +61,9 @@
                                                 
                                                 <b>Form ID# {{enrollmentassoc.data[0].assocformid.enr_form_id}}</b><br>
                                                 <b>Program Code: </b> {{enrollmentassoc.data[0].assoccurrid.currprograms.program_code}}<br>
-                                                <b>Year Level</b> {{enrollmentassoc.data[0].assoccurrid.curryearlevel.title}}<br>
+                                                <b>Year Level: </b> {{enrollmentassoc.data[0].assocformid.studinfo.studyearlevel.title}}<br>
+                                                <b>Semester: </b> {{enrollmentassoc.data[0].assoccurrid.currsemester.title}}<br>
+                                                <!-- <b>Student Status: </b> Regular<br> -->
                                                 
 
                                                 </div>
@@ -69,28 +78,28 @@
                                                 <table class="table table-striped" >
                                                     <thead>
                                                     <tr>
-                                                    <th>Course Code</th>
-                                                    <th>Description</th>
-                                                    <th>Unit</th>
-                                                    <th>Lec</th>
-                                                    <th>Lab</th>
-                                                    <th>Section</th>
-                                                    <th>Day</th>
-                                                    <th style="text-align:center;">Time</th>
-                                                    <th>Room</th>
+                                                    <th style="padding:15px;">Course Code</th>
+                                                    <th style="padding:15px; text-align:center;">Description</th>
+                                                    <th style="padding:15px;">Unit</th>
+                                                    <th style="padding:15px;">Lec</th>
+                                                    <th style="padding:15px;">Lab</th>
+                                                    <th style="padding:15px; text-align:center;">Section</th>
+                                                    <th style="padding:15px; text-align:center;">Day</th>
+                                                    <th style="text-align:center; padding:15px;">Time</th>
+                                                    <th style="padding:15px;">Room</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>
                                                     <tr v-for="enrollassoc in enrollmentassoc.data" :key = "enrollassoc.id">
-                                                    <td>{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
-                                                    <td>{{enrollassoc.assoccurrid.currcourses.descriptive_title}}</td>
-                                                    <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currcourses.course_unit}}</td>
-                                                    <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currcourses.lec_hr}}</td>
-                                                    <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currcourses.lab_hr}}</td>
-                                                    <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.currsection.title}}</td>
-                                                    <td style="width:10px; ">{{enrollassoc.assoccurrid.sched_days}}</td>
-                                                    <td style="width:150px; text-align:center;">{{enrollassoc.assoccurrid.sched_time}}</td>
-                                                    <td style="width:10px; text-align:center;">{{enrollassoc.assoccurrid.sched_room}}</td>
+                                                    <td style="width:130px; padding:15px;">{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
+                                                    <td style="padding:15px;">{{enrollassoc.assoccurrid.currcourses.descriptive_title}}</td>
+                                                    <td style="width:10px; text-align:center; padding:15px;">{{enrollassoc.assoccurrid.currcourses.course_unit}}</td>
+                                                    <td style="width:10px; text-align:center; padding:15px;">{{enrollassoc.assoccurrid.currcourses.lec_hr}}</td>
+                                                    <td style="width:10px; text-align:center; padding:15px;">{{enrollassoc.assoccurrid.currcourses.lab_hr}}</td>
+                                                    <td style="width:10px; text-align:center; padding:15px;">{{enrollassoc.assoccurrid.currsection.title}}</td>
+                                                    <td style="width:10px; text-align:center; padding:15px; ">{{enrollassoc.assoccurrid.sched_days}}</td>
+                                                    <td style="width:160px; text-align:center; padding:15px;">{{enrollassoc.assoccurrid.sched_time}}</td>
+                                                    <td style="width:10px; text-align:center; padding:15px;">{{enrollassoc.assoccurrid.sched_room}}</td>
                                                         
                                                     </tr>
                                                         
@@ -104,12 +113,12 @@
                                             <div class="row" >
                                                 <div class="col-4">
                                                 <p class="lead">Semestral Fees:</p>
-                                                <div class="col-12">    
                                                     <div class="table-responsive">
-                                                        <table class="table">
+                                                    <table class="table">
                                                         <tbody><tr>
-                                                            <th style="width:70%">Tuition Fee: </th>
+                                                            <th style="width:50%">Tuition Fee: </th>
                                                             <td></td>
+
                                                         </tr>
                                                         <tr>
                                                             <th>Registration Fee: </th>
@@ -129,19 +138,20 @@
                                                             </tr>
 
                                                         </tbody></table>
-                                                    </div>
-                                                    </div>
+                                                </div>
 
                                                 </div>
                                                 <!-- /.col -->
                                                 <div class="col-4">
-                                                <p class="lead" style=" text-align: center">Total Units: {{totalunits}} </p>
+                                                <p class="lead" style=" text-align: left">Total Units: {{totalunits}} </p>
+                                                
                                                     <div class="table-responsive">
                                                     <table class="table">
                                                         <tbody><tr>
                                                         <th style="width:50%">
                                                             Athletic:</th>
-                                                        <td></td>
+                                                            <td></td>
+
                                                         </tr>
                                                         <tr>
                                                             <th>Book Rental: </th>
@@ -164,55 +174,141 @@
                                                     </div>
                                                 </div>
                                                 <div class="col-4">
-                                                    <p class="lead">&nbsp;</p>
+                                                <p class="lead" style=" text-align: left">Total Lab: {{totallab}} </p>
+                                                    
 
                                                 <div class="table-responsive">
                                                     <table class="table">
                                                     <tbody><tr>
                                                         <th style="width:50%">
                                                         Advising Officer: </th>
-                                                        <td></td>
+                                                        <template v-if="enrollmentassoc.data">
+                                                        <td><small>{{enrollmentassoc.data[0].assocformid.studinfo.studprograms.advisingid.advising_officer_name}}</small></td>
+                                                        </template>
                                                     </tr>
                                                     <tr>
                                                         <th>Assessed By:  </th>
-                                                        <td></td>
+                                                                    <td></td>
+
                                                     </tr>
                                                     <tr>
                                                         <th>College Registrar: </th>
-                                                        <td></td>
+                                                                    <td></td>
+
                                                     </tr>
                                                     <tr>
-                                                        <th>Total: </th>
-                                                        <td></td>
+                                                        <th>Total Amount: </th>
+                                                                    <td></td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <th>&nbsp;</th>
+                                                                    <td></td>
+
                                                     </tr>
 
 
                                                     </tbody></table>
                                                 </div>
                                                 </div>
-                                                <!-- /.col -->
-                                            <small >College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389</small>
+                                            <!-- OR NO -->
+                                                <div class="col-4">      
+                                                <p class="lead">Prelim:</p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                    <tbody><tr>
+                                                        <th style="width:55%">
+                                                       OR #:
+                                                       </th>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Amount Paid: </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Date: </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Issued By: </th>
+                                                    </tr>
 
+
+                                                    </tbody></table>
+                                                </div>
+                                                </div>
+
+                                                <div class="col-4">      
+                                                <p class="lead">Midterm:</p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                    <tbody><tr>
+                                                        <th style="width:55%">
+                                                       OR #:
+                                                       </th>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Amount Paid: </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Date: </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Issued By: </th>
+                                                    </tr>
+
+
+                                                    </tbody></table>
+                                                </div>
+                                                </div>
+
+                                                <div class="col-4">      
+                                                <p class="lead">Finals:</p>
+                                                <div class="table-responsive">
+                                                    <table class="table">
+                                                    <tbody><tr>
+                                                        <th style="width:55%">
+                                                       OR #:
+                                                       </th>
+                                                        
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Amount Paid: </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Date: </th>
+                                                    </tr>
+                                                    <tr>
+                                                        <th>Issued By: </th>
+                                                    </tr>
+
+
+                                                    </tbody></table>
+                                                </div>
+                                                </div>
+
+
+                                                <!-- /.col -->
+
+                                            </div>
+
+                                            <div class="col-3"><br>
+                                                ______________________________<br>
+                                                <center><p class="lead">Student's Signature</p></center>
                                             </div>
                                             <!-- /.row -->
 
-                                            <!-- this row will not appear when printing -->
-                                            <div class="row no-print">
-                                                <div class="col-2"></div>
-                                                <div class="col-8"></div>
-                                                <div class="col-2">
-                                                <a href="" @click.prevent="printme" target="_blank" class="btn btn-danger"><i class="fa fa-print"></i> Print</a>
 
-                                                </div>
-                                            </div>
 
                                             </div>
+                                            <small >College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389</small>
+
                                             <!-- /.invoice --> 
-                        </div>
+                        <!-- </div> -->
 
 
-                            </div>
-                        </div>
+                            <!-- </div> -->
+                        <!-- </div> -->
         </div> 
     </div>
 </template>
@@ -282,6 +378,14 @@
                let sum = 0;
                for (let i = 0; i < this.enrollmentassoc.total; i++){
                    sum += (parseInt(this.enrollmentassoc.data[i].assoccurrid.currcourses.course_unit));
+               }
+
+               return sum;
+           },
+        totallab:function(){
+               let sum = 0;
+               for (let i = 0; i < this.enrollmentassoc.total; i++){
+                   sum += (parseInt(this.enrollmentassoc.data[i].assoccurrid.currcourses.lab_hr));
                }
 
                return sum;
