@@ -18,6 +18,7 @@
                     <th>Semester</th>
                     <th>Year Level</th>
                     <th>Course</th>
+                    <th>Description</th>
                     <th>Section</th>
                     <th>Days</th>
                     <th>Time</th>
@@ -32,6 +33,7 @@
                     <td>{{enrollassoc.assoccurrid.currsemester.title}}</td>
                     <td>{{enrollassoc.assoccurrid.curryearlevel.title}}</td>
                     <td>{{enrollassoc.assoccurrid.currcourses.course_code}}</td>
+                    <td>{{enrollassoc.assoccurrid.currcourses.descriptive_title}}</td>
                     <td>{{enrollassoc.assoccurrid.currsection.title}}</td>
                     <td>{{enrollassoc.assoccurrid.sched_days}}</td>
                     <td style="width:180px; ">{{enrollassoc.assoccurrid.sched_time}}</td>

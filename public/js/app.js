@@ -79638,6 +79638,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -79660,6 +79664,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 sched_days: '',
                 sched_time: '',
                 sched_room: '',
+                selected_curr_year: '',
+                selected_curr_program_id: '',
                 search: ''
 
             })
@@ -79828,7 +79834,7 @@ var render = function() {
                     staticStyle: { width: "250px" },
                     attrs: {
                       type: "search",
-                      placeholder: "Search Form ID or ID Number",
+                      placeholder: "Search Program Code",
                       "aria-label": "Search"
                     },
                     domProps: { value: _vm.form.search },
@@ -79876,6 +79882,10 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(_vm._s(curr.currcourses.course_code))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(curr.currcourses.descriptive_title))
                           ]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(curr.currsection.title))]),
@@ -80516,6 +80526,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Program")]),
       _vm._v(" "),
       _c("th", [_vm._v("Course")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Description")]),
       _vm._v(" "),
       _c("th", [_vm._v("Section")]),
       _vm._v(" "),
@@ -81353,6 +81365,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -81571,6 +81585,15 @@ var render = function() {
                             _vm._v(
                               _vm._s(
                                 enrollassoc.assoccurrid.currcourses.course_code
+                              )
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(
+                              _vm._s(
+                                enrollassoc.assoccurrid.currcourses
+                                  .descriptive_title
                               )
                             )
                           ]),
@@ -82075,6 +82098,8 @@ var staticRenderFns = [
       _c("th", [_vm._v("Year Level")]),
       _vm._v(" "),
       _c("th", [_vm._v("Course")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Description")]),
       _vm._v(" "),
       _c("th", [_vm._v("Section")]),
       _vm._v(" "),

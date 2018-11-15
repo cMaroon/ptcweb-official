@@ -7,7 +7,9 @@
                 <h3 class="card-title">Curriculum Table</h3>
 
                 <div class="card-tools">
-            <input style="width:250px" class="form-control float-left" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search Form ID or ID Number" aria-label="Search">
+
+                    
+            <input style="width:250px" class="form-control float-left" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search Program Code" aria-label="Search">
                     &nbsp;
                    <button class="btn btn-success" @click="newModal">Add New <i class="fas fa-plus-square fa-fw"></i></button>
                 </div>
@@ -20,18 +22,20 @@
                     <th>Semester</th>
                     <th>Program</th>
                     <th>Course</th>
+                    <th>Description</th>
                     <th>Section</th>
                     <th>Days</th>
                     <th>Time</th>
                     <th>Room</th>
                     <th>Modify</th>
                   </tr>
-                  <tr v-for="curr in curriculum.data" :key = "curr.id">
+                  <tr v-for="curr in curriculum.data"  :key = "curr.id">
                  
                     <td>{{curr.curryearlevel.title}}</td>
                     <td>{{curr.currsemester.title}}</td>
                     <td>{{curr.currprograms.program_code}}</td>
                     <td>{{curr.currcourses.course_code}}</td>
+                    <td>{{curr.currcourses.descriptive_title}}</td>
                     <td>{{curr.currsection.title}}</td>
                     <td>{{curr.sched_days}}</td>
                     <td>{{curr.sched_time}}</td>
@@ -175,6 +179,8 @@
                 sched_days:'',
                 sched_time:'',
                 sched_room:'',
+                selected_curr_year:'',
+                selected_curr_program_id:'',
                 search:''
 
             })
