@@ -26,6 +26,7 @@
                     <th>Instructor</th>
                     <th>General Average</th>
                     <th>Advising Status</th>
+                    <th>Modify</th>
                   </tr>
                   <tr v-for="enrollassoc in enrollmentassoc.data" :key = "enrollassoc.id">
                  
@@ -41,6 +42,11 @@
                     <td>{{enrollassoc.assoc_prof_id}}</td>
                     <td>{{enrollassoc.assoc_final_grade}}</td>
                     <td>{{enrollassoc.advising_status}}</td>
+                    <td>
+                       <a href="#" @click="deleteEnroll(enrollassoc.id)">
+                            <i class="fa fa-trash icon-red"></i>
+                        </a>
+                    </td>
                  
                   </tr>
                   
@@ -229,7 +235,7 @@
                     }).then((result) => {
                         // Send request to the server
                          if (result.value) {
-                                this.form.delete('api/enrollmentassoc/'+id).then(()=>{
+                                this.form.delete('/api/enrollmentassoc/'+id).then(()=>{
                                         swal(
                                         'Deleted!',
                                         'Your file has been deleted.',

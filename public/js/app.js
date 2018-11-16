@@ -80713,6 +80713,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -80917,7 +80923,22 @@ var render = function() {
                               )
                             ],
                             1
-                          )
+                          ),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteEnroll(enroll.id)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-trash icon-red" })]
+                            )
+                          ])
                         ])
                       })
                     ],
@@ -81133,7 +81154,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("Fee Status")]),
       _vm._v(" "),
-      _c("th", [_vm._v("My Curriculum")])
+      _c("th", [_vm._v("My Curriculum")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Modify")])
     ])
   },
   function() {
@@ -81367,6 +81390,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -81448,7 +81477,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             }).then(function (result) {
                 // Send request to the server
                 if (result.value) {
-                    _this3.form.delete('api/enrollmentassoc/' + id).then(function () {
+                    _this3.form.delete('/api/enrollmentassoc/' + id).then(function () {
                         swal('Deleted!', 'Your file has been deleted.', 'success');
                         Fire.$emit('AfterCreate');
                     }).catch(function () {
@@ -81624,6 +81653,21 @@ var render = function() {
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(_vm._s(enrollassoc.advising_status))
+                          ]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                attrs: { href: "#" },
+                                on: {
+                                  click: function($event) {
+                                    _vm.deleteEnroll(enrollassoc.id)
+                                  }
+                                }
+                              },
+                              [_c("i", { staticClass: "fa fa-trash icon-red" })]
+                            )
                           ])
                         ])
                       })
@@ -82113,7 +82157,9 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("General Average")]),
       _vm._v(" "),
-      _c("th", [_vm._v("Advising Status")])
+      _c("th", [_vm._v("Advising Status")]),
+      _vm._v(" "),
+      _c("th", [_vm._v("Modify")])
     ])
   },
   function() {

@@ -19,6 +19,7 @@
                     <th>Program Code</th>
                     <th>Fee Status</th>
                     <th>My Curriculum</th>
+                    <th>Modify</th>
                   </tr>
                   <tr v-for="enroll in enrollment.data" :key = "enroll.id">
                  
@@ -32,6 +33,11 @@
                            Add Curriculum
          
                 </router-link>
+                    </td>
+                        <td>
+                       <a href="#" @click="deleteEnroll(enroll.id)">
+                            <i class="fa fa-trash icon-red"></i>
+                        </a>
                     </td>
                  
                   </tr>

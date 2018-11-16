@@ -101,7 +101,7 @@ class EnrollmentController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isSuperAdmin');
+        // $this->authorize('isSuperAdmin');
         $enrollment = Enrollment::findOrFail($id);
 
         // delete the user

@@ -92,7 +92,7 @@ class EnrollmentAssocController extends Controller
      */
     public function destroy($id)
     {
-        $this->authorize('isSuperAdmin');
+        // $this->authorize('isSuperAdmin');
         $enrollmentassoc = EnrollmentAssoc::findOrFail($id);
 
         // delete the user
