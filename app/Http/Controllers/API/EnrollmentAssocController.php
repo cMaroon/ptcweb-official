@@ -37,9 +37,6 @@ class EnrollmentAssocController extends Controller
         return $enrollmentassoc;
         
     }
-
-  
-
     // public function student(){
     //     return Auth('api')->user(); 
 

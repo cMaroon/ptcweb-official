@@ -349,12 +349,7 @@
 
           loadEnrollment(){
             // if(this.$gate.isStudent()){
-                // axios.get("/api/curriculum").then(({data}) =>(this.curriculum = data))
-                // axios.get("/api/courses").then(({data}) =>(this.courses = data))
-                // axios.get("/api/enrollList").then(({data}) =>(this.enrollment = data))               
-                // axios.get("/api/yearlevel").then(({data}) =>(this.yearlevel = data))                
-                // axios.get("/api/studentlist").then(({data}) => (this.student = data))
-                // axios.get("/api/semester").then(({data}) =>(this.semester = data))                                      
+                                     
                 axios.get("/api/enrollmentassoc/"+this.$route.params.id).then(({data}) =>(this.enrollmentassoc = data))
                 .then($data=>{this.totalrecord=$data.total});
             // }

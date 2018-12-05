@@ -28,6 +28,7 @@ Route::apiResources(['courses'=>'API\CoursesController']);
 Route::apiResources(['curriculum'=>'API\CurriculumController']);
 Route::apiResources(['enrollment'=>'API\EnrollmentController']);
 Route::apiResources(['enrollmentassoc'=>'API\EnrollmentAssocController']);
+Route::apiResources(['currassoc'=>'API\CurriculumAssocController']);
 Route::apiResources(['semester'=>'API\SemesterController']);
 Route::apiResources(['yearlevel'=>'API\YearLevelController']);
 Route::apiResources(['section'=>'API\SectionController']);
@@ -36,11 +37,8 @@ Route::get('courselist','API\CoursesController@CourseList');
 Route::get('curriculumlist','API\CurriculumController@CurriculumList');
 Route::get('enrollList','API\EnrollmentController@EnrollList');
 Route::get('enrollAll','API\EnrollmentController@EnrollAll');
-Route::get('profile','API\StudentController@student');
 Route::get('studentlist','API\StudentController@StudentList');
-
-
-
+Route::get('profile','API\StudentController@student');
 
 // Global Search
 Route::get('findStudent', 'API\StudentController@search');

@@ -57,8 +57,10 @@ let routes = [
   { path: '/enrollment', component: require('./components/Enrollment.vue') },
   { name: 'mycurr', path: '/mycurr/:id', component: require('./components/EnrollmentAssoc.vue') },
   { name: 'printenroll', path: '/printenroll/:id', component: require('./components/PrintEnroll.vue') },
+  { name: 'printclass', path: '/printclass/:id', component: require('./components/PrintClass.vue') },
   { path: '/manage_enrollment', component: require('./components/EnrollmentManage.vue') },
   { name: 'manage_curr' ,path: '/manage_curr/:id', component: require('./components/EnrollmentAssocManage.vue') },
+  { name: 'view_students' ,path: '/view_students/:id', component: require('./components/CurriculumStudents.vue') },
 
 
 ]

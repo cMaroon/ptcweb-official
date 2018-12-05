@@ -21,6 +21,7 @@
                     <th>Form ID</th>
                     <th>ID Number</th>
                     <th>Student Name</th>
+                    <th>Enrolled At</th>
                     <th>Modify</th>
                   </tr>
                   <tr v-for="enroll in enrollList.data" :key = "enroll.id">
@@ -28,6 +29,7 @@
                     <td>{{enroll.enr_form_id}}</td>
                     <td>{{enroll.enr_id_num}}</td>
                     <td>{{enroll.studinfo.firstname}} {{enroll.studinfo.lastname}} {{enroll.studinfo.suffixname}}</td>
+                    <td>{{enroll.created_at | setDate}}</td>
                     <td>
                 <router-link :to="{name: 'manage_curr', params:{id: enroll.id}}" >
                      

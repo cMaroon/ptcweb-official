@@ -2,6 +2,7 @@
     <div class="container">
       <div class="row mt-3" v-if="$gate.isSuperAdmin()">
           <div class="col-md-12">
+
             <div class="card">
               <div class="card-header">
                 <h3 class="card-title">Curriculum Table</h3>
@@ -40,7 +41,13 @@
                     <td>{{curr.sched_days}}</td>
                     <td>{{curr.sched_time}}</td>
                     <td>{{curr.sched_room}}</td>
-                    <td>
+                    <td style="width:130px;">
+                        <router-link :to="{name: 'view_students', params:{id: curr.id}}" >
+                     
+                            <i class="fas fa-eye icon-green"></i> 
+         
+                        </router-link>                      
+                        |
                       <a href="#" @click="editModal(curr)">
                             <i class="fa fa-edit icon-blue"></i>
                         </a>

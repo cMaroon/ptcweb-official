@@ -216,7 +216,9 @@
             if(this.$gate.isSuperAdmin()){
                 axios.get("api/user").then(({data}) =>(this.users = data))
                 .then($data=>{this.totalrecord=$data.total-1});
+
             }
+
             
           },
 
@@ -239,7 +241,6 @@
             }
         },
         created() {
-
            this.loadUsers();
            Fire.$on('AfterCreate',() => {
                this.loadUsers();
