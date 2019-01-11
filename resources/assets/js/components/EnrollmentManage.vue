@@ -8,10 +8,7 @@
 
                 <div class="card-tools">
                         <input style="width:250px" class="form-control float-left" @keyup="searchthis" v-model="form.search" type="search" placeholder="Search Form ID or ID Number" aria-label="Search">
-            <div class="input-group-append">
-        
-      </div>
-                   <!-- <button class="btn btn-success" @click="newModal" >Generate Form ID <i class="fas fa-plus-square fa-fw"></i></button> -->
+
                 </div>
               </div>
               <!-- /.card-header -->
@@ -20,6 +17,7 @@
                   <tbody><tr>
                     <th>Form ID</th>
                     <th>ID Number</th>
+                    <th>Program Code</th>
                     <th>Student Name</th>
                     <th>Enrolled At</th>
                     <th>Modify</th>
@@ -28,6 +26,7 @@
                  
                     <td>{{enroll.enr_form_id}}</td>
                     <td>{{enroll.enr_id_num}}</td>
+                    <td>{{enroll.enrollprograms.program_code}}</td>
                     <td>{{enroll.studinfo.firstname}} {{enroll.studinfo.lastname}} {{enroll.studinfo.suffixname}}</td>
                     <td>{{enroll.created_at | setDate}}</td>
                     <td>

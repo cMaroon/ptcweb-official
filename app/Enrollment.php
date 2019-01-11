@@ -22,6 +22,11 @@ class Enrollment extends Model
         return $this->belongsTo('App\Program','enr_program_id');
     }
 
+    public function enrollassoc()
+    {
+        return $this->belongsTo('App\EnrollmentAssoc','enr_form_id');
+    }
+
     public function studinfo()
     {
         return $this->belongsTo('App\Student','enr_id_num','id_num');

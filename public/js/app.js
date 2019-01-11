@@ -30690,7 +30690,7 @@ module.exports = Cancel;
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(141);
-module.exports = __webpack_require__(240);
+module.exports = __webpack_require__(243);
 
 
 /***/ }),
@@ -30755,7 +30755,7 @@ Vue.use(__WEBPACK_IMPORTED_MODULE_5_vue_progressbar___default.a, {
   height: '4px'
 });
 
-var routes = [{ path: '/dashboard', component: __webpack_require__(174) }, { path: '/developer', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }, { path: '/users', component: __webpack_require__(186) }, { path: '/studentlist', component: __webpack_require__(189) }, { path: '/program', component: __webpack_require__(192) }, { path: '/courses', component: __webpack_require__(195) }, { path: '/curriculum', component: __webpack_require__(198) }, { path: '/enrollment', component: __webpack_require__(201) }, { name: 'mycurr', path: '/mycurr/:id', component: __webpack_require__(204) }, { name: 'printenroll', path: '/printenroll/:id', component: __webpack_require__(207) }, { name: 'printclass', path: '/printclass/:id', component: __webpack_require__(256) }, { path: '/manage_enrollment', component: __webpack_require__(210) }, { name: 'manage_curr', path: '/manage_curr/:id', component: __webpack_require__(213) }, { name: 'view_students', path: '/view_students/:id', component: __webpack_require__(216) }];
+var routes = [{ path: '/dashboard', component: __webpack_require__(174) }, { path: '/developer', component: __webpack_require__(177) }, { path: '/profile', component: __webpack_require__(180) }, { path: '/users', component: __webpack_require__(186) }, { path: '/studentlist', component: __webpack_require__(189) }, { path: '/program', component: __webpack_require__(192) }, { path: '/courses', component: __webpack_require__(195) }, { path: '/curriculum', component: __webpack_require__(198) }, { path: '/enrollment', component: __webpack_require__(201) }, { name: 'mycurr', path: '/mycurr/:id', component: __webpack_require__(204) }, { name: 'printenroll', path: '/printenroll/:id', component: __webpack_require__(207) }, { name: 'printclass', path: '/printclass/:id', component: __webpack_require__(210) }, { path: '/manage_enrollment', component: __webpack_require__(213) }, { name: 'manage_curr', path: '/manage_curr/:id', component: __webpack_require__(216) }, { name: 'view_students', path: '/view_students/:id', component: __webpack_require__(219) }];
 
 var router = new __WEBPACK_IMPORTED_MODULE_4_vue_router__["a" /* default */]({
   mode: 'history',
@@ -30778,15 +30778,15 @@ window.Fire = new Vue();
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('passport-clients', __webpack_require__(219));
+Vue.component('passport-clients', __webpack_require__(222));
 
-Vue.component('passport-authorized-clients', __webpack_require__(224));
+Vue.component('passport-authorized-clients', __webpack_require__(227));
 
-Vue.component('passport-personal-access-tokens', __webpack_require__(229));
+Vue.component('passport-personal-access-tokens', __webpack_require__(232));
 
-Vue.component('not-found', __webpack_require__(234));
+Vue.component('not-found', __webpack_require__(237));
 
-Vue.component('example-component', __webpack_require__(237));
+Vue.component('example-component', __webpack_require__(240));
 
 var app = new Vue({
   el: '#app',
@@ -83388,6 +83388,413 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
+Component.options.__file = "resources/assets/js/components/PrintClass.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-2cd59ac2", Component.options)
+  } else {
+    hotAPI.reload("data-v-2cd59ac2", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 211 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            currstud: {},
+            datetoday: new Date('2011-04-11T10:20:30Z')
+
+        };
+    },
+
+    methods: {
+        printme: function printme() {
+            window.print();
+        },
+        loadClass: function loadClass() {
+            var _this = this;
+
+            // if(this.$gate.isStudent()){
+
+            axios.get("/api/currassoc/" + this.$route.params.id).then(function (_ref) {
+                var data = _ref.data;
+                return _this.currstud = data;
+            }).then(function ($data) {
+                _this.totalrecord = $data.total;
+            });
+            // }
+
+        }
+    },
+
+    created: function created() {
+        var _this2 = this;
+
+        this.loadClass();
+        Fire.$on('AfterCreate', function () {
+            _this2.loadClass();
+        });
+        //  setInterval(() => this.loadUsers(), 15000);
+    },
+
+    computed: {
+        orderedLastname: function orderedLastname() {
+            return _.orderBy(this.currstud.data, 'assocformid.studinfo.lastname');
+        }
+    },
+    filters: {
+        firstletter: function firstletter(value) {
+            if (!value) return '';
+            value = value.toString();
+            return value.charAt(0);
+        }
+    }
+
+});
+
+/***/ }),
+/* 212 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _vm.$gate.isSuperAdmin()
+      ? _c("div", { staticClass: "row mt-2" }, [
+          _c("div", { staticClass: "row no-print" }, [
+            _c("div", { staticClass: "col-2" }, [
+              _c(
+                "a",
+                {
+                  staticClass: "btn btn-danger",
+                  attrs: { href: "", target: "_blank" },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.printme($event)
+                    }
+                  }
+                },
+                [_c("i", { staticClass: "fa fa-print" }), _vm._v(" Print")]
+              )
+            ])
+          ]),
+          _vm._v(" "),
+          _c(
+            "div",
+            {
+              staticClass: "invoice p-3 mb-3",
+              staticStyle: {
+                "background-image": "url('/img/logo_ptcbw.png')",
+                "background-position": "relative",
+                "background-size": "auto"
+              }
+            },
+            [
+              _c("div", { staticClass: "row" }, [
+                _vm._m(0),
+                _vm._v(" "),
+                _c("div", { staticClass: "col-md-10" }, [
+                  _c("small", { staticClass: "float-right" }, [
+                    _vm._v(
+                      "Printed Date: " + _vm._s(_vm._f("setDate")(Date.now()))
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("br"),
+                  _vm._v(" "),
+                  _c("h2", [_vm._v("Pateros Technological College")]),
+                  _vm._v(" "),
+                  _c("h4", [
+                    _vm._v(
+                      "Class List Course : " +
+                        _vm._s(
+                          _vm.currstud.data[0].assoccurrid.currcourses
+                            .course_code
+                        ) +
+                        " of " +
+                        _vm._s(
+                          _vm.currstud.data[0].assoccurrid.currprograms
+                            .program_code
+                        ) +
+                        " " +
+                        _vm._s(
+                          _vm.currstud.data[0].assoccurrid.curryearlevel.title
+                        ) +
+                        " - " +
+                        _vm._s(
+                          _vm.currstud.data[0].assoccurrid.currsection.title
+                        )
+                    )
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("br"),
+              _vm._v(" "),
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col-12 table-responsive" }, [
+                  _c("table", { staticClass: "table table-striped" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c(
+                      "tbody",
+                      _vm._l(_vm.orderedLastname, function(currstuds, index) {
+                        return _c(
+                          "tr",
+                          { key: currstuds.id, attrs: { index: index } },
+                          [
+                            _c(
+                              "td",
+                              {
+                                staticStyle: { width: "3px", padding: "15px" }
+                              },
+                              [_vm._v(_vm._s(index + 1))]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticStyle: { width: "200px", padding: "15px" }
+                              },
+                              [_vm._v(_vm._s(currstuds.assocformid.enr_id_num))]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticStyle: { width: "350px", padding: "15px" }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    currstuds.assocformid.studinfo.lastname
+                                  ) +
+                                    " " +
+                                    _vm._s(
+                                      currstuds.assocformid.studinfo.suffixname
+                                    ) +
+                                    " , " +
+                                    _vm._s(
+                                      currstuds.assocformid.studinfo.firstname
+                                    ) +
+                                    " " +
+                                    _vm._s(
+                                      _vm._f("firstletter")(
+                                        currstuds.assocformid.studinfo
+                                          .middlename
+                                      )
+                                    ) +
+                                    "."
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "td",
+                              {
+                                staticStyle: { width: "250px", padding: "15px" }
+                              },
+                              [
+                                _vm._v(
+                                  _vm._s(
+                                    currstuds.assocformid.studinfo.cd_email
+                                  )
+                                )
+                              ]
+                            ),
+                            _vm._v(" "),
+                            _c("td", {
+                              staticStyle: { width: "250px", padding: "15px" }
+                            })
+                          ]
+                        )
+                      })
+                    )
+                  ])
+                ])
+              ])
+            ]
+          ),
+          _vm._v(" "),
+          _c("small", [
+            _vm._v(
+              "College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389"
+            )
+          ])
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-md-2" }, [
+      _c("img", {
+        staticClass: "img-circle elevation-2",
+        staticStyle: { width: "100px" },
+        attrs: { src: "/img/logo.png" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("No.")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Student ID")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Fullname")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("th", { staticStyle: { padding: "15px" } }, [
+          _vm._v("Student's Signature")
+        ])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-2cd59ac2", module.exports)
+  }
+}
+
+/***/ }),
+/* 213 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(214)
+/* template */
+var __vue_template__ = __webpack_require__(215)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
 Component.options.__file = "resources/assets/js/components/EnrollmentManage.vue"
 
 /* hot reload */
@@ -83410,12 +83817,11 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 211 */
+/* 214 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
 //
 //
 //
@@ -83645,7 +84051,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 212 */
+/* 215 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -83689,9 +84095,7 @@ var render = function() {
                         _vm.$set(_vm.form, "search", $event.target.value)
                       }
                     }
-                  }),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "input-group-append" })
+                  })
                 ])
               ]),
               _vm._v(" "),
@@ -83707,6 +84111,10 @@ var render = function() {
                           _c("td", [_vm._v(_vm._s(enroll.enr_form_id))]),
                           _vm._v(" "),
                           _c("td", [_vm._v(_vm._s(enroll.enr_id_num))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _vm._v(_vm._s(enroll.enrollprograms.program_code))
+                          ]),
                           _vm._v(" "),
                           _c("td", [
                             _vm._v(
@@ -83974,6 +84382,8 @@ var staticRenderFns = [
       _vm._v(" "),
       _c("th", [_vm._v("ID Number")]),
       _vm._v(" "),
+      _c("th", [_vm._v("Program Code")]),
+      _vm._v(" "),
       _c("th", [_vm._v("Student Name")]),
       _vm._v(" "),
       _c("th", [_vm._v("Enrolled At")]),
@@ -84009,15 +84419,15 @@ if (false) {
 }
 
 /***/ }),
-/* 213 */
+/* 216 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(214)
+var __vue_script__ = __webpack_require__(217)
 /* template */
-var __vue_template__ = __webpack_require__(215)
+var __vue_template__ = __webpack_require__(218)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -84056,7 +84466,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 214 */
+/* 217 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84330,7 +84740,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 215 */
+/* 218 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -84726,15 +85136,15 @@ if (false) {
 }
 
 /***/ }),
-/* 216 */
+/* 219 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(217)
+var __vue_script__ = __webpack_require__(220)
 /* template */
-var __vue_template__ = __webpack_require__(218)
+var __vue_template__ = __webpack_require__(221)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -84773,7 +85183,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 217 */
+/* 220 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -84887,7 +85297,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 218 */
+/* 221 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -85061,19 +85471,19 @@ if (false) {
 }
 
 /***/ }),
-/* 219 */
+/* 222 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(220)
+  __webpack_require__(223)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(222)
+var __vue_script__ = __webpack_require__(225)
 /* template */
-var __vue_template__ = __webpack_require__(223)
+var __vue_template__ = __webpack_require__(226)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -85112,13 +85522,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 220 */
+/* 223 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(221);
+var content = __webpack_require__(224);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -85138,7 +85548,7 @@ if(false) {
 }
 
 /***/ }),
-/* 221 */
+/* 224 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -85152,7 +85562,7 @@ exports.push([module.i, "\n.action-link[data-v-5d1d7d82] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 222 */
+/* 225 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -85516,7 +85926,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 223 */
+/* 226 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86077,19 +86487,19 @@ if (false) {
 }
 
 /***/ }),
-/* 224 */
+/* 227 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(225)
+  __webpack_require__(228)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(227)
+var __vue_script__ = __webpack_require__(230)
 /* template */
-var __vue_template__ = __webpack_require__(228)
+var __vue_template__ = __webpack_require__(231)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -86128,13 +86538,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 225 */
+/* 228 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(226);
+var content = __webpack_require__(229);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -86154,7 +86564,7 @@ if(false) {
 }
 
 /***/ }),
-/* 226 */
+/* 229 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -86168,7 +86578,7 @@ exports.push([module.i, "\n.action-link[data-v-2ee9fe67] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 227 */
+/* 230 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -86288,7 +86698,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 228 */
+/* 231 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -86397,19 +86807,19 @@ if (false) {
 }
 
 /***/ }),
-/* 229 */
+/* 232 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 function injectStyle (ssrContext) {
   if (disposed) return
-  __webpack_require__(230)
+  __webpack_require__(233)
 }
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(232)
+var __vue_script__ = __webpack_require__(235)
 /* template */
-var __vue_template__ = __webpack_require__(233)
+var __vue_template__ = __webpack_require__(236)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -86448,13 +86858,13 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 230 */
+/* 233 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // style-loader: Adds some css to the DOM by adding a <style> tag
 
 // load the styles
-var content = __webpack_require__(231);
+var content = __webpack_require__(234);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
@@ -86474,7 +86884,7 @@ if(false) {
 }
 
 /***/ }),
-/* 231 */
+/* 234 */
 /***/ (function(module, exports, __webpack_require__) {
 
 exports = module.exports = __webpack_require__(4)(false);
@@ -86488,7 +86898,7 @@ exports.push([module.i, "\n.action-link[data-v-89c53f18] {\n    cursor: pointer;
 
 
 /***/ }),
-/* 232 */
+/* 235 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -86810,7 +87220,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 });
 
 /***/ }),
-/* 233 */
+/* 236 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -87188,15 +87598,15 @@ if (false) {
 }
 
 /***/ }),
-/* 234 */
+/* 237 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(235)
+var __vue_script__ = __webpack_require__(238)
 /* template */
-var __vue_template__ = __webpack_require__(236)
+var __vue_template__ = __webpack_require__(239)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -87235,7 +87645,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 235 */
+/* 238 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -87257,7 +87667,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 236 */
+/* 239 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -87957,15 +88367,15 @@ if (false) {
 }
 
 /***/ }),
-/* 237 */
+/* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(238)
+var __vue_script__ = __webpack_require__(241)
 /* template */
-var __vue_template__ = __webpack_require__(239)
+var __vue_template__ = __webpack_require__(242)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -88004,7 +88414,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 238 */
+/* 241 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -88033,7 +88443,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 239 */
+/* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -88076,432 +88486,10 @@ if (false) {
 }
 
 /***/ }),
-/* 240 */
+/* 243 */
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
-
-/***/ }),
-/* 241 */,
-/* 242 */,
-/* 243 */,
-/* 244 */,
-/* 245 */,
-/* 246 */,
-/* 247 */,
-/* 248 */,
-/* 249 */,
-/* 250 */,
-/* 251 */,
-/* 252 */,
-/* 253 */,
-/* 254 */,
-/* 255 */,
-/* 256 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(1)
-/* script */
-var __vue_script__ = __webpack_require__(257)
-/* template */
-var __vue_template__ = __webpack_require__(258)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/PrintClass.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2cd59ac2", Component.options)
-  } else {
-    hotAPI.reload("data-v-2cd59ac2", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 257 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            currstud: {},
-            datetoday: new Date('2011-04-11T10:20:30Z')
-
-        };
-    },
-
-    methods: {
-        printme: function printme() {
-            window.print();
-        },
-        loadClass: function loadClass() {
-            var _this = this;
-
-            // if(this.$gate.isStudent()){
-
-            axios.get("/api/currassoc/" + this.$route.params.id).then(function (_ref) {
-                var data = _ref.data;
-                return _this.currstud = data;
-            }).then(function ($data) {
-                _this.totalrecord = $data.total;
-            });
-            // }
-
-        }
-    },
-
-    created: function created() {
-        var _this2 = this;
-
-        this.loadClass();
-        Fire.$on('AfterCreate', function () {
-            _this2.loadClass();
-        });
-        //  setInterval(() => this.loadUsers(), 15000);
-    },
-
-    computed: {
-        orderedLastname: function orderedLastname() {
-            return _.orderBy(this.currstud.data, 'assocformid.studinfo.lastname');
-        }
-    },
-    filters: {
-        firstletter: function firstletter(value) {
-            if (!value) return '';
-            value = value.toString();
-            return value.charAt(0);
-        }
-    }
-
-});
-
-/***/ }),
-/* 258 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "container" }, [
-    _vm.$gate.isSuperAdmin()
-      ? _c("div", { staticClass: "row mt-2" }, [
-          _c("div", { staticClass: "row no-print" }, [
-            _c("div", { staticClass: "col-2" }, [
-              _c(
-                "a",
-                {
-                  staticClass: "btn btn-danger",
-                  attrs: { href: "", target: "_blank" },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.printme($event)
-                    }
-                  }
-                },
-                [_c("i", { staticClass: "fa fa-print" }), _vm._v(" Print")]
-              )
-            ])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "invoice p-3 mb-3",
-              staticStyle: {
-                "background-image": "url('/img/logo_ptcbw.png')",
-                "background-position": "relative",
-                "background-size": "auto"
-              }
-            },
-            [
-              _c("div", { staticClass: "row" }, [
-                _vm._m(0),
-                _vm._v(" "),
-                _c("div", { staticClass: "col-md-10" }, [
-                  _c("small", { staticClass: "float-right" }, [
-                    _vm._v(
-                      "Printed Date: " + _vm._s(_vm._f("setDate")(Date.now()))
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c("br"),
-                  _vm._v(" "),
-                  _c("h2", [_vm._v("Pateros Technological College")]),
-                  _vm._v(" "),
-                  _c("h4", [
-                    _vm._v(
-                      "Class List Course : " +
-                        _vm._s(
-                          _vm.currstud.data[0].assoccurrid.currcourses
-                            .course_code
-                        ) +
-                        " of " +
-                        _vm._s(
-                          _vm.currstud.data[0].assoccurrid.currprograms
-                            .program_code
-                        ) +
-                        " " +
-                        _vm._s(
-                          _vm.currstud.data[0].assoccurrid.curryearlevel.title
-                        ) +
-                        " - " +
-                        _vm._s(
-                          _vm.currstud.data[0].assoccurrid.currsection.title
-                        )
-                    )
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("br"),
-              _vm._v(" "),
-              _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col-12 table-responsive" }, [
-                  _c("table", { staticClass: "table table-striped" }, [
-                    _vm._m(1),
-                    _vm._v(" "),
-                    _c(
-                      "tbody",
-                      _vm._l(_vm.orderedLastname, function(currstuds, index) {
-                        return _c(
-                          "tr",
-                          { key: currstuds.id, attrs: { index: index } },
-                          [
-                            _c(
-                              "td",
-                              {
-                                staticStyle: { width: "3px", padding: "15px" }
-                              },
-                              [_vm._v(_vm._s(index + 1))]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticStyle: { width: "200px", padding: "15px" }
-                              },
-                              [_vm._v(_vm._s(currstuds.assocformid.enr_id_num))]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticStyle: { width: "350px", padding: "15px" }
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    currstuds.assocformid.studinfo.lastname
-                                  ) +
-                                    " " +
-                                    _vm._s(
-                                      currstuds.assocformid.studinfo.suffixname
-                                    ) +
-                                    " , " +
-                                    _vm._s(
-                                      currstuds.assocformid.studinfo.firstname
-                                    ) +
-                                    " " +
-                                    _vm._s(
-                                      _vm._f("firstletter")(
-                                        currstuds.assocformid.studinfo
-                                          .middlename
-                                      )
-                                    ) +
-                                    "."
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c(
-                              "td",
-                              {
-                                staticStyle: { width: "250px", padding: "15px" }
-                              },
-                              [
-                                _vm._v(
-                                  _vm._s(
-                                    currstuds.assocformid.studinfo.cd_email
-                                  )
-                                )
-                              ]
-                            ),
-                            _vm._v(" "),
-                            _c("td", {
-                              staticStyle: { width: "250px", padding: "15px" }
-                            })
-                          ]
-                        )
-                      })
-                    )
-                  ])
-                ])
-              ])
-            ]
-          ),
-          _vm._v(" "),
-          _c("small", [
-            _vm._v(
-              "College St., Brgy. Sto. Rosario-Kanluran, Pateros, Metro-Manila Telephone: 02-640-5375 / 02-640-5389"
-            )
-          ])
-        ])
-      : _vm._e()
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-md-2" }, [
-      _c("img", {
-        staticClass: "img-circle elevation-2",
-        staticStyle: { width: "100px" },
-        attrs: { src: "/img/logo.png" }
-      })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("No.")]),
-        _vm._v(" "),
-        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Student ID")]),
-        _vm._v(" "),
-        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Fullname")]),
-        _vm._v(" "),
-        _c("th", { staticStyle: { padding: "15px" } }, [_vm._v("Email")]),
-        _vm._v(" "),
-        _c("th", { staticStyle: { padding: "15px" } }, [
-          _vm._v("Student's Signature")
-        ])
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2cd59ac2", module.exports)
-  }
-}
 
 /***/ })
 /******/ ]);

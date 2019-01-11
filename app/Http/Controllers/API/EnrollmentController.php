@@ -49,7 +49,7 @@ class EnrollmentController extends Controller
     {
         if (\Gate::allows('isSuperAdmin')) {
             
-            $enroll = Enrollment::with('enrollprograms','studinfo.studsection')->latest()->paginate(10);
+            $enroll = Enrollment::with('enrollassoc','enrollprograms','studinfo.studsection')->latest()->paginate(10);
 
             // dd($studentlist);
             return $enroll;
